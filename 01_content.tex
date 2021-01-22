@@ -320,7 +320,7 @@ print("Hello World")
 
 \vspace{10pt}
 \begin{minipage}{.49\linewidth}
-\begin{codebox}[Code]
+\begin{codebox}[Code: \texttt{print}]
 \begin{minted}[linenos, fontsize=\scriptsize]{python}
 print("Text")
 print('and even', "more text")
@@ -329,7 +329,7 @@ print('and even', "more text")
 %
 \end{minipage}
 \begin{minipage}{.49\linewidth}
-\begin{cmdbox}[Ausgabe]
+\begin{cmdbox}[Output: \texttt{print}]
 \begin{minted}[fontsize=\scriptsize]{text}
 Text
 and even more text
@@ -492,7 +492,8 @@ and even more text
 
 \begin{frame}[fragile]{Comments}
 %
-\begin{minipage}[t]{.44\linewidth}
+\begin{columns}[T]
+\column{.5\linewidth}
 \begin{itemize}
 \item Line of text that will be ignored by the interpreter
 \item Contains text for the develloper(s): explanations, etc.
@@ -500,11 +501,9 @@ and even more text
 \item Begin with a pound sign (\texttt{\#})
 \item Entire line behind the pound sign will be ignored
 \end{itemize}
-\end{minipage}
 %
-\begin{minipage}[t]{.55\linewidth}
-\phantom{x}
-\begin{codebox}[Code mit Kommentaren]
+\column{.5\linewidth}
+\begin{codebox}[Code with comments]
 \begin{minted}[linenos, fontsize=\scriptsize]{python}
 print("Hello World")  # text output
 
@@ -515,6 +514,6 @@ print("Hello World")  # text output
 # print("this line will not be executed")
 \end{minted}
 \end{codebox}
-\end{minipage}
+\end{columns}
 %
 \end{frame}
