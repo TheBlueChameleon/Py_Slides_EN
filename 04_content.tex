@@ -6,53 +6,6 @@
 
 % =========================================================================== %
 
-\begin{frame}{Recap}
-%
-\begin{columns}[T]
-\column{.5\linewidth}
-\begin{itemize}
-\item Modules
-	\begin{itemize}
-	\item Load with \inPy{import modulename}
-	\item Use objects with \inPy{modulename.symbol}
-	\end{itemize}
-\item \inPy{list}s
-	\begin{itemize}
-	\item Data containers
-	\item Elements in [brackets, separated by commas]
-	\item Access with [index in brackets]
-	\item Negative indices: count from end, backwards
-	\end{itemize}
-\end{itemize}
-%
-\column{.5\linewidth}
-\begin{itemize}
-\item Slices
-	\begin{itemize}
-	\item \emph{Extended index}
-	\item Creates new (temporary) \inPy{list}
-	\item \phantom{x} [start : stop : stride]
-	\item any of these parameters can be omitted
-	\end{itemize}
-\item References and copies
-	\begin{itemize}
-	\item Assignment via \texttt{=} actually assigns references
-	\item Module copy
-	\item \inPy{copy.deepcopy} for sublists
-	\end{itemize}
-\item mutable / immutable objects
-\end{itemize}
-
-\end{columns}
-%
-\begin{center}
-	\emph{Noch Fragen?}
-\end{center}
-%
-\end{frame}
-
-% =========================================================================== %
-
 \begin{frame}[fragile]{Chapter 4}
 %
 \begin{itemize}
@@ -88,7 +41,7 @@
 \end{itemize}
 %
 \column{.5\linewidth}
-\begin{codebox}[Beispiel: Strings]
+\begin{codebox}[Example: Strings]
 \begin{minted}[linenos, fontsize=\scriptsize]{python}
 text = "These go to eleven"
 
@@ -208,7 +161,7 @@ print(s)        #{'r', 'v', 'k', 'd', 'a'}
 \end{itemize}
 %
 \column{.5\linewidth}
-\begin{codebox}[Beispiel: \texttt{range}s]
+\begin{codebox}[Example: \texttt{range}s]
 \begin{minted}[linenos, fontsize=\scriptsize]{python}
 r = range(1, 10, 2)
 print(r)         # range(1, 10, 2)
@@ -245,7 +198,7 @@ print(list(range(5, 0, -1)))
 \end{itemize}
 %
 \column{.5\linewidth}
-\begin{codebox}[Beispiel: \texttt{range}s]
+\begin{codebox}[Example: \texttt{range}s]
 \begin{minted}[linenos, fontsize=\scriptsize]{python}
 d = {'north' : 12, 'east' : 9,
      'south' :  6, 'west' : 3}
@@ -303,7 +256,7 @@ B = ["red", "blue", "yellow", "green"]
 print(list(zip(A, B)))
 	\end{minted}
 	\end{codebox}
-	\begin{cmdbox}[Ausgabe: \texttt{zip}]
+	\begin{cmdbox}[Output: \texttt{zip}]
 	\begin{minted}[fontsize=\scriptsize]{text}
 [("Gryffindor", "red"), ("Ravenclaw", "blue"),
  ("Hufflepuff", "yellow"), ("Slytherin", "green")]
@@ -514,7 +467,7 @@ for i, t in enumerate(zip(data1, data2)) :
 \end{minted}
 \end{codebox}
 %
-\begin{cmdbox}[Ausgabe: \texttt{for}-Schleifen mit \texttt{zip}]
+\begin{cmdbox}[Output: \texttt{for}-Schleifen mit \texttt{zip}]
 \begin{minted}[fontsize=\scriptsize]{text}
 Datapoint 0: (1.7, 1.8) differs by : -0.10000000000000009
 Datapoint 1: (2.2, 2.0) differs by : 0.20000000000000018
