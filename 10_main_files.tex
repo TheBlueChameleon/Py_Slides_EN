@@ -43,8 +43,10 @@
 \usepackage{color, colortbl}
 \usepackage{xcolor}
 	\definecolor{tabhighlight}{RGB}{230,240,255}
+	\definecolor{tabcontrast} {RGB}{200,210,255}
 
 \usepackage{tabto}
+\usepackage{xspace}
 
 % math
 \usepackage{amsmath}
@@ -63,7 +65,7 @@
 	\usetikzlibrary{backgrounds}
 	\usetikzlibrary{calc}
 	\usetikzlibrary{decorations.pathreplacing}
-	\tikzstyle{every picture}+=[remember picture] 
+	\usetikzlibrary{arrows}
 \usepackage{adjustbox}
 
 \usepackage[most]{tcolorbox}
@@ -71,8 +73,7 @@
 		{colback=cyan!10!white,
 		 colframe=cyan!75!black,
 		 arc=0pt,
-		 outer arc=0pt,
-		 parbox=false
+		 outer arc=0pt
 		}
 	\newtcolorbox{codebox}[1][Code]
 		{colback=black!5!white,
@@ -80,7 +81,7 @@
 		 title=#1,
 		 leftupper=6mm
 		}
-	\newtcolorbox{cmdbox}[1][Terminal]
+	\newtcolorbox{cmdbox}[1][Kommandozeilen-Befehl]
 		{colback=black,
 		 coltext=white,
 		 fontupper=\ttfamily ,
@@ -88,12 +89,12 @@
 		 title=#1,
 		 outer arc=0pt
 		}
-	\newtcolorbox{warnbox}[1][Attention]
+	\newtcolorbox{warnbox}[1][Beachte]
 		{colback=black!5!white,
 		 colframe=red!40!black,
 		 title=#1
 		}
-	\newtcolorbox{hintbox}[1][Hint]
+	\newtcolorbox{hintbox}[1][Tipp]
 		{colback=black!5!white,
 		 colframe=green!40!black,
 		 title=#1
@@ -114,25 +115,25 @@
 \newcommand*{\eg}{e.\,g. }
 \newcommand*{\ie}{i.\,e. }
 
-\newcommand{\Thus}{\ensuremath{\Rightarrow}}
-\newcommand{\thus}{\ensuremath{\rightarrow}}
+\newcommand{\Thus}{\ensuremath{\Rightarrow}\xspace}
+\newcommand{\thus}{\ensuremath{\rightarrow}\xspace}
 
 \newcommand*{\tabcrlf}{\\ \midrule}			% actually still allows for optional argument
 
-\newcommand*{\inPy}[1]{\mintinline{python}{#1}}
+\newcommand*{\inPy}[1]{\mintinline{python3}{#1}}
 
 % =========================================================================== %
 
 \author{Stefan Hartinger}
 \title{Programming in Python}
-\subtitle{Part 6: Advanced Techniques with Functions}
+\subtitle{Part 10: Reading and Writing Files}
 \institute{University Regensburg, Department of Theoretical Physics}
 \date{Block Course, Summer Term 2021}
 
 % =========================================================================== %
 
 \begin{document}
-\include{06_content}
+\include{10_content}
 \end{document}
 
 % MAREI!!
