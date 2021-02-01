@@ -11,39 +11,59 @@
 \begin{columns}[T]
 \column{.5\linewidth}
 \begin{itemize}
-\item Advanced forms of argument lists
+\item File access via handles
 	\begin{itemize}
-	\item Optional arguments
-	\item Variadic functions
-	\item Keyword arguments
+	\item \inPy{handle = open(filename, mode)}
+	\item pre-built objects
+	\item file mode: read/write/append, binary/text mode
+	\item should be closed after operation
 	\end{itemize}
-\item Returning functions
+\item Writing to files
 	\begin{itemize}
-	\item Return a reference
-	\item Function generators
+	\item With \texttt{handle.write}
+	\item Argument: String in text mode, \inPy{bytes} object in binary mode
 	\end{itemize}
 \end{itemize}
 %
 \column{.5\linewidth}
 \begin{itemize}
-\item Lambdas
+\item Reading from files
 	\begin{itemize}
-	\item Shorthand form for functions
-	\item Often used as arguments (\thus \texttt{sort})
+	\item \texttt{handle.read} -- read as string or as \inPy{bytes} object
+	\item Entire file or up to a maximum length
+	\item \texttt{readline} and \texttt{readlines} -- read entire line(s)
 	\end{itemize}
-\item Recursion
+\item Block structures
 	\begin{itemize}
-	\item Functions calling themselves
-	\item Solution to self-similar problems
-	\item \enquote{Boxes} with variables of their own
+	\item \inPy{with open(...) as handle} -- automatically close files
+	\item Realized via dunders \inPy{__enter__} and \inPy{__exit__}
+	\item \inPy{for line in handle}
 	\end{itemize}
 \end{itemize}
-
 \end{columns}
 %
 \begin{center}
 	\emph{Any Questions?}
 \end{center}
+%
+\end{frame}
+
+
+% =========================================================================== %
+
+\begin{frame}[fragile]{Recap}
+%
+\begin{columns}[T]
+\column{.5\linewidth}
+\begin{itemize}
+\item x
+\end{itemize}
+%
+\column{.5\linewidth}
+\begin{itemize}
+\item y
+\end{itemize}
+\end{columns}
 %
 \end{frame}
 

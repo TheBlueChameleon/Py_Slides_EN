@@ -11,35 +11,37 @@
 \begin{columns}[T]
 \column{.5\linewidth}
 \begin{itemize}
-\item File access via handles
+\item Exceptions
+\item Block structure
 	\begin{itemize}
-	\item \inPy{handle = open(filename, mode)}
-	\item pre-built objects
-	\item file mode: read/write/append, binary/text mode
-	\item should be closed after operation
+	\item \inPy{try}: Anything that might go wroing
+	\item \inPy{except}: What to do if something goes wrong
+	\item \inPy{else}: What to do if everything is all right
+	\item \inPy{finally}: What to do in any case
 	\end{itemize}
-\item Writing to files
+\item Error Classes
 	\begin{itemize}
-	\item With \texttt{handle.write}
-	\item Argument: String in text mode, \inPy{bytes} object in binary mode
+	\item Hierarchical Order
+	\item Allows specific treatment
 	\end{itemize}
 \end{itemize}
 %
 \column{.5\linewidth}
 \begin{itemize}
-\item Reading from files
+\item Command \inPy{raise}
 	\begin{itemize}
-	\item \texttt{handle.read} -- read as string or as \inPy{bytes} object
-	\item Entire file or up to a maximum length
-	\item \texttt{readline} and \texttt{readlines} -- read entire line(s)
+	\item Trigger an exception yourself
+	\item Argument: instance of an error class
+	\item Or: Re-raise in an \inPy{except} block
 	\end{itemize}
-\item Block structures
+\item Own Error Classes
 	\begin{itemize}
-	\item \inPy{with open(...) as handle} -- automatically close files
-	\item Realized via dunders \inPy{__enter__} and \inPy{__exit__}
-	\item \inPy{for line in handle}
+	\item Inherit from \texttt{Exception}
+	\item Arbitrary Design
+	\item Usually only for specific treatment of user-defined errors: \enquote{empty} classes
 	\end{itemize}
 \end{itemize}
+
 \end{columns}
 %
 \begin{center}

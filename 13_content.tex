@@ -11,34 +11,21 @@
 \begin{columns}[T]
 \column{.5\linewidth}
 \begin{itemize}
-\item Exceptions
-\item Block structure
+\item Classes
 	\begin{itemize}
-	\item \inPy{try}: Anything that might go wroing
-	\item \inPy{except}: What to do if something goes wrong
-	\item \inPy{else}: What to do if everything is all right
-	\item \inPy{finally}: What to do in any case
-	\end{itemize}
-\item Error Classes
-	\begin{itemize}
-	\item Hierarchical Order
-	\item Allows specific treatment
+	\item Data collection with context
+	\item Class attributes and instance attributes
+	\item Methods: Functions that access specific instances
 	\end{itemize}
 \end{itemize}
 %
 \column{.5\linewidth}
 \begin{itemize}
-\item Command \inPy{raise}
+\item Dunders: Methods, called automatically in specific situations
 	\begin{itemize}
-	\item Trigger an exception yourself
-	\item Argument: instance of an error class
-	\item Or: Re-raise in an \inPy{except} block
-	\end{itemize}
-\item Own Error Classes
-	\begin{itemize}
-	\item Inherit from \texttt{Exception}
-	\item Arbitrary Design
-	\item Usually only for specific treatment of user-defined errors: \enquote{empty} classes
+	\item \inPy{__init__} -- Constructor
+	\item \inPy{__str__} and \inPy{__repr__} -- text representation
+	\item \inPy{__call__} -- instance as function
 	\end{itemize}
 \end{itemize}
 
@@ -52,669 +39,146 @@
 
 % =========================================================================== %
 
-\begin{frame}[fragile]{Chapter 8}
-%
-\begin{itemize}
-\item Representation in Binary and as Text
-\item Handles
-\item Reading and Writing Files
-\item Block struktures
-\item File Cursor Manipulation
-\item Pickle, JSON, CSV
-\end{itemize}
-%
-\end{frame}
-
-% =========================================================================== %
-
-\begin{frame}[fragile]{Representation in Binary and as Text}
+\begin{frame}[fragile]{Recap}
 %
 \begin{columns}[T]
 \column{.5\linewidth}
 \begin{itemize}
-\item Recap: Humans use thousands of characters, computers use only two
-\item All information: for computers essentially binary numbers
-\item Rules for interpretation allow interfaces to humans
-\item[\Thus] Everything is a number
+\item \inPy{__len__} and \inPy{__abs__}
+\item Comparison operators
+\item Computation operators
+	\begin{itemize}
+	\item Left- and right hand sided operators
+	\item Return value \inPy{NotImplemented}
+	\end{itemize}
+\item Index-Access
+\item Type safety
 \end{itemize}
 %
 \column{.5\linewidth}
 \begin{itemize}
-\item How to store (human) numbers: two principal approaches:
-\item \emph{Text} \inPy{"42"} is not equal to \emph{number} \inPy{42}
+\item Design-Pattern: Shared methods
+\item Inheritance
 	\begin{itemize}
-	\item Text: two characters: \inPy{"4"}, with ASCII-Code 52 and \inPy{"2"} with ASCII-Code 50\\
-		Bit pattern \texttt{00110110 00110100}
-	\item Number: Direct storage as binary number\\
-		Bit pattern \texttt{00101010}
+	\item \enquote{Recyle} classes
+	\item Methods and attributes are copied
+	\item Everything can be overwritten
+	\item Calling Parent-Methods -- \inPy{super()}
 	\end{itemize}
 \end{itemize}
+
 \end{columns}
 %
 \begin{center}
-	\begin{large}
-	\Thus \emph{As Coders, we have to keep track of which kind of data we handle and give some context to the computer!}
-	\end{large}
+	\emph{Any Questions?}
 \end{center}
 %
 \end{frame}
 
 % =========================================================================== %
 
-\begin{frame}[fragile]
+\begin{frame}[fragile]{Seen in the Exercises}
 %
-\begin{columns}[T]
-\column{.5\linewidth}
-\begin{Large}
-	{Opening Files -- Handles}
-	\vspace{6pt}
-\end{Large}
-\begin{itemize}
-\item Python does most of the interpretation work in the background through assigned data types (\inPy{int}, \inPy{float}, \inPy{dict}, \ldots)
-\item File content only holes \enquote{raw information}, without an assigned data type
-\item[\Thus] Our task
-\item Python: File Mode -- like assigning a data type
-\item Picture: \enquote{attach a handle to a file} with which you can \enquote{touch} the file
-\end{itemize}
+\begin{tcbraster}[raster columns=2,
+                  raster equal height,
+                  nobeforeafter,
+                  raster column skip=0.5cm]
+\begin{warnbox}[Example: Interupted Blocks, leftupper=6mm]
+\begin{minted}[fontsize=\scriptsize, linenos]{python}
+class foo :
+    def __init__(self, attr) :
+        self.bar = attr
+
+foobar = foo("foo bar")
+
+    def __str__(self) :
+        return str(self.bar)
+
+print(foobar)
+\end{minted}
+\end{warnbox}
 %
-\column{.5\linewidth}
-\begin{codebox}[Syntax: Opening Files]
-\begin{minted}[fontsize=\scriptsize]{python}
-handle = open(filename, mode)
+\begin{codebox}[Example: Solution]
+\begin{minted}[fontsize=\scriptsize, linenos]{python}
+class foo :
+    def __init__(self, attr) :
+        self.bar = attr
+
+    def __str__(self) :
+        return str(self.bar)
+
+foobar = foo("foo bar")
+print(foobar)
 \end{minted}
 \end{codebox}
+\end{tcbraster}
 %
-\begin{itemize}
-\item \texttt{filename} -- relative or absolute filename
-	\begin{itemize}
-	\item \inPy{"myFile.txt"} -- try to find it in the current working directory (CWD)
-	\item \inPy{"C:\myFiles\myFile.txt"} -- absolute filename
-	\item \inPy{"..\myFile.txt"} -- try to find it one level above the CWD
-	\end{itemize}
-\item Linux and Mac: separator is a \emph{forward slash} (/), not the Backslash (\textbackslash).
-\end{itemize}
-\end{columns}
-%
-\end{frame}
-
-% =========================================================================== %
-
-\begin{frame}[fragile]{File Modes}
-%
-\begin{center}
-\scriptsize
-\rowcolors{1}{white}{tabhighlight}
-\begin{tabular}{c|cp{.6\linewidth}}
-	\toprule
-	\textbf{String}	& \textbf{Bedeutung}       & \textbf{Kommentar} \tabcrlf
-	\texttt{r}				& Read   -- Text Mode      & File Cursor at the beginning of the file.\newline \emph{No} creation of new files.\\
-	\texttt{rb}			& Read   -- Binary Mode    & File Cursor at the beginning of the file.\newline \emph{No} creation of new files.\\
-	\texttt{w}				& Write  -- Text Mode      & File Cursor at the beginning of the file.\newline Creation of new files, old files will be overwritten.\\
-	\texttt{wb}			& Write  -- Binary Mode    & File Cursor at the beginning of the file.\newline Creation of new files, old files will be overwritten.\\
-	\texttt{x}				& Write  -- Text Mode      & File Cursor at the beginning of the file.\newline Creation of new files, old files will \emph{not} be overwritten.\\
-	\texttt{xb}			& Write  -- Binary Mode    & File Cursor at the beginning of the file.\newline Creation of new files, old files will \emph{not} be overwritten.\\
-	\texttt{a}				& Append -- Text Mode      & File Cursor at the \emph{end} of the file. Creation of new files, old files will \emph{not} be overwritten.\\
-	\texttt{ab}			& Append -- Binary Mode    & File Cursor at the \emph{end} of the file. Creation of new files, old files will \emph{not} be overwritten. \\
-	\bottomrule
-\end{tabular}
-\end{center}
-%
-\end{frame}
-
-% =========================================================================== %
-
-\begin{frame}
-%
-\begin{hintbox}[Binary or Text mode?]
-\small
-Is the file human-readable in a text editor?												\tabto{10.5cm} \Thus Text mode
-
-Are there only cryptic characters (\eg like when opeing pictures)?	\tabto{10.5cm} \Thus Binary mode
-\end{hintbox}
-%
-\begin{hintbox}[Which Access Mode?]
-\small
-Read?		\tabto{3cm} \Thus \texttt{r} or \texttt{rb}
-
-Create?	\tabto{3cm} \Thus \texttt{w} or \texttt{wb}
-
-Append?	\tabto{3cm} \Thus \texttt{a} or \texttt{ab}
-\end{hintbox}
-%
-\begin{hintbox}[Path Specifications -- Relative and Compact]
-\small
-Absolute Path Specifications: inflexible / not portable
-
-If possible: order programs such that all necessary files can be found in \emph{subfolders} of the project directory.
+\begin{hintbox}[Hint]
+This holds for \emph{all} block structures: loops, functions, \inPy{if}s, \ldots
 \end{hintbox}
 %
 \end{frame}
 
 % =========================================================================== %
 
-\begin{frame}[fragile]
-%
-\begin{columns}[T]
-\column{.5\linewidth}
-\begin{Large}
-	{Closing Files}
-	\vspace{6pt}
-\end{Large}
+\begin{frame}[fragile]{Mind-Pictures: Classes as Professions}
 %
 \begin{itemize}
-\item Handling Files: Fairly complicated processes
+\item Class instance: \enquote{Person, holding some specific knowledge}
 	\begin{itemize}
-	\item Many media types: hard discs, CDs, network files, \ldots
-	\item Many file systems (NTFS, FAT, ext, \ldots)
+	\item Pure knowledge \thus instance attributes
+	\item Expert of their subject, can interpret these attributes \thus methods
 	\end{itemize}
-\item Most work done by the operating system (OS)
-\item To work correctly, we have to tell the OS when an operation is completed
-\item[\Thus] Method \inPy{close()}
-\end{itemize}
-%
-\column{.5\linewidth}
-\begin{codebox}[Syntax: Closing Files]
-\begin{minted}[fontsize=\scriptsize]{python3}
-handle.close()
-\end{minted}
-\end{codebox}
-%
-\begin{itemize}
-\item If forgotten: Usually, Python interpreter closes files automatically
-\item Can result in a noticeable delay
-\end{itemize}
-%
-\begin{hintbox}[Write \texttt{open} and \texttt{close} in the same step]
-\small
-When typing \inPy{open}: Write the associated \texttt{close} directly thereafter. Only then, think of and write the code in between these commands.
-\end{hintbox}
-\end{columns}
-%
-\end{frame}
-
-% =========================================================================== %
-
-\begin{frame}[fragile]{Writing Files}
-%
-\begin{columns}[T]
-\column{.5\linewidth}
-\begin{itemize}
-\item As soon as we've opend a file in a write mode (\texttt{w}, \texttt{wb}, \texttt{a}, \ldots): method \texttt{write} can be used
-\item Takes either \inPy{str}ings (text mode) or \inPy{bytes}-Objekte (binary mode) as an argument
-\item Argument is written int the file \enquote{as is}
-\item \emph{No} automatic line break
-\item Multiple write commands in sequence possible (no overwriting, regardless of mode)
-\end{itemize}
-%
-\column{.5\linewidth}
-\begin{codebox}[Example: Writing Two Lines into a File]
-\begin{minted}[fontsize=\scriptsize, linenos]{python}
-handle = open("output.txt", "w")
-
-handle.write("Some text " * 2 + "\n")
-handle.write( str([1, 2, 3]) )
-
-handle.close()
-\end{minted}
-\end{codebox}
-%
-\begin{cmdbox}[File Content of \texttt{output.txt}]
-\begin{minted}[fontsize=\scriptsize]{text}
-Some text Some text
-[1, 2, 3]
-\end{minted}
-\end{cmdbox}
-\end{columns}
-%
-\end{frame}
-
-% =========================================================================== %
-
-\begin{frame}[fragile]
-%
-\begin{columns}[T]
-\column{.5\linewidth}
-\begin{Large}
-	{Excursion: \inPy{bytes}-Object}
-	\vspace{6pt}
-\end{Large}
-%
-\begin{itemize}
-\item Data Container, representing a section of memory
-\item Can be generated from many objects
-\item Can be cast into many data types
+\item Designing a class: \enquote{describing the profession}
 	\begin{itemize}
-	\item To \inPy{int}: Directly, via method \inPy{int.from_bytes}
-	\item Additional information \enquote{Byte order}: Read left-to-right or right-to-left
-	\item \enquote{big endian} or \enquote{little endian}
-	\item To \inPy{float}: module \texttt{struct}
+	\item What do all people of that profession know? \thus instance and class attributes
+	\item What questions can they answer? \thus methods
+	\item How can they alter their \enquote{knowledge}? \thus methods, too
 	\end{itemize}
-\item Can be written in binary mode, puts memory content 1:1 into file
-\end{itemize}
-%
-\column{.5\linewidth}
-\begin{codebox}[Example: \texttt{bytes}]
-\begin{minted}[fontsize=\scriptsize, linenos]{python}
-data = [65, 66, 67, 68]
-bdata = bytes(data)
-print(bdata)
-print(int.from_bytes(bdata, 'big'))
-
-handle = open("output.dat", "wb")
-handle.write(bdata)
-handle.close()
-\end{minted}
-\end{codebox}
-%
-\begin{cmdbox}[Output on Screen]
-\begin{minted}[fontsize=\scriptsize]{text}
-b'ABCD'
-1094861636
-\end{minted}
-\end{cmdbox}
-%
-\begin{cmdbox}[File Content of \texttt{output.dat}]
-\begin{minted}[fontsize=\scriptsize]{text}
-ABCD
-\end{minted}
-\end{cmdbox}
-\end{columns}
-%
-\end{frame}
-
-% =========================================================================== %
-
-\begin{frame}[fragile]
-%
-\begin{columns}[T]
-\column{.5\linewidth}
-\begin{Large}
-	{Reading From Files}
-	\vspace{6pt}
-\end{Large}
-\begin{itemize}
-\item As soon as a file is opened in a read mode (\texttt{r} or \texttt{rb}): method \texttt{read} can be used
-\item One optional argument
+\item Interaction between classes
 	\begin{itemize}
-	\item Maximum of characters (text mode) or bytes (binary mode) to be read
-	\item If omitted: reads entire file
-	\item If value bigger than file length: ignored
-	\item If value smaller than file length: \enquote{file cursor} moved to in front of the first unread character (byte)
-	\end{itemize}
-\item Attempting to read after end of file: raise exception
-\item Return value: \inPy{str}ing- or \inPy{bytes} variable
-\end{itemize}
-%
-\column{.5\linewidth}
-\begin{cmdbox}[File Content of \texttt{output.txt}]
-\begin{minted}[fontsize=\scriptsize]{text}
-Some text Some text
-[1, 2, 3]
-\end{minted}
-\end{cmdbox}
-%
-\begin{codebox}[Example: Reading Text Files]
-\begin{minted}[fontsize=\scriptsize]{python}
-handle = open("output.txt", "r")
-firstWord = handle.read(4)
-rest = handle.read()
-handle.close()
-print(firstWord)
-print(rest)
-\end{minted}
-\end{codebox}
-%
-\begin{cmdbox}[Output on Screen]
-\begin{minted}[fontsize=\scriptsize]{text}
-Some
- text Some text
-[1, 2, 3]
-\end{minted}
-\end{cmdbox}
-%
-\end{columns}
-%
-\end{frame}
-
-% =========================================================================== %
-
-\begin{frame}[fragile]{\texttt{readline} and \texttt{readlines}}
-%
-\begin{columns}[T]
-\column{.5\linewidth}
-\begin{itemize}
-\item \texttt{readline}
-	\begin{itemize}
-	\item Method to file handles in text read mode
-	\item Reads an entire line
-	\item Optional argument: maximum length
-	\item Line break is included in the read content (unless prohibited by length restriction)
-	\end{itemize}
-\item \texttt{readlines}
-	\begin{itemize}
-	\item Method to file handles in text read mode
-	\item Reads \emph{all} lines, store them as a \inPy{list}
-	\item Optional argument: maximum line count
-	\item Line breaks is included int the read content
-	\end{itemize}
-\end{itemize}
-%
-\column{.5\linewidth}
-\begin{codebox}[Beispiel: \texttt{readline} and \texttt{readlines}]
-\begin{minted}[fontsize=\scriptsize]{python}
-handle = open("output.txt", "r")
-print( handle.readline(), end="" )
-print( handle.readline(), end="" )
-handle.close()
-
-handle = open("output.txt", "r")
-data = handle.readlines()
-print(data)
-handle.close()
-\end{minted}
-\end{codebox}
-%
-\begin{cmdbox}[Output on Screen]
-\begin{minted}[fontsize=\scriptsize]{text}
-Some text Some text
-[1, 2, 3]
-['Some text Some text\n', '[1, 2, 3]\n']
-\end{minted}
-\end{cmdbox}
-%
-\end{columns}
-%
-\end{frame}
-
-% =========================================================================== %
-
-\begin{frame}[fragile]{Block strukture: \inPy{with .. as}}
-%
-\begin{columns}[T]
-\column{.5\linewidth}
-\begin{itemize}
-\item Close Files automatically
-\item Realised via Dunders \inPy{__enter__} and \inPy{__exit__}
-	\begin{itemize}
-	\item \texttt{handle} is instance of class \texttt{\_io.TextIOWrapper}
-	\item \inPy{with} calls method \inPy{__enter__}, stores return value in \texttt{handle}
-	\item At the end of the indentation block: call to method \inPy{__exit__}
-	\item For file handles: \inPy{self.close()}
-	\end{itemize}
-\item Generally recommended to use
-\item Sometimes not possible due to complex program structure
-\end{itemize}
-%
-\column{.5\linewidth}
-\begin{codebox}[Syntax: \texttt{with .. as}]
-\begin{minted}[fontsize=\scriptsize]{python}
-with open(filename, mode) as handle :
-    commands
-
-# NO handle.close()
-\end{minted}
-\end{codebox}
-%
-\begin{codebox}[Example: compact read code]
-\begin{minted}[fontsize=\scriptsize, linenos]{python}
-with open("output.txt", "r") as handle :
-    data = handle.readlines()
-    
-print(data)
-\end{minted}
-\end{codebox}
-%
-\end{columns}
-%
-\end{frame}
-
-% =========================================================================== %
-
-\begin{frame}[fragile]{Block Strukture: File Handles with \inPy{for} and \inPy{list}}
-%
-\begin{columns}[T]
-\column{.5\linewidth}
-\begin{itemize}
-\item File Handles are \emph{Iterables}
-\item Can be looped over with \inPy{for}: read line by line
-\item Can be stored as a \inPy{list} 
-\item Hidden access to method \texttt{readlines}
-\item Probably most often used code structure when reading files
-\end{itemize}
-%
-\column{.5\linewidth}
-\begin{codebox}[Example: Three Equivalent Calls]
-\begin{minted}[fontsize=\scriptsize, linenos]{python}
-with open("output.txt", "r") as handle :
-  for line in handle.readlines() :
-    print(line)
-
-with open("output.txt", "r") as handle :
-  lines = list(handle) # stays in memory
-  for line in lines :
-    print(line)
-
-with open("output.txt", "r") as handle :
-  for line in handle :
-    print(line)
-\end{minted}
-\end{codebox}
-%
-\end{columns}
-%
-\end{frame}
-
-% =========================================================================== %
-
-\begin{frame}[fragile]{File Cursor: \inPy{tell} and \inPy{seek}}
-%
-\begin{columns}[T]
-\column{.5\linewidth}
-\begin{itemize}
-\item Both: Methods of file handles
-\item	\texttt{tell}
-	\begin{itemize}
-	\item Returns current cursor position
-	\item Distance from start of file in \enquote{steps}
-	\item Binary modes: 1 step = 1 byte
-	\item Text modes: 1 step = 1 character
-	\end{itemize}
-\item \texttt{seek}
-	\begin{itemize}
-	\item Change to cursor position (aka \emph{offset})
-	\item Same idea of \enquote{steps}
-	\item Parameter 1: How many steps
-	\item Parameter 2: Which starting point
+	\item Picture: conversation
+	\item One person (instance) will take the lead, asks the other one questions
+	\item Ask questions \thus call methods
+	\item For that we need to know:
 		\begin{itemize}
-		\item 0: start of file
-		\item 1: current position
-		\item 2: end of file
+		\item Whom to ask \thus instance of the other class
+		\item Which question \thus which method
+		\item Possibly: How to specify the question \thus arguments to the method
 		\end{itemize}
 	\end{itemize}
 \end{itemize}
 %
-\column{.5\linewidth}
-\begin{codebox}[Beispiel: \texttt{seek} und \texttt{tell}]
-\begin{minted}[fontsize=\scriptsize, linenos]{python}
-with open("output.txt", "r") as handle :
-    text = handle.read(4)
-    print( handle.tell() )
-        # Output: 4
-    
-    handle.seek(-2, 1)
-        # Step back two characters
-    print( handle.tell() )
-        # Output: 2
-    
-    handle.seek(0, 2)
-        # Jump to end of file
-\end{minted}
-\end{codebox}
-%
-\end{columns}
-%
 \end{frame}
 
 % =========================================================================== %
 
-\begin{frame}[fragile]{Pickle -- Serialization of Python Data Objects}
+\begin{frame}{Mind-Pictures: Classes as Professions}
 %
 \begin{itemize}
-\item Some Computations take very long
-\item (Partial) results may be reusable later, or: split computation in multiple steps
-\item Pickle: module for \emph{serialization} of data objects, \ie bring into a form that can be stored to a file or sent over networks
-\item Format particular to Python; hardly compatible with other languages
-\item But can be used with (almost) anything in Python
-\item Requires \inPy{import pickle}
-\item Read or write in \emph{binary mode}
-\item Write: \inPy{pickle.dump(object, handle)}
-\item Read: \inPy{object = pickle.load(handle)}
-\end{itemize}
-%
-\end{frame}
-
-% =========================================================================== %
-
-\begin{frame}[fragile]
-%
-\begin{codebox}[Example: Pickle -- Read and Write]
-\begin{minted}[linenos, fontsize=\scriptsize]{python}
-import pickle
-
-class Foo :
-    def __init__(self) :
-        self.bar = 1 + 1j
-    def __str__(self) :
-        return "Foo object"
-
-complexNumber = -0.3 + 4.1j
-classObject   = Foo()
-
-with open("archive.pkl", "wb") as handle :
-    pickle.dump(complexNumber, handle)
-    pickle.dump(classObject  , handle)
-with open("archive.pkl", "rb") as handle :
-    readComplex     = pickle.load(handle)
-    readClassObject = pickle.load(handle)
-
-print(readComplex)
-print(readClassObject, readClassObject.bar)
-\end{minted}
-\end{codebox}
-%
-\end{frame}
-
-% =========================================================================== %
-
-\begin{frame}
-%
-\begin{columns}[T]
-\column{.65\linewidth}
-\begin{warnbox}[Security Issue Pickle]
-Pickle can serialize \emph{anything} -- even functions or entire modules. This can be useful, but allows to hide harmful code in an archive. Since code is often executed automatically in Python, an archive can be devised that runs harmful code \emph{as soon as it's unpickled}.
-
-From the file itself it is hardly possible to see what is loaded (binary files).
-
-Only load pickles that you really trust!
-\end{warnbox}
-%
-\column{.35\linewidth}
-\begin{center}
-\includegraphics[width=.6\linewidth]{./gfx/pickleRick}\\
-\scriptsize Source: \url{https://www.emp.de/p/the-adventures-of-pickle-rick/470242.html}
-\end{center}
-\end{columns}
-%
-\end{frame}
-
-% =========================================================================== %
-
-\begin{frame}[fragile]{JSON -- Portable Archives}
-%
-\begin{itemize}
-\item \emph{JavaScript Object Notation}
-\item Alternative Approach to Pickle, Same Goal
-\item Data is stored as human-readable text
-\item Only supports 8 data types (as well as compositions thereof): 
-	\inPy{int}, \inPy{float}, \inPy{str}, \inPy{bool}, \inPy{list}, \inPy{tuple}, \inPy{dict}, \inPy{None}
-\item Other data types: deconstruct manually
-\item Well compatible with other languages
-\item Code logic as with Pickle:
+\item Example: \emph{Where, in a given garden, is it a good idea to plant a tree?}
+\item For this: two \enquote{experts}
 	\begin{itemize}
-	\item \inPy{import json}
-	\item Open in \emph{Text}mode
-	\item Write: \inPy{json.dump(object, handle)}
-	\item Read: \inPy{object = json.load(handle)}
-	\item Compile multiple objects into a \inPy{dict}
+	\item Gardener: knows how to recognize a good spot
+	\item Owner of the garden: knows the shape of their garde
 	\end{itemize}
-\end{itemize}
-%
-\end{frame}
-
-% =========================================================================== %
-
-\begin{frame}[fragile]
-%
-\begin{codebox}[Example: JSON -- Read and Write]
-\begin{minted}[linenos, fontsize=\scriptsize]{python}
-import json
-
-complexNumber = -0.3 + 4.1j
-realPart      = complexNumber.real
-imaginaryPart = complexNumber.imag
-dictionary  = {1 : "one", 2 : "two", 3 : "three", 4 : ["list", "of", "strings"]}
-
-with open("archive.json", "w") as handle :
-    json.dump(
-        {"real" : realPart,
-         "imag" : imaginaryPart,
-         "dict" : dictionary},
-        handle
-    )
-with open("archive.json", "r") as handle :
-    jsonObjects = json.load(handle)
-readComplex = complex(jsonObjects["real"], jsonObjects["imag"])
-
-print(readComplex)
-print(jsonObjects["dict"])
-\end{minted}
-\end{codebox}
-%
-\end{frame}
-
-% =========================================================================== %
-
-\begin{frame}[fragile]{CSV -- Read and Write Tables}
-%
-\begin{itemize}
-\item \emph{Comma Separated Values}. Supported by many spreadsheet programs (such as Microsoft Excel or LibreOffice Calc)
-\item \inPy{str}ings, \inPy{int}s and \inPy{float}s in rows and columns
-\item Columns separated by some separator character, usually a comma (hence the name CSV); possible to use with whitespaces or tabulators, too
-\item Double separator character \Thus empty cell
-\item \inPy{str}ings usually in \emph{string delimiters}, most often  \texttt{"}double quotes\texttt{"}
-\end{itemize}
-%
-\end{frame}
-
-% =========================================================================== %
-
-\begin{frame}[fragile]{CSV -- Read and Write Tables}
-%
-\begin{itemize}
-\item Requires \inPy{import csv}
-\item \texttt{csv.reader}: Class that \emph{parses} a CSV file with a given set of rules
-\item Arguments:
+\item Possible: two approaches
 	\begin{itemize}
-	\item \texttt{handle} -- handle to a file opened in text read mode (\inPy{"r"})
-	\item Optionally: \texttt{delimiter} -- column delimiter (default: \inPy{","})
-	\item Optionally: \texttt{quotechar} -- string delimiter (default: \inPy{None})
+	\item Responsibility with gardener
+		\begin{itemize}
+		\item Asks question: which spots are there? Decides on a good spot based on this reply
+		\end{itemize}
+	\item Responsibility with owner
+		\begin{itemize}
+		\item Asks if a chosen spot is a good spot
+		\end{itemize}
 	\end{itemize}
-\item \texttt{csv.reader} can be iterated over with \inPy{for}
+\item (Third approach: gardener and owner are the same person)
 	\begin{itemize}
-	\item Loop variables are \inPy{list}s of strings, representing a line in the table
-	\item Skip any line with \inPy{content = next(readerObject)}
+	\item Less complex mechanics for \emph{simple} examples
+	\item Big projects: danger to loose track
+	\item \enquote{A class is responsible for \emph{one} concept.}
 	\end{itemize}
-\item More Details: \url{https://docs.python.org/3/library/csv.html}
 \end{itemize}
 %
 \end{frame}
@@ -727,84 +191,641 @@ print(jsonObjects["dict"])
                   raster equal height,
                   nobeforeafter,
                   raster column skip=0.5cm]
-\begin{cmdbox}[File to Read]
-\begin{minted}[fontsize=\scriptsize, obeytabs, tabsize=14]{text}
-#time in s	voltage in V
-0	0
-1	0.1
-2	1.6
-3	2.9
-4	10.1
-5	11.5
-6	9.8
-7	3.1
-8	0.2
-9	0
-\end{minted}
-\end{cmdbox}
-%
-\begin{codebox}[Example: Read Data]
+\begin{codebox}[Example: Respons. w. Gardener]
 \begin{minted}[fontsize=\scriptsize, linenos]{python}
-import csv
+import random
 
-with open("tab.txt", "r") as handle :
-    reader = csv.reader(
-        handle,
-        delimiter='\t'
-    )
-    first = next(reader)
-    print(first)
-    for row in reader :
-        print(row)
+class Owner :
+  def __init__(self) :
+    self._spots = [1, 2, 3, 4, 5]
+  
+  def getSpots :
+    return self._spots
+
+class Gardener :
+  def getGoodSpot(self, whomToAsk) :
+    answer = []
+    for spot in whomToAsk.getSpots() :
+      answer.append(spot)
+    return random.choice(answer)
+
+g = Gardener()
+o = Owner()
+
+print( g.getGoodSpot(o) )
+\end{minted}
+\end{codebox}
+%
+\begin{codebox}[Example: Responsibilty with Owner]
+\begin{minted}[fontsize=\scriptsize, linenos]{python}
+import random
+
+class Gardener :
+  def isSpotGood(self, spot) :
+    return random.choice([True, False])
+
+class Owner :
+  def __init__(self) :
+    self._spots = [1, 2, 3, 4, 5]
+  
+  def getGoodSpot(self, whomToAsk) :
+    goodSpots = []
+    for spot in self._spots :
+      if whomToAsk.isSpotGood(spot) :
+        goodSpots.append(spot)
+    return random.choice(goodSpots)
+    
+g = Gardener()
+o = Owner()
+
+print( o.getGoodSpot(g) )
 \end{minted}
 \end{codebox}
 \end{tcbraster}
-%
-\begin{cmdbox}[Output on Screen]
-\begin{minted}[fontsize=\scriptsize, obeytabs, tabsize=14]{text}
-['#time in s', 'voltage in V']
-['0', '0']
-['1', '0.1']
-['2', '1.6']
-...
-\end{minted}
-\end{cmdbox}
 %
 \end{frame}
 
 % =========================================================================== %
 
-\begin{frame}[fragile]{Pickle, JSON, CSV -- When To Use What?}
+\begin{frame}
 %
-\begin{tcbraster}[raster columns=3,
+\begin{hintbox}[Whom to give the responsibilty?]
+Both approaches make sense. Which one is better depends on the form of the project as a whole. Some thoughts that go into the decision:
+\begin{itemize}
+\item Which approach minimized the number of function calls (\thus efficiency)
+\item Which object will be used mostly by the end-user (\thus user interface)
+\item Which object already controls most of the required data/methods (\thus hierarchy)
+\end{itemize}
+
+These questions can lead to contradictory results; there isn't always one ulitimative answer.
+\end{hintbox}
+%
+\end{frame}
+
+% =========================================================================== %
+
+\begin{frame}[fragile]{Chapter 9}
+%
+\begin{itemize}
+\item \inPy{try..except} blocks
+\item Multipartite \inPy{except} blocks
+\item \inPy{else} and \inPy{finally}
+\item \inPy{raise} -- causing exceptions
+\item Creating own exception classes
+\end{itemize}
+%
+\end{frame}
+
+% =========================================================================== %
+
+\begin{frame}[fragile]{\inPy{try..except} Blocks -- Basics}
+%
+\begin{columns}[T]
+\column{.5\linewidth}
+\begin{itemize}
+\item Sometimes easier to \emph{react} to errors than to catch them before they happen
+\item Code structure:
+	\begin{itemize}
+	\item \inPy{try}: anything that could go wrong
+	\item \inPy{except}: what to do when something has gone wrong
+	\end{itemize}
+\item Discern \emph{error classes}, aka \emph{exeptions}
+\item After treatment of this exception: program continues normally
+\end{itemize}
+%
+\column{.5\linewidth}
+\begin{codebox}[Syntax: \texttt{try..except} Block]
+\begin{minted}[fontsize=\scriptsize]{python}
+try :
+    Code that could raise an exception
+except ErrorClass as varible :
+    Code for error treatment
+\end{minted}
+\end{codebox}
+\end{columns}
+%
+\end{frame}
+
+% =========================================================================== %
+
+\begin{frame}[fragile]
+%
+\begin{tcbraster}[raster columns=2,
                   raster equal height,
                   nobeforeafter,
                   raster column skip=0.5cm]
-\begin{tcolorbox}[title=Pickle]
-\begin{itemize}
-\item Very complex objects
-\item Pure Python Projects
-\item No intent to pass results to others
-\item Human-readable results not necessary
-\end{itemize}
-\end{tcolorbox}
+\begin{codebox}[Example: Code w. Error Treatment (1)]
+\begin{minted}[linenos, fontsize=\scriptsize]{python}
+import math
+
+for x in range(-3, 4) :
+  try :
+    print( 1/x,  math.log(abs(x-2)) )
+  except ZeroDivisionError as e :
+    print("Error:", e)
+\end{minted}
+\end{codebox}
 %
-\begin{tcolorbox}[title=JSON]
-\begin{itemize}
-\item Medium complexity of data objects
-\item No specific order to the data
-\item Human readability necessary
-\item Exchange with other prorammes or humans
-\end{itemize}
-\end{tcolorbox}
-%
-\begin{tcolorbox}[title=CSV]
-\begin{itemize}
-\item Tabular structure
-\item Very simple data types in rows and columns
-\item Exchange with other programs, in particular spreadsheet programs
-\end{itemize}
-\end{tcolorbox}
+\begin{cmdbox}[Output: Code w. Error Treatment (1)]
+\begin{minted}[fontsize=\scriptsize]{text}
+-0.3333333333333333 1.6094379124341003
+-0.5 1.3862943611198906
+-1.0 1.0986122886681098
+Error: division by zero
+1.0 0.0
+Traceback (most recent call last):
+  File "<stdin>", line 3, in <module>
+ValueError: math domain error
+\end{minted}
+\end{cmdbox}
 \end{tcbraster}
+%
+\begin{center}
+\begin{itemize}
+\item[\Thus] Execution \emph{jumps} upon encountering an exception into the \inPy{except} block.
+\item[\Thus] Thereafter: code continues normally
+\item[\Thus] Only specified error classes are caught
+	\begin{itemize}
+	\item[\thus] Here: \inPy{ZeroDivisionError}
+	\end{itemize}
+\item[\Thus] Untreated errors (here: \inPy{ValueError}) still lead to aborting execution
+\item[\Thus] Variable \texttt{e} holds \enquote{Description of the error}
+	\begin{itemize}
+	\item[\thus] Instance of \inPy{ZeroDivisionError}
+	\end{itemize}
+\end{itemize}
+\end{center}
+%
+\end{frame}
+
+% =========================================================================== %
+
+\begin{frame}[fragile]
+%
+\begin{tcbraster}[raster columns=2,
+                  raster equal height,
+                  nobeforeafter,
+                  raster column skip=0.5cm]
+\begin{codebox}[Example: Code w. Error Treatment (2)]
+\begin{minted}[linenos, fontsize=\scriptsize]{python}
+try :
+    for x in range(-3, 4) :
+        print(1 / x)
+except ZeroDivisionError as e :
+    print("Error:", e)
+
+print("Done.")
+\end{minted}
+\end{codebox}
+%
+\begin{cmdbox}[Output: Code w. Error Treatment (2)]
+\begin{minted}[fontsize=\scriptsize]{text}
+-0.3333333333333333
+-0.5
+-1.0
+Error: division by zero
+Done.
+\end{minted}
+\end{cmdbox}
+\end{tcbraster}
+%
+\begin{center}
+\begin{itemize}
+\item[\Thus] \emph{Entire} \inPy{try} block is left after the first exception; continuation of code \emph{after} the \inPy{try..except} block
+\item[\Thus] Hierarchical ordering of \inPy{try} and other structures is important!
+\end{itemize}
+\end{center}
+%
+\end{frame}
+
+% =========================================================================== %
+
+\begin{frame}[fragile]{\inPy{tuple}s of Error Classes in a \inPy{except} Block}
+%
+\begin{columns}[T]
+\column{.5\linewidth}
+\begin{itemize}
+\item In one \inPy{try} block there can be multiply things going wrong
+\item Simple case: React to all errors in the same way
+\item If so: list error classes as a \inPy{tuple}
+\item[\Thus] If \emph{any} of the error classes meets the exception, treatment is triggered
+\end{itemize}
+%
+\column{.5\linewidth}
+\begin{codebox}[Syntax: \texttt{try..except} Block]
+\begin{minted}[fontsize=\scriptsize]{python}
+try :
+    Code that might cause an exception
+except (class1, class2, ..) as varible :
+    Code for treatment
+\end{minted}
+\end{codebox}
+\end{columns}
+%
+\end{frame}
+
+% =========================================================================== %
+
+\begin{frame}[fragile]
+%
+\begin{tcbraster}[raster columns=2,
+                  raster equal height,
+                  nobeforeafter,
+                  raster column skip=0.5cm]
+\begin{codebox}[Example: Code w. Error Treatment (3)]
+\begin{minted}[linenos, fontsize=\scriptsize]{python}
+import math
+
+for x in range(-3, 4) :
+    try :
+        print(1/x,  math.log(abs(x-2)))
+        
+    except (ZeroDivisionError,
+            ValueError) as e :
+        print("Error:", e)
+\end{minted}
+\end{codebox}
+%
+\begin{cmdbox}[Output: Code w. Error Treatment (3)]
+\begin{minted}[fontsize=\scriptsize]{text}
+-0.3333333333333333 1.6094379124341003
+-0.5 1.3862943611198906
+-1.0 1.0986122886681098
+Error: division by zero
+1.0 0.0
+Error: math domain error
+0.3333333333333333 0.0
+\end{minted}
+\end{cmdbox}
+\end{tcbraster}
+%
+\end{frame}
+
+% =========================================================================== %
+
+\begin{frame}[fragile]{Multipartite \inPy{except} Blocks}
+%
+\begin{columns}[T]
+\column{.5\linewidth}
+\begin{itemize}
+\item Sometimes necessary: treat different errors differently
+	\begin{itemize}
+	\item Invalid entry in a file? Skip
+	\item File not found? Ask for alternative name
+	\end{itemize}
+\item Solution: Multiple \inPy{except} blocks
+\end{itemize}
+%
+\column{.5\linewidth}
+\begin{codebox}[Syntax: \texttt{try..except}-Block]
+\begin{minted}[fontsize=\scriptsize]{python}
+try :
+    Code that may raise an exception
+except Class1 as varible :
+    Code for treatment of Class1
+except Class2 as varible :
+    Code for treatment of Class2
+except ...
+\end{minted}
+\end{codebox}
+\end{columns}
+%
+\end{frame}
+
+% =========================================================================== %
+
+\begin{frame}[fragile]{Hierarchical Order of Error Classes}
+%
+\begin{itemize}
+\item Error Classes have hierarchical order: parent classes and derived classes
+\item \enquote{X belongs to Y}
+\item Example: \inPy{ZeroDivisionError} is a \inPy{ArithmeticError}, too
+\item But: \inPy{ArithmeticError} is not necessarily a \inPy{ZeroDivisionError}
+\item[\Thus] \inPy{except ArithmeticError} catches a \inPy{ZeroDivisionError}, but not vice versa
+\item \eg \inPy{ArithmeticError} also covers \inPy{OverflowError}
+\item See lecture notes or \url{https://docs.python.org/3/library/exceptions.html} for a list of pre-defined error classes
+\item \inPy{Exception} covers \emph{all} possible errors
+\end{itemize}
+%
+\end{frame}
+
+% =========================================================================== %
+
+\begin{frame}[fragile]
+%
+\begin{tcbraster}[raster columns=2,
+                  raster equal height,
+                  nobeforeafter,
+                  raster column skip=0.5cm]
+\begin{codebox}[Example: Multiple Error Classes A]
+\begin{minted}[linenos, fontsize=\scriptsize]{python}
+try :
+    print(1/0)
+    
+except ZeroDivisionError as e :
+    print("ZeroDivisionError")
+    
+except ArithmeticError as e :
+    print("ArithmeticError")
+\end{minted}
+\end{codebox}
+%
+\begin{codebox}[Example: Multiple Error Classes B]
+\begin{minted}[linenos, fontsize=\scriptsize]{python}
+try :
+    print(1/0)
+    
+except ArithmeticError as e :
+    print("ArithmeticError")
+    
+except ZeroDivisionError as e :
+    print("ZeroDivisionError")
+\end{minted}
+\end{codebox}
+\end{tcbraster}
+%
+\begin{tcbraster}[raster columns=2,
+                  raster equal height,
+                  nobeforeafter,
+                  raster column skip=0.5cm]
+\begin{cmdbox}[Output: Multiple Error Classes A]
+\begin{minted}[fontsize=\scriptsize]{text}
+ZeroDivisionError
+\end{minted}
+\end{cmdbox}
+%
+\begin{cmdbox}[Output: Multiple Error Classes B]
+\begin{minted}[fontsize=\scriptsize]{text}
+ArithmeticError
+\end{minted}
+\end{cmdbox}
+\end{tcbraster}
+%
+\begin{itemize}
+\item[\Thus] Only the first matching block is executed
+\item[\Thus] Other \inPy{except} blocks -- even if matching the error -- are ignored
+\end{itemize}
+%
+\end{frame}
+
+% =========================================================================== %
+
+\begin{frame}[fragile]{\inPy{else} and \inPy{finally} with \inPy{try..except} Blocks}
+%
+\begin{columns}[T]
+\column{.5\linewidth}
+\begin{itemize}
+\item \inPy{else}: execute if \emph{no error} has occured
+\item \enquote{On success of the \inPy{try} block, do ...}
+\end{itemize}
+%
+\column{.5\linewidth}
+\begin{itemize}
+\item \inPy{finally}: Execution in any case
+\item Even if there is a non-treated error
+\item \enquote{Safe Shutdown}
+\item Also executed after an \inPy{else} block (if present)
+\end{itemize}
+\end{columns}
+%
+\end{frame}
+
+% =========================================================================== %
+
+\begin{frame}[fragile]
+%
+\begin{tcbraster}[raster columns=2,
+                  raster equal height,
+                  nobeforeafter,
+                  raster column skip=0.5cm]
+\begin{codebox}[Example: All Clauses]
+\begin{minted}[linenos, fontsize=\scriptsize]{python}
+def divide(x, y):
+    try:
+        result = x / y
+    except ZeroDivisionError:
+        print("division by zero!")
+    else:
+        print("result is", result)
+    finally:
+        print("finally clause")
+
+print("divide(2, 1)")
+divide(2, 1)
+print()
+
+print("divide(2, 0)")
+divide(2, 0)
+print()
+
+print('divide("2", "0")')
+divide("2", "1")
+\end{minted}
+\end{codebox}
+%
+\begin{cmdbox}[Output: All Clauses]
+\begin{minted}[fontsize=\scriptsize]{text}
+divide(2, 1)
+result is 2.0
+finally clause
+
+divide(2, 0)
+division by zero!
+finally clause
+
+divide("2", "1")
+finally clause
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "<stdin>", line 3, in divide
+TypeError: unsupported operand type(s) 
+  for /: 'str' and 'str'
+\end{minted}
+\end{cmdbox}
+\end{tcbraster}
+%
+\end{frame}
+
+% =========================================================================== %
+
+\begin{frame}[fragile]{Triggering Exceptions: \inPy{raise}}
+%
+\begin{columns}[T]
+\column{.5\linewidth}
+\begin{itemize}
+\item Wrong usage of a class or function may cause harm
+\item Example: User enters a file name \Thus could overwrite existing files
+\item Syntactically correct, but undesired behaviour
+\item[\Thus] \emph{Throw/Raise an exception}
+\end{itemize}
+%
+\column{.5\linewidth}
+\begin{codebox}[Syntax: \texttt{raise}]
+\begin{minted}[fontsize=\scriptsize]{python}
+raise ErrorClass(Arguments)
+\end{minted}
+\end{codebox}
+%
+\begin{itemize}
+\item \texttt{ErrorClass}: As shown before: \inPy{ArithmeticError}, \inPy{ZeroDivisionError}, ...
+\item \texttt{Arguments}: Depends on Error Class
+	\begin{itemize}
+	\item Usually: String, will be output in Error Handling
+	\end{itemize}
+\end{itemize}
+\end{columns}
+%
+\end{frame}
+
+% =========================================================================== %
+
+\begin{frame}[fragile]
+%
+\begin{tcbraster}[raster columns=2,
+                  raster equal height,
+                  nobeforeafter,
+                  raster column skip=0.5cm]
+\begin{codebox}[Example: Raising Exceptions]
+\begin{minted}[linenos, fontsize=\scriptsize]{python}
+print("Please choose an option:")
+print("START game")
+print("show HIGHSCORE")
+print("QUIT")
+
+option = input("> ")
+
+if not option.upper() in [
+    "START",
+    "HIGHSCORE",
+    "QUIT"
+] :
+    raise RuntimeError(
+        "Invalid choice"
+    )
+\end{minted}
+\end{codebox}
+%
+\begin{cmdbox}[Output: Raising Exceptions]
+\begin{minted}[fontsize=\scriptsize]{text}
+Please choose an option:
+START game
+show HIGHSCORE
+QUIT
+> SETTINGS
+Traceback (most recent call last):
+  File "<stdin>", line 2, in <module>
+RuntimeError: Invalid choice
+\end{minted}
+\end{cmdbox}
+\end{tcbraster}
+%
+\end{frame}
+
+% =========================================================================== %
+
+\begin{frame}[fragile]{Re-\inPy{raise}}
+%
+\begin{columns}[T]
+\column{.5\linewidth}
+\begin{itemize}
+\item Possibly desired: Debug-Output, but no full treatment of the exception
+\item Superior functional unit (end user) treats the problem
+\item[\Thus] Reactivate error after \enquote{treatment}: \texttt{raise} \emph{without} error class
+\end{itemize}
+%
+\vspace{15pt}
+\begin{cmdbox}[Ausgabe: re-\texttt{raise}]
+\begin{minted}[fontsize=\scriptsize]{text}
+division by zero
+x = 1, y = 0
+Error was caught, eventually
+\end{minted}
+\end{cmdbox}
+%
+\column{.5\linewidth}
+\begin{codebox}[Beispiel: re-\texttt{raise}]
+\begin{minted}[fontsize=\scriptsize]{python}
+def divide(x, y) :
+  try :
+    result = x / y
+  except ZeroDivisionError as e:
+    print(e)
+    print(f"x = {x}, y = {y}")
+    raise
+  else :
+    return result
+
+try :
+  print( divide(1, 0) )
+except ZeroDivisionError as e:
+  print("Error was caught, eventually")
+\end{minted}
+\end{codebox}
+%
+\end{columns}
+%
+\end{frame}
+
+% =========================================================================== %
+
+\begin{frame}[fragile]{}
+%
+\begin{hintbox}[Choose Error Classes with Maximum Specificity]
+Error classes should be chosen very narrowly, such that treatment can be written effectively. 
+
+Catching Errors too unspecifically can cause more harm than doing good.
+\end{hintbox}
+%
+\end{frame}
+
+% =========================================================================== %
+
+\begin{frame}[fragile]{Creating Own Error Classes}
+%
+\begin{columns}[T]
+\column{.5\linewidth}
+\begin{itemize}
+\item Error Classes are, in fact \emph{classes} in the Python sense
+\item Hierarchical Structure through \emph{inheritance}
+\item All necessary properties can be inherited from class \inPy{Exception} (or from classes derived thereof)
+\item Class may remain empty otherwise (\inPy{pass}), or hold custom code deemed useful for error treatment
+\end{itemize}
+%
+\column{.5\linewidth}
+\begin{codebox}[Syntax: Creating an Own Error Class]
+\begin{minted}[fontsize=\scriptsize]{python3}
+class OwnErrorClass (Exception) :
+   pass
+\end{minted}
+\end{codebox}
+%
+\begin{itemize}
+\item In \inPy{Exception}: String with a short summary (\inPy{print(e)})
+\item You may use your full knowledge about classes: attributes, methods, dunders, ...
+\end{itemize}
+%
+\end{columns}
+%
+\end{frame}
+
+% =========================================================================== %
+
+\begin{frame}[fragile]
+%
+\begin{codebox}[Example: Creating an Own Error Class]
+\begin{minted}[linenos,fontsize=\scriptsize]{python3}
+class UserInputError(Exception) :
+    pass
+
+
+try:
+    x = float(input("Please provide a positive number"))
+    if x < 0 :
+        raise UserInputError("Negative number entered!")
+
+except UserInputError as e :
+    print(e)
+\end{minted}
+\end{codebox}
 %
 \end{frame}
