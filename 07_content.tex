@@ -11,31 +11,30 @@
 \begin{columns}[T]
 \column{.5\linewidth}
 \begin{itemize}
-\item Advanced forms of argument lists
+\item \inPy{while}-loops
 	\begin{itemize}
-	\item Optional arguments
-	\item Variadic functions
-	\item Keyword arguments
+	\item Repeat code as long as (while) a condition is satisfied
 	\end{itemize}
-\item Returning functions
+\item \inPy{break} and \inPy{continue}
 	\begin{itemize}
-	\item Return a reference
-	\item Function generators
+	\item Stop looping early (\inPy{break}) or skip part of the loop body (\inPy{continue})
+	\end{itemize}
+\item \inPy{else} with \inPy{for} and \inPy{while}
+	\begin{itemize}
+	\item \inPy{for}   -- execute code only when end of loop is reached
+	\item \inPy{while} -- execute code only when loop body was never executed
 	\end{itemize}
 \end{itemize}
 %
 \column{.5\linewidth}
 \begin{itemize}
-\item Lambdas
+\item Functions
 	\begin{itemize}
-	\item Shorthand form for functions
-	\item Often used as arguments (\thus \texttt{sort})
-	\end{itemize}
-\item Recursion
-	\begin{itemize}
-	\item Functions calling themselves
-	\item Solution to self-similar problems
-	\item \enquote{Boxes} with variables of their own
+	\item Separate blocks of code
+	\item New commands for doing larger blocks of work at once
+	\item Variables local to the function (\thus scopes)
+	\item Only \emph{mutable} variables can be changed by a function
+	\item Memory model -- old references under new (local) names
 	\end{itemize}
 \end{itemize}
 
@@ -48,268 +47,135 @@
 \end{frame}
 
 % =========================================================================== %
-\begin{frame}[fragile]{Seen in the Exercises}
-%
-\begin{codebox}[Lambda as a key]
-\begin{minted}[fontsize=\scriptsize, linenos]{python}
-data = [(9, 1), (8, 2), (7, 3), (6, 4), (5, 5)]
-print( sorted(data, key=lambda x: x[0]**2 + x[1]**2) )
-\end{minted}
-\end{codebox}
+
+\begin{frame}[fragile]{Chapter 6}
 %
 \begin{itemize}
-\item Lambda: Projection \inPy{tuple} \thus Length
-\item Called for each \inPy{tuple} in the \inPy{list data}
-\item Sort by length, ascendingly 
+\item Optional Arguments
+\item Variadic Functionens
+\item Functions as return value
+\item Lambdas
+\item Recursion
 \end{itemize}
 %
 \end{frame}
 
 % =========================================================================== %
 
-\begin{frame}[fragile]
-%
-\begin{codebox}[Binary Search \emph{with} Rekursion]
-\begin{minted}[fontsize=\scriptsize, linenos]{python}
-def binarySearch (data, searchTerm) :
-  size = len(data)
-  
-  if (size == 1) :
-    if data[0] == searchTerm : return True
-    else                     : return False
-  else :
-    midPoint = size // 2
-    if   data[midPoint] == searchTerm : return True
-    elif data[midPoint]  < searchTerm : return binarySearch(data[midPoint:], searchTerm)
-    else                              : return binarySearch(data[:midPoint], searchTerm)
-
-data = [1, 5, 6, 7, 8, 42, 96, 666, 1337, 2112]
-searchTerm = 42
-
-print("### binarySearch")
-print(binarySearch(data, searchTerm) , end="\n\n")      # test for middle element
-print(binarySearch(data, 1)          , end="\n\n")      # test for first element
-print(binarySearch(data, 2112)       , end="\n\n")      # test for last element
-print(binarySearch(data, 2)          , end="\n\n")      # test for not in list
-\end{minted}
-\end{codebox}
-%
-\end{frame}
-
-% =========================================================================== %
-
-\begin{frame}[fragile]
-%
-\begin{codebox}[Binary Search \emph{without} Rekursion]
-\begin{minted}[fontsize=\scriptsize, linenos]{python}
-def midSearch(data, searchTerm):
-    first = 0
-    last  = len(data)
-    index = -1
-    
-    while(first <= last) and (index == -1):
-        mid = (first+last) // 2
-        if data[mid] == searchTerm:
-            index = mid
-        else:
-            if searchTerm < data[mid]: last  = mid - 1
-            else                     : first = mid + 1
-
-    if index == -1: print("Element not in list")
-    else          : return index
-
-data = [1, 5, 6, 7, 8, 42, 96, 1337, 2112]
-print(midSearch(data, 1337))
-\end{minted}
-\end{codebox}
-%
-\begin{flushright}
-\scriptsize \emph{Thanks to Michael Briehl for this code}
-\end{flushright}
-%
-\end{frame}
-
-% =========================================================================== %
-
-\begin{frame}[fragile]{Chapter 7}
-%
-\begin{itemize}
-\item Classes as Data Containers
-\item Methods
-\item Magic methods (\enquote{dunders})
-\end{itemize}
-%
-\end{frame}
-
-% =========================================================================== %
-
-\begin{frame}{Classes}
-%
-\begin{itemize}
-\item Idea: Computer \enquote{knows} only numbers (integers)
-\item Only interpreting these numbers yields texts, pictures, programs, ...
-\item Example: 98, 108, 117, 101
-	\begin{itemize}
-	\item ASCII-Codes for characters \texttt{b, l, u, e}?
-	\item or street numbers of the adresses of my first four girlfriends?
-	\item \emph{Context} necessary for interpretation!
-	\end{itemize}
-\item Classes: Data object with attached context
-	\begin{itemize}
-	\item Collection of values
-	\item Methods for interpreting these values
-	\end{itemize}
-\item Usually: \emph{similar} Objects \Thus name \emph{classes}
-\end{itemize}
-%
-\end{frame}
-
-% =========================================================================== %
-
-\begin{frame}[fragile]{Classes in Python -- Data Types}
+\begin{frame}[fragile]{Optional Arguments}
 %
 \begin{columns}[T]
-\column{.5\linewidth}
+\column{.45\linewidth}
 \begin{itemize}
-\item Data types in Python are examples of classes
-	\begin{itemize}
-	\item Example: \inPy{list}s
-	\item \enquote{Data content}: liste elements
-	\item Assigned methods: sort, reverse, append, ...
-	\item \texttt{append} makes no sense with an \inPy{int}!
-	\end{itemize}
-\item Designing classes means: creating your own data type
-\item Internally: composition of known data types
+\item Recap: Functions allow doing recurrent tasks with a single call
+\item Parametrised -- list of values used in execution of the task
+\item Often: standard arguments, used almost every time
+\item New syntax: render some arguments optional and define a default value
+\item Lingu: \emph{positional} and \emph{optional} arguments
 \end{itemize}
 %
-\column{.5\linewidth}
-\begin{codebox}[Syntax: Creating Classes]
+\column{.55\linewidth}
+\begin{codebox}[Syntax: Optional Arguments]
 \begin{minted}[fontsize=\scriptsize]{python}
-class ClassName :
-    # Definitions
+def funcName (param, optParam = default) :
+    ...
 \end{minted}
 \end{codebox}
-
-\begin{codebox}[Syntax: Instantiating a Class]
+%
+\begin{codebox}[Syntax: Calling Funcs with opt. Arguments]
 \begin{minted}[fontsize=\scriptsize]{python}
-newVar = ClassName()
+funcName (param)
+funcName (param, optParam)
 \end{minted}
 \end{codebox}
-\begin{itemize}
-\item Infinite possiblities for \texttt{Definitions}
-\item Most important details in this lecture
-\end{itemize}
 \end{columns}
 %
 \end{frame}
 
 % =========================================================================== %
 
-\begin{frame}{Who had it worse?}
+\begin{frame}[fragile]{Optional Arguments}
 %
-\begin{center}
-\scriptsize
-\textbf{Stefan's romantic past}
-\rowcolors{1}{tabhighlight}{tabcontrast}
-\begin{tabular}{c|ccp{.3\linewidth}p{.3\linewidth}}
-	\textbf{Symbol} & \textbf{Name} & \textbf{Height} & \textbf{Upsides}                                 & \textbf{Downsides} \tabcrlf
-	\texttt{exgf1}  & Steffie       & 1.65 m          & intelligent, beautiful, has a dog                & too attached to her mother, 
-																																																				doesn't like meeting people \\
-	\texttt{exgf2}  & Epsi          & 1.63 m          & very intelligent, beautiful, good taste in music & doesn't like coffee, doesn't like coding \\
-	\texttt{exgf3}  & Katja         & 1.81 m          & intelligent, very beautiful, musician            & moody, cheated on me
-\end{tabular}
-\end{center}
+\begin{columns}[T]
+\column{.5\linewidth}
+\begin{itemize}
+\item Arbitrary count of \emph{positional} (normal) arguments
+\item Arbitrary count of optionals arguments
+\item Optional arguments: always after positional arguments
+\item In a call: can be only omitted \emph{from the end, backwards}
+\end{itemize}
+%
+\column{.5\linewidth}
+\begin{codebox}[Example: Call With opt. Arguments]
+\begin{minted}[linenos, fontsize=\scriptsize]{python}
+# def func (a, b = 2, c) :
+#    ! last argument not optional!
 
-\begin{center}
-\scriptsize
-\textbf{Charlotte's broken hearts}
-\rowcolors{1}{tabhighlight}{tabcontrast}
-\begin{tabular}{c|ccp{.3\linewidth}p{.3\linewidth}}
-	\textbf{Symbol} & \textbf{Name} & \textbf{Height} & \textbf{Upsides}                                 & \textbf{Downsides} \tabcrlf
-	\texttt{exbf1}  & Sebastian     & 1.78 m          & intelligent, handsome, likes to listen           & obsessed with catching bugs, always late \\
-	\texttt{exbf2}  & Reginald      & 1.84 m          & very intelligent, handsome, plays in a band      & flirty with everyone, complains a lot \\
-	\texttt{exbf3}  & Sönke         & 1.81 m          & intelligent, quite handsome, cheerful nature     & superficial, racist
-\end{tabular}
-\end{center}
+def func (a, b = 2, c = 3) :
+    print(a, b, c)
+    
+func(1)            # a= 1, b= 2, c= 3
+func(-1, -2)       # a=-1, b=-2, c= 3
+func(-1, -2, -3)   # a=-1, b=-2, c=-3
+# func(-1, , -3)
+#    ! cannot skip arguments!
+\end{minted}
+\end{codebox}
+\end{columns}
 %
 \end{frame}
 
 % =========================================================================== %
 
-\begin{frame}[fragile]{Classes as Pure Containers}
+\begin{frame}[fragile]{Variadic Functions}
 %
-\begin{codebox}[Syntax: Class with \emph{Attributes}]
+\begin{columns}[T]
+\column{.5\linewidth}
+\begin{itemize}
+\item Some functions allow an arbitrary count of arguments in a call
+\item Cf. \inPy{print}
+\item New Syntax in function definition
+	\begin{itemize}
+	\item Asterisk (*) in front of \emph{one} argument
+	\item By convention: \texttt{*args}
+	\item Note: The asterisk is \emph{not} part of the variable name!
+	\end{itemize}
+\item Pass arguments as a \inPy{tuple}
+\end{itemize}
+%
+\column{.5\linewidth}
+\begin{codebox}[Syntax: Variadic Functions]
 \begin{minted}[fontsize=\scriptsize]{python}
-class ClassName :
-    attribute1 = value1
-    attribute2 = value2
+def funcName (params, *args) :
     ...
 \end{minted}
 \end{codebox}
 %
-\begin{codebox}[Syntax: Accessing Attributes]
+\begin{codebox}[Syntax: Aufruf Variadische Fktn.]
 \begin{minted}[fontsize=\scriptsize]{python}
-instance = ClassName()
-
-instance.attribute1 = newValue
-ClassName.attribute1 = newValue
-
-instance.newAttribute = newValue
-ClassName.newAttribute = newValue
+funcName (param)
+funcName (param, varArg1, varArg2, ...)
 \end{minted}
 \end{codebox}
+\end{columns}
 %
 \end{frame}
 
 % =========================================================================== %
 
-\begin{frame}[fragile]
+\begin{frame}{Variadic Functions}
 %
-\begin{codebox}[Example: Changing Attributes]
-\begin{minted}[fontsize=\scriptsize, linenos]{python}
-class Cla :
-    bar = "dead parrot"
-    lst = [1]
-
-foo = cla()
-\end{minted}
-\end{codebox}
-%
-\begin{tcbraster}[raster columns=2,
-                  raster equal height,
-                  nobeforeafter,
-                  raster column skip=0.5cm]
-\begin{codebox}[(... continued ...)]
-\begin{minted}[fontsize=\scriptsize, linenos, firstnumber=last]{python}
-print("via foo:", foo.bar)
-print("via Cla:", Cla.bar, end="\n\n")
-cla.bar = "lumberjack"
-print("via foo:", foo.bar)
-print("via Cla:", Cla.bar, end="\n\n")
-foo.bar = "hovercraft"
-print("via foo:", foo.bar)
-print("via Cla:", Cla.bar, end="\n\n")
-foo.new = "eel"
-print("via foo:", foo.new, end="\n\n")
-# print("via Cla:", Cla.new)
-\end{minted}
-\end{codebox}
-%
-\begin{cmdbox}[Output: Changing Attributes]
-\begin{minted}[fontsize=\scriptsize]{text}
-via foo: dead parrot
-via Cla: dead parrot
-
-via foo: lumberjack
-via Cla: lumberjack
-
-via foo: hovercraft
-via Cla: lumberjack
-
-via foo: eel
-\end{minted}
-\end{cmdbox}
-\end{tcbraster}
+\begin{itemize}
+\item Arbitrary count of positional arguments \emph{before} the variadic one
+\item At most one variadic argument -- absorbs all variadic arguments
+\item Arbitrary count of \emph{optional} arguments
+	\begin{itemize}
+	\item Both, before and after the variadic one
+	\item Assignment via clause \inPy{optParam = Wert}
+	\item Optional arguments \emph{cannot} be put in between variadic arguments
+	\item See more to that in a minute
+	\end{itemize}
+\end{itemize}
 %
 \end{frame}
 
@@ -321,200 +187,121 @@ via foo: eel
                   raster equal height,
                   nobeforeafter,
                   raster column skip=0.5cm]
-\begin{codebox}[(... continued ...)]
-\begin{minted}[fontsize=\scriptsize, linenos, firstnumber=20]{python}
-# ...
+\begin{codebox}[Example: Variadic Functions]
+\begin{minted}[linenos, fontsize=\scriptsize]{python}
+def func (
+    posArg1, posArg2,
+    *varArg,
+    optArg = 0
+) :
+    print("pos. arguments:",
+          posArg1, posArg2)
+    print("var. argument :", varArg)
+    print("opt. argument :", optArg)
+    print()
 
-foo.lst.append(2)
-print("via foo:", foo.lst)
-print("via Cla:", Cla.lst, end="\n\n")
+func(1, 2)
+func(1, 2, 3, 4, 5, 6, "seven")
+func(1, 2, 3, optArg = 4)
+func(1, 2, optArg = 3)
 \end{minted}
 \end{codebox}
 %
-\begin{cmdbox}[(... continued ...)]
+\begin{cmdbox}[Output: Variadic Functions]
 \begin{minted}[fontsize=\scriptsize]{text}
-...
+pos. arguments: 1 2
+var. argument : ()
+opt. argument : 0
 
+pos. arguments: 1 2
+var. argument : (3, 4, 5, 6, 'seven')
+opt. argument : 0
 
-via foo: [1, 2]
-via Cla: [1, 2]
+pos. arguments: 1 2
+var. argument : (3,)
+opt. argument : 4
+
+pos. arguments: 1 2
+var. argument : ()
+opt. argument : 3
 \end{minted}
 \end{cmdbox}
 \end{tcbraster}
 %
-\vspace{15pt}
+\end{frame}
+
+% =========================================================================== %
+
+\begin{frame}[fragile]{Keyword Arguments}
 %
-\begin{center}
-	\Thus\,???
-\end{center}
+\begin{columns}[T]
+\column{.5\linewidth}
+\begin{itemize}
+\item Similar to variadic arguments, but: pass pairs of key : value
+\item New syntax in function definition: \texttt{**kwargs}
+	\begin{itemize}
+	\item By convention: \texttt{kwargs}
+	\item Note that the asterisks are not part of the variable name
+	\end{itemize}
+\item New syntax in call: \inPy{funcName(..., key = value, ...)}
+\item I.\,e. the same as just seen with \emph{optional keywords} after \emph{variadic keywords}
+\item Passed on as \inPy{dict}
+\end{itemize}
+%
+\column{.5\linewidth}
+\begin{codebox}[Syntax: Variadische Funktionen]
+\begin{minted}[fontsize=\scriptsize]{python}
+def Funkname (params, **kwargs) :
+    ...
+\end{minted}
+\end{codebox}
+%
+\begin{codebox}[Syntax: Aufruf Variadische Fktn.]
+\begin{minted}[fontsize=\scriptsize]{python}
+Funkname (par)
+Funkname (par, kw1 = v1, kw2 = v2, ...)
+\end{minted}
+\end{codebox}
+\end{columns}
 %
 \end{frame}
 
-% =========================================================================== %\\
+% =========================================================================== %
 
-\begin{frame}[fragile]
+\begin{frame}{Keyword Arguments}
 %
-\begin{tcolorbox}[title=Memory Model]
-Up to line 8 (only read access):
-\begin{center}
-\begin{tikzpicture}
-  [ 
-    cell/.style={text width=8mm,
-      text height=4mm, draw=black, inner sep=1mm},
-    ld/.style={draw=blue,shorten >=2pt,->}
-  ]
-  \node  (a0) at ( 0,0) [cell] {\ttfamily @bar};
-  \node  (a1) at ( 1,0) [cell] {\ttfamily @lst};
-  \node  (a2) at ( 2,0) [cell] {\ttfamily ...};
-  \node  (a3) at ( 3,0) [cell] {\ttfamily @Cla};
-  \node  (a4) at ( 4,0) [cell] {\ttfamily ...};
-  \node  (a5) at ( 5,0) [cell] {\ttfamily ...};
-  \node  (a6) at ( 6,0) [cell] {\ttfamily bar};
-  \node  (a7) at ( 7,0) [cell] {\ttfamily lst};
-  \node  (a8) at ( 8,0) [cell] {\ttfamily ...};
-  \node  (a9) at ( 9,0) [cell] {\ttfamily ...};
-  \node (a10) at (10,0) [cell] {\ttfamily ...};
-  \node (a11) at (11,0) [cell] {\ttfamily ...};
-  
-  \draw [decorate, decoration={brace,amplitude=7pt}, xshift=-0pt, yshift=0pt]
-  		(-0.5, 0.5) -- ( 1.5, 0.5) node (x) [midway, yshift=+0.5cm] 
-		(braceFuncDerivative) {\texttt{Cla}};
-	
-  \draw [decorate, decoration={brace,amplitude=7pt}, xshift=-0pt, yshift=0pt]
-  		( 2.5, 0.5) -- ( 3.5, 0.5) node (y) [midway, yshift=+0.5cm] 
-		(braceFuncDerivative) {\texttt{foo}};
-	
-	\draw [->, bend left=20]
-		(a3.south) to node 
-		[below] {Referenced via \texttt{foo = cla()}} 
-		(a0.south);
-		
-	\node (t6) at (5.5,+1.5) {\texttt{dead parrot}};
-	\node (t7) at (7.5,+1.5) {\texttt{[1]}};
-	
-	\draw [->, bend right=15] (t6.south) to node [below] {} (a6.north);
-	\draw [->, bend left =15] (t7.south) to node [below] {} (a7.north);
-\end{tikzpicture}
-\end{center}
-\texttt{foo} only holds a reference to \texttt{Cla}. This symbol, in turn, references \texttt{bar} and \texttt{lst}.
-\end{tcolorbox}
+\begin{itemize}
+\item Arbitrary many keyword-value pairs in calls
+\item Only one keyword argument in the definition -- absorbs all keywords into a single \inPy{dict}
+\end{itemize}
 %
-\end{frame}
-
-% =========================================================================== %\\
-
-\begin{frame}[fragile]
+\begin{columns}[T]
+\column{.4\linewidth}
+\begin{itemize}
+\item Possible Order:
+	\begin{itemize}
+	\item positional arguments
+	\item optionale arguments
+	\item variadic arguments
+	\item keyword arguments
+	\end{itemize}
+\end{itemize}
 %
-\begin{tcolorbox}[title=Memory Model]
-Line 10: \inPy{Cla.bar = "lumberjack"}
-\begin{center}
-\begin{tikzpicture}
-  [ 
-    cell/.style={text width=8mm,
-      text height=4mm, draw=black, inner sep=1mm},
-    ld/.style={draw=blue,shorten >=2pt,->}
-  ]
-  \node  (a0) at ( 0,0) [cell, blue] {\ttfamily @br'};
-  \node  (a1) at ( 1,0) [cell] {\ttfamily @lst};
-  \node  (a2) at ( 2,0) [cell] {\ttfamily ...};
-  \node  (a3) at ( 3,0) [cell] {\ttfamily @Cla};
-  \node  (a4) at ( 4,0) [cell] {\ttfamily ...};
-  \node  (a5) at ( 5,0) [cell] {\ttfamily ...};
-  \node  (a6) at ( 6,0) [cell, gray] {\ttfamily bar};
-  \node  (a7) at ( 7,0) [cell] {\ttfamily lst};
-  \node  (a8) at ( 8,0) [cell] {\ttfamily ...};
-  \node  (a9) at ( 9,0) [cell, blue] {\ttfamily br'};
-  \node (a10) at (10,0) [cell] {\ttfamily ...};
-  \node (a11) at (11,0) [cell] {\ttfamily ...};
-  
-  \draw [decorate, decoration={brace,amplitude=7pt}, xshift=-0pt, yshift=0pt]
-  		(-0.5, 0.5) -- ( 1.5, 0.5) node (x) [midway, yshift=+0.5cm] 
-		(braceFuncDerivative) {\texttt{Cla}};
-	
-  \draw [decorate, decoration={brace,amplitude=7pt}, xshift=-0pt, yshift=0pt]
-  		( 2.5, 0.5) -- ( 3.5, 0.5) node (y) [midway, yshift=+0.5cm] 
-		(braceFuncDerivative) {\texttt{foo}};
-	
-	\draw [->, bend right=20, blue]
-		(a0.south) to node 
-		[below] {New memory location} 
-		(a9.south);
-	
-	\node (t6) at (6,-0.7) {\color{gray}(orphaned)};
-	
-	\node (t9) at (9,+1.5) {\texttt{lumberjack}};
-	\draw [->] (t9.south) to node [below] {} (a9.north);
-\end{tikzpicture}
-\end{center}
-Changes to \texttt{Cla} also affect \texttt{foo}, since this really is nothing but a reference to \texttt{Cla}.\\
-Since \texttt{bar} is \emph{immutable} (property of strings), changes to \texttt{bar} only affect the new memory location; the old location becomes orphaned.
-\end{tcolorbox}
+\column{.4\linewidth}
+\begin{itemize}
+\item Possible Order:
+	\begin{itemize}
+	\item positional arguments
+	\item variadic arguments
+	\item optionale arguments
+	\item keyword arguments
+	\end{itemize}
+\end{itemize}
+\end{columns}
+
 %
-\end{frame}
-
-% =========================================================================== %\\
-
-\begin{frame}[fragile]
-%
-\begin{tcolorbox}[title=Memory Model]
-Line 14: \inPy{foo.bar = "hovercraft"}\\
-Line 18: \inPy{foo.new = "eel"}
-\begin{center}
-\begin{tikzpicture}
-  [ 
-    cell/.style={text width=8mm,
-      text height=4mm, draw=black, inner sep=1mm},
-    ld/.style={draw=blue,shorten >=2pt,->}
-  ]
-  \node  (a0) at ( 0,0) [cell] {\ttfamily @br'};
-  \node  (a1) at ( 1,0) [cell] {\ttfamily @lst};
-  \node  (a2) at ( 2,0) [cell] {\ttfamily ...};
-  \node  (a3) at ( 3,0) [cell] {\ttfamily @Cla};
-  \node  (a4) at ( 4,0) [cell, blue] {\ttfamily @br''};
-  \node  (a5) at ( 5,0) [cell, blue] {\ttfamily @new};
-  \node  (a6) at ( 6,0) [cell, gray] {\ttfamily bar};
-  \node  (a7) at ( 7,0) [cell] {\ttfamily lst};
-  \node  (a8) at ( 8,0) [cell] {\ttfamily ...};
-  \node  (a9) at ( 9,0) [cell] {\ttfamily br'};
-  \node (a10) at (10,0) [cell, blue] {\ttfamily br''};
-  \node (a11) at (11,0) [cell, blue] {\ttfamily new};
-  
-  \draw [decorate, decoration={brace,amplitude=7pt}, xshift=-0pt, yshift=0pt]
-  		(-0.5, 0.5) -- ( 1.5, 0.5) node (x) [midway, yshift=+0.5cm] 
-		(braceFuncDerivative) {\texttt{Cla}};
-	
-  \draw [decorate, decoration={brace,amplitude=7pt}, xshift=-0pt, yshift=0pt]
-  		( 2.5, 0.5) -- ( 5.5, 0.5) node (y) [midway, yshift=+0.5cm] 
-		(braceFuncDerivative) {\texttt{foo}};
-	
-	\draw [->, bend right=20, blue]
-		(a4.south) to node 
-		[below] {extension, new memory location} 
-		(a10.south);
-	\draw [->, bend right=20, blue]
-		(a5.south) to node 
-		[below] {}
-		(a11.south);
-\end{tikzpicture}
-\end{center}
-The memory describing \texttt{foo} is extended to hold not only a reference to \texttt{Cla}, but also to new strings.  New memory is allocated for those strings.\\
-Up to these amendments, the basic structure of \texttt{Cla} still holds: accessing \texttt{foo.lst} goes via \texttt{Cla.lst}.\\
-Since \texttt{lst} is \emph{mutable} (property of \inPy{list}s), no new memory location is created in line 22 (\inPy{foo.lst.append(2)}).
-\end{tcolorbox}
-%
-\end{frame}
-
-% =========================================================================== %\\
-
-\begin{frame}
-%
-\begin{hintbox}[Class Attributes and Instance Attributes]
-We distinguish between attributes that are shared between all instances of a class and such that are specific for a particular instance.
-
-Example Expartners: We want to judge all former partners by a common ruleset. This common ruleset could be a \emph{class attribute}.
-On the other hand, the specific details of the former partners (traits, name, ...) are \emph{instance attributes}: All my ex-girlfriends had a name, but the name \emph{Epsi} is specific to one of them.
-
-Class attributes are written \emph{within the class}. Instance attributes are defined at the instances themselves.
+\begin{hintbox}[How to remember the order]
+The interpreter needs to be able to decide which arguments belong to which parameter. This is only possible in the two above arrangements.
 \end{hintbox}
 %
 \end{frame}
@@ -523,31 +310,57 @@ Class attributes are written \emph{within the class}. Instance attributes are de
 
 \begin{frame}[fragile]
 %
-\begin{codebox}[Example: Class Attributes and Instance Attributes]
+\begin{tcbraster}[raster columns=2,
+                  raster equal height,
+                  nobeforeafter,
+                  raster column skip=0.5cm]
+\begin{codebox}[Example: Variadic Functions]
 \begin{minted}[linenos, fontsize=\scriptsize]{python}
-class Expartner :
-    traits = {
-        "good taste in music"         :   2, "beautiful"                   :   3,
-        "handsome"                    :   3, "intelligent"                 :   5,
-        "very beautiful"              :   5, "very handsome"               :   5,
-        "very intelligent"            :  10, "doesn't like coding"         : - 4,
-        "doesn't like meeting people" : - 4, "complains a lot"             : - 8,
-        "cheated on me"               : -20, "racist"                      : -30
-    }
+def func (
+    posArg1, posArg2,
+    optArg = 0,
+    *varArg, **kwArgs
+) :
+    print("pos. arguments:",
+          posArg1, posArg2)
+    print("var. argument   :", varArg)
+    print("opt. argument   :", optArg)
+    print("key. argument   :", kwArgs)
+    print()
 
-exgf2 = Expartner()
-exgf2.name      = "Epsi"
-exgf2.height    = 1.65
-exgf2.upsides   = {"very intelligent", "beautiful", "good taste in music"}
-exgf2.downsides = {"doesn't like coffee", "doesn't like coding"}
-
-exbf2 = Expartner()
-exbf2.name      = "Reginald"
-exbf2.height    = 1.84
-exbf2.upsides   = {"very intelligent", "handsome", "plays in a band"}
-exbf2.downsides = {"flirty with everyone", "complains a lot"}
+func(1, 2, 3)
+func(1, 2, key="value")
+func(1, 2, optArg="value")
+# func(1, 2, 3, optArg="value")
+#    ! multiple values for optArg!
+func(1, 2, "value", 4, key="value")
 \end{minted}
 \end{codebox}
+%
+\begin{cmdbox}[Output: Variadic Functions]
+\begin{minted}[fontsize=\scriptsize]{text}
+pos. arguments: 1 2
+var. argument   : ()
+opt. argument   : 3
+key. argument   : {}
+
+pos. arguments: 1 2
+var. argument   : ()
+opt. argument   : 0
+key. argument   : {'key': 'value'}
+
+pos. arguments: 1 2
+var. argument   : ()
+opt. argument   : value
+key. argument   : {}
+
+pos. arguments: 1 2
+var. argument   : (4,)
+opt. argument   : value
+key. argument   : {'key': 'value'}
+\end{minted}
+\end{cmdbox}
+\end{tcbraster}
 %
 \end{frame}
 
@@ -555,102 +368,242 @@ exbf2.downsides = {"flirty with everyone", "complains a lot"}
 
 \begin{frame}[fragile]
 %
+\begin{hintbox}[How to order parameters?]
+It depends on your function and how you intend to use it.
+
+Required arguments should go first, and be arranged in a \enquote{natural} order, \ie in the order we as humans think about them when thinking about a problem. For example, spatial coordinates should be asked in order x, y, z.
+
+Variadic arguments are either used as main parameters -- \eg in \inPy{print} -- or as supplementary/optional values.\\
+In the first case, they go first; otherwise, they go last.
+
+Optional parameters most often go last, unless you want the user to actually change them often. For example, a function that treats both, 2D and 3D coordinates may have the signature \inPy{func(x, y, z=0, *args)}. On the other hand, a function processing a batch of files into a single report may have the signature 
+\inPy{func(outputFile, *inputFiles, title="Report")}.
+
+Keyword arguments always go last, since otherwise, the interpreter could not unambigiously decide what goes where in some cases.
+\end{hintbox}
+%
+\end{frame}
+
+% =========================================================================== %
+
+\begin{frame}[fragile]{Optional Arguments in \inPy{print}}
+%
 \begin{columns}[T]
 \column{.5\linewidth}
-\begin{Large}
-	{Classes with Methods}
-	\vspace{6pt}
-\end{Large}
 \begin{itemize}
-\item Method: Function that accesses data \enquote{in} an instance
-\item Definition \emph{within the class}
-\item Obligatory first argument: \inPy{self}
-	\begin{itemize}
-	\item Reference to the instance on which the method is called
-	\item[\Thus] Access instance (and class attributes) via \inPy{self}
-	\item Passed automatically when calling the method
-	\item Name \inPy{self} is only a convention
-	\end{itemize}
-\item Each class has their own list of names
+\item \texttt{end} -- string, automatically printed \emph{after the last argument}. Default: \inPy{"\n"} (line break)
+\item \texttt{sep} -- string, automatically printed \emph{between two arguments}. Default: \inPy{" "} (whitespace)
+\item \texttt{file} -- target \enquote{file}, in which to write (default \enquote{screen/terminal})
+\item \texttt{flush} -- trigger automatic updates (default: \inPy{False})
+\item Signature \inPy{def print(*values, sep=' ', end='\n', file=sys.stdout, flush=False)}
 \end{itemize}
 %
 \column{.5\linewidth}
-\begin{codebox}[Syntax: Defining a Method]
-\begin{minted}[fontsize=\scriptsize]{python}
-class ClassName :
-    ...
-    def method(self, ...) :
-       Code
-    ...
+\begin{codebox}[Example: Opt. Arguments in \texttt{print}]
+\begin{minted}[linenos, fontsize=\scriptsize]{python}
+print(1, 2, 3)
+print(1, 2, 3, sep="--")
+print(1, 2, 3, end="#\n")
+print(1, 2, 3, end="#\n", sep="--")
 \end{minted}
 \end{codebox}
 %
-\begin{codebox}[Syntax: Calling A Method]
-\begin{minted}[fontsize=\scriptsize]{python}
-Instance = ClassName()
-Instance.method(...)
+\begin{cmdbox}[Output: Opt. Arguments in \texttt{print}]
+\begin{minted}[fontsize=\scriptsize]{text}
+1 2 3
+1--2--3
+1 2 3#
+1--2--3#
 \end{minted}
-\end{codebox}
-%
-\begin{itemize}
-\item[\Thus] There may be two (or more) distinct classes, each of them having their own method called \texttt{doStuff}
-\end{itemize}
+\end{cmdbox}
 \end{columns}
 %
 \end{frame}
 
 % =========================================================================== %
 
-\begin{frame}[fragile]
+\begin{frame}[fragile]{Funktions as Return Values}
 %
-\begin{codebox}[Example: Class with Methods]
+\begin{itemize}
+\item In Python, \emph{anything} can be stored in variables
+\item[\Thus] \emph{anything} can be the return value of a function
+\end{itemize}
+%
+\begin{tcbraster}[raster columns=2,
+                  raster equal height,
+                  nobeforeafter,
+                  raster column skip=0.5cm]
+\begin{codebox}[Example: Returning a Function]
 \begin{minted}[linenos, fontsize=\scriptsize]{python}
-class Expartner :
-    traits = { ... }   # as before
-   
-    def areThey(self, trait) :
-        return (trait in self.upsides) or (trait in self.downsides)
-    
-    def rating(self) :
-        reVal = 0
-        for trait in self.upsides :
-            if trait in self.traits : reVal += self.traits[trait]
-            else                    : reVal += +1
-        for trait in self.downsides :
-            if trait in self.traits : reVal += self.traits[trait]
-            else                    : reVal += -1
-        return reVal
+import math
 
-# exgf2, exbf2 as before
+def funcSelector (funcNummer) :
+    if funcNummer == 1 :
+        return math.sin
+    elif funcNummer == 2 :
+        return math.cos
 
-print( exgf2.areThey("very intelligent") )   # Output: True
-print( exbf2.rating() )                      # Output: 5
+func = funcSelector(2)
+print(func)
+print(func(math.pi))
 \end{minted}
 \end{codebox}
+%
+\begin{cmdbox}[Output: Returning a Function]
+\begin{minted}[fontsize=\scriptsize]{text}
+<built-in function cos>
+-1.0
+\end{minted}
+\end{cmdbox}
+\end{tcbraster}
 %
 \end{frame}
 
 
 % =========================================================================== %
 
-\begin{frame}{Magic Methods (\enquote{Dunders})}
+\begin{frame}[fragile]
+%
+\begin{hintbox}[Lookups via \texttt{dict}s]
+\scriptsize
+The previous example should only illistrate an idea. Long  \inPy{if-elif-...}-chains can be replaced by \inPy{dict}s:
+
+\begin{codebox}[Example: Lookups with \texttt{dict}s]
+\begin{minted}[linenos, fontsize=\scriptsize]{python}
+import math
+funcSelector = {1 : math.sin,
+                2 : math.cos}
+func = funcSelector[1]
+print(func, func(math.pi))
+\end{minted}
+\end{codebox}
+\end{hintbox}
+%
+\begin{hintbox}[Syntax-Element Parentheses]
+Without parentheses -- \emph{Referencing} the object (\ie the funktion)\\
+With parentheses -- \emph{Calling} the object
+\end{hintbox}
+%
+\end{frame}
+
+% =========================================================================== %
+
+\begin{frame}[fragile]{Function Generators}
 %
 \begin{itemize}
-\item Calls to functions: sometimes a lot to type, bad legibilty
-	\begin{itemize}
-	\item Compare: \inPy{x + y} with \inPy{x.add(y)}
-	\end{itemize}
-\item[\Thus] For most common operations: own mechanism
-\item \enquote{Hidden} (automatic) function calls
-	\begin{itemize}
-	\item Initialization: \inPy{__init__}
-	\item Computations: \inPy{__add__}, \inPy{__sub__}, \inPy{__mul__}, \inPy{__matmul__}, \inPy{__truediv__}, \inPy{__floordiv__}
-	\item Comparisons: \inPy{__eq__}, \inPy{__ne__}, \inPy{__gt__}, \inPy{__ge__}, \inPy{__lt__}, \inPy{__le__}
-	\item String representation: \inPy{__str__} und \inPy{__repr__}
-	\item Use as a function: \inPy{__call__}
-	\end{itemize}
-\item \emph{Double Underscore} \Thus \enquote{Dunders}
+\item Functions can be nested into one another
+\item The inner function may be the return value of the outer function
+\item A new copy of the inner function is created for each call to the outer function
+\item Parameters of the outer function are put into the copy of the inner function
+\item This allows \emph{dynamically generating} new functions
 \end{itemize}
+%
+\end{frame}
+
+% =========================================================================== %
+
+\begin{frame}[fragile]
+%
+\begin{tcolorbox}[title=Differential Quotient]
+	\begin{equation*}
+	\dv{x} f(x)
+=
+	\lim_{\varepsilon \to 0}
+		\frac
+			{f(x + \varepsilon) - f(x)}
+			{\varepsilon}
+	\end{equation*}
+\end{tcolorbox}
+%
+\begin{codebox}[Example: Numerical Derivative]
+\begin{minted}[linenos, fontsize=\scriptsize]{python}
+import math
+
+def derivative (f, epsilon = 1e-7) :
+    def result(x) :
+        return (f(x + epsilon) - f(x)) / epsilon
+    return result
+
+dsin = derivative(math.sin)
+dcos = derivative(math.cos)
+
+for x in range(20) :
+    print(int(20 + 10 * dsin(x / 3)) * " ", "*")
+\end{minted}
+\end{codebox}
+%
+\end{frame}
+
+% =========================================================================== %
+
+\begin{frame}[fragile]
+%
+\begin{codebox}[Example: Num. Der., width=.333\linewidth, nobeforeafter, equal height group=A]
+\begin{minted}[fontsize=\scriptsize, linenos, firstnumber=last]{python}
+print(derivative)
+print(dsin)
+print(dcos)
+\end{minted}
+\end{codebox}
+%
+\begin{cmdbox}[Output: Numerical Derivative, width=.655\linewidth, nobeforeafter, equal height group=A]
+\begin{minted}[fontsize=\scriptsize]{text}
+<function derivative at 0x7f44162a7940>
+<function derivative.<locals>.result at 0x7f44264a9820>
+<function derivative.<locals>.result at 0x7f44243b21f0>
+\end{minted}
+\end{cmdbox}
+%
+\begin{tcolorbox}[title=Memory Model]
+\begin{center}
+\begin{tikzpicture}
+  [ 
+    cell/.style={text width=8mm,
+      text height=4mm, draw=black, inner sep=1mm},
+    ld/.style={draw=blue,shorten >=2pt,->}
+  ]
+  \node  (a0) at ( 0,0) [cell] {\ttfamily ...};
+  \node  (a1) at ( 1,0) [cell] {\ttfamily ...};
+  \node  (a2) at ( 2,0) [cell] {\ttfamily ...};
+  \node  (a3) at ( 3,0) [cell] {\ttfamily ...};
+  \node  (a4) at ( 4,0) [cell] {\ttfamily ...};
+  \node  (a5) at ( 5,0) [cell] {\ttfamily ...};
+  \node  (a6) at ( 6,0) [cell] {\ttfamily ...};
+  \node  (a7) at ( 7,0) [cell] {\ttfamily ...};
+  \node  (a8) at ( 8,0) [cell] {\ttfamily ...};
+  \node  (a9) at ( 9,0) [cell] {\ttfamily ...};
+  \node (a10) at (10,0) [cell] {\ttfamily ...};
+  \node (a11) at (11,0) [cell] {\ttfamily ...};
+  \node (a12) at (12,0) [cell] {\ttfamily ...};
+  
+  \draw [decorate, decoration={brace,amplitude=7pt}, xshift=-0pt, yshift=0pt]
+  		( 0.5, 1.5) -- ( 4.5, 1.5) node [midway, yshift=+0.5cm] 
+		(braceFuncDerivative) {function code \texttt{derivative}};
+	
+  \draw [decorate, decoration={brace,amplitude=7pt}, xshift=-0pt, yshift=0pt]
+  		( 1.5, 0.5) -- ( 3.5, 0.5) node [midway, yshift=+0.5cm] 
+		(braceFuncResult) {function code \texttt{result}};
+		
+  \draw [decorate, decoration={brace,amplitude=7pt}, xshift=-0pt, yshift=0pt]
+  		( 5.5, 0.5) -- ( 7.5, 0.5) node [midway, yshift=+0.5cm] 
+		(braceFuncResult) {function code \texttt{dsin}};
+		
+  \draw [decorate, decoration={brace,amplitude=7pt}, xshift=-0pt, yshift=0pt]
+  		( 9.5, 0.5) -- (11.5, 0.5) node [midway, yshift=+0.5cm] 
+		(braceFuncResult) {function code \texttt{dcos}};
+		
+	\draw [->, bend right=20]
+		(a2.south) to node 
+		[below right=0] {copy, plug in\texttt{sin}} 
+		(a6.south);
+  
+	\draw [->, bend right]
+		(a2.south) to node 
+		[below] {copy, plug in \texttt{cos}} 
+		(a10.south);
+\end{tikzpicture}
+\end{center}
+\end{tcolorbox}
 %
 \end{frame}
 
@@ -661,30 +614,33 @@ print( exbf2.rating() )                      # Output: 5
 \begin{columns}[T]
 \column{.5\linewidth}
 \begin{Large}
-	{\inPy{__init__} -- Constructor (Initializer)}
+	{Lambdas}
 \end{Large}
 \vspace{6pt}
-%
 \begin{itemize}
-\item Called as soon as an instance of a class is created
-\item After \inPy{self}: free form (any number of arguments)
-\item Usually: Put default values into the instance
+\item Shorthand form for very simple functions
+\item Often: \enquote{single-use functions}, parameters to other functions
+\item Example: choose sorting criterion
+\item Obey same rules as \enquote{normal} functions (scopes, treatment of mutable/immutables, optional/variadic/... arguments, ...)
 \end{itemize}
 %
 \column{.5\linewidth}
-\begin{codebox}[Syntax: \texttt{\_\_init\_\_}]
+\begin{codebox}[Syntax: Lambdas]
 \begin{minted}[fontsize=\scriptsize]{python}
-class ClassName :
-    # class attributes
-    
-    def __init__ (self, ...) :
-        ...
+var = lambda args : expression(args)
 \end{minted}
 \end{codebox}
 %
-\begin{codebox}[Syntax: Call to \texttt{\_\_init\_\_}]
+\begin{codebox}[Equivalent Code]
 \begin{minted}[fontsize=\scriptsize]{python}
-instance = ClassName(...)
+def var (args) :
+    return expressio(args)
+\end{minted}
+\end{codebox}
+%
+\begin{codebox}[Syntax: Calling Lambdas]
+\begin{minted}[fontsize=\scriptsize]{python}
+result = var(args)
 \end{minted}
 \end{codebox}
 \end{columns}
@@ -695,113 +651,74 @@ instance = ClassName(...)
 
 \begin{frame}[fragile]
 %
-\begin{codebox}[Example: \texttt{\_\_init\_\_}]
-\begin{minted}[linenos, fontsize=\scriptsize]{python}
-class Expartner :
-    # class attributes ...
-    
-    def __init__(self, name = None, height = None, upsides = {}, downsides = {}) :
-        if height < 0 :
-            raise Exception("Your Ex cannot be less than 0.0m tall")
-        
-        self.name      = name
-        self.height    = height
-        self.upsides   = upsides
-        self.downsides = downsides
-    
-perfect = Expartner("Arista" , 1.70, 
-              {"very intelligent", "very beautiful", "good taste in music"}
-          )
+\begin{codebox}[Example: Sort Strings by Length]
+\begin{minted}[fontsize=\scriptsize, linenos]{python}
+stuffToSort = ["Vicki wollte ins Script",
+               "epsilon", 
+               "Darf Ich Das Behalten"
+              ]
+
+stuffToSort.sort(key = lambda element : len(element))
+
+print(stuffToSort)
 \end{minted}
 \end{codebox}
+%
+\begin{cmdbox}[Output: Sort Strings by Length]
+\begin{minted}[fontsize=\scriptsize]{text}
+['epsilon', 'Darf Ich Das Behalten', 'Vicki wollte ins Script']
+\end{minted}
+\end{cmdbox}
+%
+\begin{hintbox}[Sorting criterion (\texttt{key})]
+\texttt{key} is a lambda that computes a number (rank) from each element in the container. The elements in the container then are sorted according to this rank.
+\end{hintbox}
 %
 \end{frame}
 
 % =========================================================================== %
 
-\begin{frame}[fragile]{\inPy{__str__} and \inPy{__repr__} -- Text Representation}
-%
-\begin{columns}[T]
-\column{.5\linewidth}
+\begin{frame}{Recursion}
 %
 \begin{itemize}
-\item Both methods: return text that represents the instance
-\item \inPy{__str__}
+\item Functions can call other functions and in particular, can call \emph{themselves}
+\item Each call creates an \enquote{closed box}: To each call there is a proper set of variables
+\item Useful for solving \emph{self-similar} problems
 	\begin{itemize}
-	\item \enquote{End user form}, most commonly needed form
-	\item Automatically called by \inPy{str(instance)}
-	\item \inPy{print} automatically calls \inPy{str} for each non-string argument
+	\item Problem can be decomposed into sub-problems
+	\item A sub-problem has the same form as the main problem, but:
+	\item The amount of data to process is smaller, and:
+	\item There is at least one trivial case, and:
+	\item All sub-problems can be decomposed into a set of trivial problems
 	\end{itemize}
-\item \inPy{__repr__}
-	\begin{itemize}
-	\item \emph{Debug form}, may be shorter or hold whatever you may need for development
-	\item Automatisch called by \inPy{repr(instance)}
-	\end{itemize}
-\item Both methods take \textbf{no arguments}!
 \end{itemize}
 %
-\column{.5\linewidth}
-\begin{codebox}[Syntax: \texttt{\_\_str\_\_} and \texttt{\_\_repr\_\_}]
-\begin{minted}[fontsize=\scriptsize]{python}
-class ClassName :
-    def __repr__ (self) :
-        return someString
-    
-    def __str__ (self) :
-        return someString
-\end{minted}
-\end{codebox}
-%
-\begin{codebox}[Syntax: Call \texttt{\_\_str\_\_} and \texttt{\_\_repr\_\_}]
-\begin{minted}[fontsize=\scriptsize]{python}
-instance = ClassName()
-
-print(instance)         # beide
-print(str(instance))    # gleich
-pritn(repr(instance))
-\end{minted}
-\end{codebox}
-\end{columns}
+\begin{hintbox}
+To understand recursion, you first need to understand recursion.
+\end{hintbox}
 %
 \end{frame}
 
 % =========================================================================== %
 
-\begin{frame}[fragile]{\inPy{__call__} -- Calling Instances as Functions}
+\begin{frame}[fragile]{Example: Sum over Elements in a List}
 %
-\begin{columns}[T]
-\column{.5\linewidth}
+Of course, we know that this problem can be easily solved with \inPy{total = sum(someList)}. Here, however, we want to illustrate the technique recursion. Hence, we'll follow this idea:
 %
-\begin{itemize}
-\item Idea: Use a class instance as if it were a function
-\item Could be useful for a game depending on lots of parameters:
-	\begin{minted}{python}
-	game = Game()
-	game.playerCount = 2
-	game.timeLimit   = 30
-	...
-	game()
-	\end{minted}
-\item Arbitrary count and kind of arguments
-\end{itemize}
+\vspace{6pt}
+\begin{tcolorbox}[title=Recursive Approach]
+The sum over the elements in a list is equal to its first element plus the sum over the remaining elements.
+\end{tcolorbox}
 %
-\column{.5\linewidth}
-\begin{codebox}[Syntax: \texttt{\_\_call\_\_}]
-\begin{minted}[fontsize=\scriptsize]{python}
-class ClassName :
-    def __call__ (self, ...) :
-        ...
+\begin{codebox}[Implementation: Recursive Array Sum]
+\begin{minted}[fontsize=\scriptsize, linenos]{python}
+def recSum (data) :
+    if len(data) == 1 : return data[0]
+    else              : return data[0] + recSum(data[1:])
+    
+print(recSum(list(range(4))))    # Ausgabe: 6 = 0 + 1 + 2 + 3
 \end{minted}
 \end{codebox}
-%
-\begin{codebox}[Syntax: Aufruf \texttt{\_\_call\_\_}]
-\begin{minted}[fontsize=\scriptsize]{python}
-Instance = ClassName()
-
-Instance(...)
-\end{minted}
-\end{codebox}
-\end{columns}
 %
 \end{frame}
 
@@ -809,17 +726,66 @@ Instance(...)
 
 \begin{frame}[fragile]
 %
-\begin{codebox}[Example: Calling an Instance]
-\begin{minted}[linenos, fontsize=\scriptsize]{python}
-class Expartner :
-    # as before
+\begin{codebox}[Implementation: Recursive Array Sum]
+\begin{minted}[fontsize=\scriptsize, linenos]{python}
+def recSum (data) :
+    if len(data) == 1 : return data[0]
+    else              : return data[0] + recSum(data[1:])
     
-    def __call__(self) :
-        print("You shouldn't call your Ex'es. Leave the past behind.")
-
-ex = Expartner("Sandra", 1.70)
-ex()
+print(recSum(list(range(4))))    # Ausgabe: 6 = 0 + 1 + 2 + 3
 \end{minted}
 \end{codebox}
+%
+\begin{codebox}[Call (line 5) sends to level 0, width=.7\linewidth, nobeforeafter, equal height group = B]
+\scriptsize\inPy{data = [0, 1, 2, 3]}
+	\begin{codebox}[Level 0 (line 3) sends to level 1]
+	\scriptsize\inPy{data = [1, 2, 3]}
+		\begin{codebox}[Level 1 (line 3) sends to level 2]
+		\scriptsize\inPy{data = [2, 3]}		
+		\end{codebox}
+	\end{codebox}
+\end{codebox}
+%
+\begin{hintbox}[Regard, width=.29\linewidth, nobeforeafter, equal height group = B]
+Each level \enquote{lives} in its own scope! The symbol \texttt{data} refers to different locations in memory! All of them exist in parallel!
+\end{hintbox}
+%
+\end{frame}
+
+% =========================================================================== %\\
+
+\begin{frame}[fragile]
+%
+	\begin{codebox}[Evaluation{,} level 0]
+		\begin{codebox}[Evaluation{,} level 1]
+			\begin{codebox}[Evaluation{,} level 2]
+				\begin{codebox}[Evaluation{,} level 3]
+				\scriptsize\inPy{return 3   # 0th element in [3]}
+				\end{codebox}
+				\scriptsize\inPy{return 2 + 3   # 0th element in [2, 3] plus result of recSum, level 3}
+			\end{codebox}
+			\scriptsize\inPy{return 1 + 5   # 0th element in [1, 2, 3] plus result of recSum, level 2}
+		\end{codebox}
+		\scriptsize\inPy{return 0 + 6   # 0th element in [0, 1, 2, 3] plus result of recSum, level 1}
+	\end{codebox}
+%
+\end{frame}
+
+% =========================================================================== %\\
+
+
+\begin{frame}{Remarks}
+%
+\begin{itemize}
+\item Maximum recursion depth (by default): 100
+\item A lot of overhead -- slow execution
+\item But: \emph{some} problems can be solved extremely efficiently that way
+	\begin{itemize}
+	\item [\thus] \emph{Exercise}
+	\item [\thus] Lecture \emph{Algorithmen und Datenstrukturen} (each summer term, Prof. Stefan Solbrig)
+	\end{itemize}
+\item Maths says: any recursive algorithm can be implemented \emph{iteratively}
+\item Reality says: \emph{This is darn hard!}
+\end{itemize}
 %
 \end{frame}

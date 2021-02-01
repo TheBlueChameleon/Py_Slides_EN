@@ -46,6 +46,13 @@
 
 \usepackage{tabto}
 
+% math
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{dsfont}
+\usepackage[arrowdel]{physics}
+\usepackage{mathtools}
+
 \usepackage{minted}
 	\usemintedstyle{friendly}
 
@@ -64,7 +71,8 @@
 		{colback=cyan!10!white,
 		 colframe=cyan!75!black,
 		 arc=0pt,
-		 outer arc=0pt
+		 outer arc=0pt,
+		 parbox=false
 		}
 	\newtcolorbox{codebox}[1][Code]
 		{colback=black!5!white,
@@ -72,7 +80,7 @@
 		 title=#1,
 		 leftupper=6mm
 		}
-	\newtcolorbox{cmdbox}[1][Kommandozeilen-Befehl]
+	\newtcolorbox{cmdbox}[1][Terminal]
 		{colback=black,
 		 coltext=white,
 		 fontupper=\ttfamily ,
@@ -80,12 +88,12 @@
 		 title=#1,
 		 outer arc=0pt
 		}
-	\newtcolorbox{warnbox}[1][Beachte]
+	\newtcolorbox{warnbox}[1][Attention]
 		{colback=black!5!white,
 		 colframe=red!40!black,
 		 title=#1
 		}
-	\newtcolorbox{hintbox}[1][Tipp]
+	\newtcolorbox{hintbox}[1][Hint]
 		{colback=black!5!white,
 		 colframe=green!40!black,
 		 title=#1
@@ -103,7 +111,7 @@
 %==============================================================================%
 % GLOBAL MACROS
 
-\newcommand*{\zB}{e.\,g. }
+\newcommand*{\eg}{e.\,g. }
 \newcommand*{\ie}{i.\,e. }
 
 \newcommand{\Thus}{\ensuremath{\Rightarrow}}
@@ -117,14 +125,14 @@
 
 \author{Stefan Hartinger}
 \title{Programming in Python}
-\subtitle{Part 3: Modules, Data Containers}
+\subtitle{Part 7: Advanced Techniques with Functions}
 \institute{University Regensburg, Department of Theoretical Physics}
 \date{Block Course, Summer Term 2021}
 
 % =========================================================================== %
 
 \begin{document}
-\include{03_content}
+\include{07_content}
 \end{document}
 
 % MAREI!!
