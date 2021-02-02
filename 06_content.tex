@@ -6,58 +6,316 @@
 
 % =========================================================================== %
 
-\begin{frame}[fragile]
-%
-\begin{tcbraster}[raster columns=2,
-                  raster equal height,
-                  nobeforeafter,
-                  raster column skip=0.5cm]
-\begin{codebox}[Beispiel: Title goes here]
-\begin{minted}[fontsize=\scriptsize, linenos]{python}
-foo
-\end{minted}
-\end{codebox}
-%
-\begin{codebox}[Beispiel: Title goes here]
-\begin{minted}[fontsize=\scriptsize, linenos]{python}
-bar
-\end{minted}
-\end{codebox}
-\end{tcbraster}
-%
-\end{frame}
-
-% =========================================================================== %
-
-\begin{frame}[fragile]{Kapitel 6}
+\begin{frame}[fragile]{Our State So Far: All Essential Tools}
 %
 \begin{itemize}
-\item Optionale Parameter
-\item Variadische Funktionen
-\item Funktionen als Rückgabewerte
-\item Lambdas
-\item Rekursion
+\item Tools we have so far: enough to write alomost any program
+	\begin{itemize}
+	\item We only lack the capability to access \enquote{devices} such as the screen or hard disks
+	\item Two commands (that nobody uses any longer)
+	\item Enough to write entire operating systems
+	\end{itemize}
+\item Art of Programming: How to combine these tools
+	\begin{itemize}
+	\item Form of art, takes time to devellop
+	\item Aim here: Learn from examples
+	\end{itemize}
+\item Train of Thought
+	\begin{itemize}
+	\item Analysis: decompose a problem into its atoms
+	\item Synthesis: solve the atomic problems, combine them into a complete program
+	\end{itemize}
 \end{itemize}
 %
 \end{frame}
 
 % =========================================================================== %
 
-\begin{frame}[fragile]{\inPy{while}-Schleifen}
+\begin{frame}[fragile]{Mini Project: Black Jack}
+%
+\begin{itemize}
+\item Recall Rules: Black Jack (simplified)
+\item Play with six decks of cards
+	\begin{itemize}
+	\item 6 $\times$ 52 cards, 4 suits, values A, 2..10, J, Q, K
+	\end{itemize}
+\item Players make a bet, put money into the pot
+\item They draw cards in turn
+	\begin{itemize}
+	\item After each card they can decide to keep drawing or stop
+	\item If the sum of the values is greater than 21, a player looses
+	\item If everyone has stopped or lost, the player(s) closest to 21 win(s)
+	\end{itemize}
+\item Today: Only up to representing cards and players
+\item Tomorrow: Game mechanics
+\end{itemize}
+%
+\end{frame}
+
+% =========================================================================== %
+
+\begin{frame}[fragile]{Analysis}
+%
+What objects and concepts do we have to represent in code?
+\begin{itemize}
+\item Cards
+\item Money
+\item Players or their actions
+\item Win or loss condition
+\end{itemize}
+%
+\end{frame}
+
+% =========================================================================== %
+
+\begin{frame}[fragile]{Analysis}
+%
+How do we portray them?
+\begin{itemize}
+\item Money: simple number \thus \inPy{int} or \inPy{float} variable
+\item Cards
+	\begin{itemize}
+	\item Collection of alike objects
+	\item One Card: suit and value
+	\item Limited Range
+	\item Two Strings representing suit and value, respectively
+	\item Suit and Value-Number belong together \thus pack them as a unit \thus \inPy{tuple}
+	\item \emph{Collection} \thus \inPy{list}
+	\end{itemize}
+\end{itemize}
+%
+\begin{hintbox}[Container Types]
+If in doubt which container is the correct one, use a \inPy{list}.
+
+The choice of a \inPy{tuple} for a card is more convention than necessity; a \inPy{list} would do just as well.
+\end{hintbox}
+%
+\end{frame}
+
+% =========================================================================== %
+
+\begin{frame}[fragile]
+%
 %
 \begin{columns}[T]
 \column{.5\linewidth}
+\begin{Large}
+	{Analysis}
+\end{Large}
+
+How do we portray players?
 \begin{itemize}
-\item x
+\item Several of them \Thus \inPy{list}
+\item Players have a name
+	\begin{itemize}
+	\item[\Thus] String variable for each Player
+	\end{itemize}
+\item Players have money
+	\begin{itemize}
+	\item[\Thus] Money-Variable for each Player
+	\end{itemize}
+\item Players have Cards
+	\begin{itemize}
+	\item[\Thus] Cards-List for each player
+	\end{itemize}
+\item Players need to decide on actions
+	\begin{itemize}
+	\item[\Thus] Something with \inPy{input}
+	\item[\Thus] Own function to keep things tight
+	\end{itemize}
+\item Players draw cards
+	\begin{itemize}
+	\item[\Thus] Function to transfer cards from the deck
+	\end{itemize}
 \end{itemize}
 %
 \column{.5\linewidth}
-\begin{codebox}[Syntax: Title goes here]
-\begin{minted}[fontsize=\scriptsize]{python}
-Stuff
+\begin{hintbox}[Non-Object Concepts]
+Our analysis shows: players are rather complex things, as they are capable to perform \emph{actions}.
+
+It is best to start coding from passive objects -- mere collections of information. Everything else we set back for a second.
+
+Here, we identify the object-characteristics of the player: their name, money, cards. Everything else will be modelled thereafter, as actions will need to access these information.
+\end{hintbox}
+\end{columns}
+%
+\end{frame}
+	
+% =========================================================================== %
+
+\begin{frame}[fragile]{Analysis}
+%
+How do we portray players?
+%
+\begin{itemize}
+\item We found: three kinds of values (name, money, cards)
+\item[\Thus] Some Container
+\item Possible: \inPy{list}, but...
+\item No natural ordering. Should \inPy{player[0]} be name, money, cards?
+\item[\Thus] \inPy{dict}! Allows \inPy{player['money']}
+\end{itemize}
+%
+\end{frame}
+
+% =========================================================================== %
+
+\begin{frame}[fragile]{Synthesis (Attempt)}
+%
+\begin{codebox}[First Few Lines of Code (Non-Functional)]
+\begin{minted}[linenos, fontsize=\scriptsize]{python}
+deck = [(...), (...), ...]
+players = [
+    {'name'  : 'Jacques Hartington', 'money' : 9001, 'cards' : [(...), (...), ...]},
+    {'name'  : 'Farin Urlaub'      , 'money' : 9001, 'cards' : [(...), (...), ...]},
+    ...
+]
 \end{minted}
 \end{codebox}
-\end{columns}
+%
+\begin{itemize}
+\item Find new problem: How do we get a deck?
+\item Back into analysis mode
+\item Leave lists empty for now (simple code, no error message)
+\end{itemize}
+%
+\end{frame}
+
+% =========================================================================== %
+
+\begin{frame}[fragile]{Analysis}
+%
+How do we build a deck?
+%
+\begin{itemize}
+\item We know which cards there are
+	\begin{itemize}
+	\item We could list them manually \Thus a lot of typing, but possible
+	\item They have a regular structure \Thus loops
+		\begin{itemize}
+		\item Same 13 cards for all four suits
+		\item One for each value between 1 and 13
+		\end{itemize}
+	\end{itemize}
+\item They should be shuffled
+	\begin{itemize}
+	\item Have a look at the \texttt{random} module
+	\end{itemize}
+\end{itemize}
+%
+\end{frame}
+
+% =========================================================================== %
+
+\begin{frame}[fragile]{Synthesis: Some Test Code}
+%
+\begin{codebox}[Attempt to Build a Deck (1)]
+\begin{minted}[linenos, fontsize=\scriptsize]{python}
+deck = []
+for deckID in range(6) :
+  for suit in ("Hearts", "Diamond", "Club", "Spades") :
+      for value in ("A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q" , "K") :
+          deck.append( (suit, value) )
+
+print(deck)
+\end{minted}
+\end{codebox}
+%
+\begin{cmdbox}[Output: Attempt to Build a Deck (1)]
+\begin{minted}[fontsize=\scriptsize]{text}
+[('Hearts', 'A'), ('Hearts', '2'), ('Hearts', '3'), ('Hearts', '4'), ('Hearts', '5'),
+ ('Hearts', '6'), ('Hearts', '7'), ('Hearts', '8'), ('Hearts', '9'), ('Hearts', '10'),
+ ('Hearts', 'J'), ('Hearts', 'Q'), ('Hearts', 'K'), ('Diamond', 'A'), ('Diamond', '2'),
+ ...
+\end{minted}
+\end{cmdbox}
+%
+\end{frame}
+
+% =========================================================================== %
+
+\begin{frame}[fragile]{Code Review: Making Things Look Nicer}
+%
+\begin{itemize}
+\item \inPy{for} loop saved us typing 312 card definitions by hand
+\item Still: 13 values explicitly stated
+\item We don't make use of the regularity of the values!
+\item Numbers: Value correspons with String directly!
+\item For Royals: need lookup!
+\item[\Thus] \inPy{str} and \inPy{dict} and a function!
+\end{itemize}
+%
+\end{frame}
+
+% =========================================================================== %
+
+\begin{frame}[fragile]{Synthesis: Improved Deck Builder}
+%
+\begin{codebox}[Attempt to Build a Deck (2)]
+\begin{minted}[linenos, fontsize=\scriptsize]{python}
+deck = []
+
+def deckLookup (value) :
+    deckTexts = {1: "A", 11 : "J", 12 : "Q", 13 : "K"}
+    
+    if value in deckTexts :
+        return deckTexts[value]
+    else :
+        return str(value)
+
+for deckID in range(6) :
+  for suit in ("Hearts", "Diamond", "Club", "Spades") :
+      for value in ( range(1, 14) ) :
+          deck.append( (suit, deckLookup(value)) )
+
+print(deck)
+\end{minted}
+\end{codebox}
+%
+\end{frame}
+
+% =========================================================================== %
+
+\begin{frame}[fragile]{Synthesis: Shuffling the Deck}
+%
+\begin{cmdbox}[Finding Functions]
+\begin{minted}[fontsize=\scriptsize]{text}
+>>> dir(random)
+['BPF', 'LOG4', 'NV_MAGICCONST', 'RECIP_BPF', 'Random', 'SG_MAGICCONST', 'SystemRandom',
+ 'TWOPI', '_Sequence', '_Set', '__all__', '__builtins__', '__cached__', '__doc__', 
+ '__file__', '__loader__', '__name__', '__package__', '__spec__', '_accumulate', '_acos',
+ '_bisect', '_ceil', '_cos', '_e', '_exp', '_inst', '_log', '_os', '_pi', '_random',
+ '_repeat', '_sha512', '_sin', '_sqrt', '_test', '_test_generator', '_urandom', '_warn',
+ 'betavariate', 'choice', 'choices', 'expovariate', 'gammavariate', 'gauss', 'getrandbits',
+ 'getstate', 'lognormvariate', 'normalvariate', 'paretovariate', 'randint', 'random',
+ 'randrange', 'sample', 'seed', 'setstate', 'shuffle', 'triangular', 'uniform',
+ 'vonmisesvariate', 'weibullvariate']
+\end{minted}
+\end{cmdbox}
+%
+... I wonder what {\color{blue}\texttt{shuffle}} does...
+%
+\end{frame}
+
+% =========================================================================== %
+
+\begin{frame}[fragile]{Synthesis: Shuffling the Deck}
+%
+\begin{cmdbox}[Learning About Functions]
+\begin{minted}[fontsize=\scriptsize]{text}
+>>> help(random.shuffle)
+Help on method shuffle in module random:
+
+shuffle(x, random=None) method of random.Random instance
+    Shuffle list x in place, and return None.
+    
+    Optional argument random is a 0-argument function returning a
+    random float in [0.0, 1.0); if it is the default None, the
+    standard random.random will be used.
+
+\end{minted}
+\end{cmdbox}
+%
+... guess what? It shuffles a list! Exactly what we need!
 %
 \end{frame}
 
@@ -65,10 +323,286 @@ Stuff
 
 \begin{frame}[fragile]
 %
-\begin{codebox}[Beispiel: Title goes here]
+\begin{codebox}[Attempt To Buildi a Deck (3)]
 \begin{minted}[linenos, fontsize=\scriptsize]{python}
-x
+import random
+
+deck = []
+def deckLookup (value) :
+    # as before
+for deckID in range(6) :
+    # as before
+
+random.shuffle(deck)    # look how nice this reads! Like "normal" English!
+
+print(deck)
 \end{minted}
 \end{codebox}
+%
+\begin{cmdbox}[Output: Attempt To Buildi a Deck (3)]
+\begin{minted}[fontsize=\scriptsize]{text}
+[('Hearts', 'K'), ('Hearts', '5'), ('Spades', '10'), ('Spades', 'K'), ('Hearts', '6'),
+ ('Club', '5'), ('Spades', '5'), ('Diamond', '1'), ('Diamond', '4'), ('Club', '3'), 
+ ('Diamond', '3'), ('Club', '4'), ('Hearts', '9'), ('Spades', '8'), ('Diamond', '8'), 
+ ('Hearts', '1'), ('Spades', '6'), ('Hearts', '8'), ('Spades', 'Q'), ('Spades', '1'), 
+ ...
+\end{minted}
+\end{cmdbox}
+%
+\end{frame}
+
+% =========================================================================== %
+
+\begin{frame}[fragile]{Analysis: Dealing Cards to the Players}
+%
+\begin{itemize}
+\item Real life game: Croupier deals cards to the players
+	\begin{itemize}
+	\item Remove top card from deck
+	\item Add it to one player's hand
+	\end{itemize}
+\item So we need in code...
+	\begin{itemize}
+	\item Way to access the deck -- \inPy{deck[index]}
+	\item Way to Remove a card
+		\begin{itemize}
+		\item One approach: \inPy{deck = deck[from_index : to_index]}
+		\item Better: \inPy{card = deck.pop(index)} (combines accessing and removing)
+		\item \texttt{pop}: argument \texttt{index} is optional. If omitted, removes/returns last element in the list.
+		\end{itemize}
+	\end{itemize}
+\item Way to put the card into a player's hands
+	\begin{itemize}
+	\item \inPy{list_of_some_players_cards.append(card)}
+	\end{itemize}
+\end{itemize}
+%
+\end{frame}
+
+% =========================================================================== %
+
+\begin{frame}[fragile]{Synthesis: Dealing Cards to the Players}
+%
+\begin{itemize}
+\item We need access to:
+	\begin{itemize}
+	\item The deck -- variable \texttt{deck}
+	\item One player's hand
+		\begin{itemize}
+		\item First: Get one player: \inPy{players[ID]}
+		\item Then: Select their cards: \inPy{players[ID]['cards']}
+		\end{itemize}
+	\end{itemize}
+\item We perform the action
+	\begin{itemize}
+	\item \inPy{players[ID]['cards'].append( deck.pop() )}
+	\end{itemize}
+\item Perform the action \emph{for each player}
+	\begin{itemize}
+	\item \inPy{for} loop!
+	\item Indices: possible\\
+		\inPy{for ID in range(len(players))}
+	\item Better: References\\
+		\inPy{for player in players :}\\
+		~~~~\inPy{player['cards'].append( deck.pop() )} 
+	\end{itemize}
+\end{itemize}
+%
+\end{frame}
+
+% =========================================================================== %
+
+\begin{frame}[fragile]
+%
+\begin{codebox}[Dealing Cards to the Players]
+\begin{minted}[linenos, fontsize=\scriptsize]{python}
+deck = ... #as before
+
+players = [
+    {'name' : 'Jacques Hartington', 'money' : 9001, 'cards' : []},
+    {'name' : 'Farin Urlaub'      , 'money' : 9001, 'cards' : []},
+ ]
+
+for player in players :
+    player['cards'].append( deck.pop() )
+
+print(players)
+\end{minted}
+\end{codebox}
+%
+\begin{cmdbox}[Output: Dealing Cards to the Players]
+\begin{minted}[fontsize=\scriptsize]{text}
+[{'name': 'Jacques Hartington', 'money': 9001, 'cards': [('Hearts', '9')]},
+ {'name': 'Farin Urlaub', 'money': 9001, 'cards': [('Diamond', '6')]}]
+\end{minted}
+\end{cmdbox}
+%
+\end{frame}
+
+% =========================================================================== %
+
+\begin{frame}{Code Design: One Function Per Idea}
+%
+\begin{itemize}
+\item High level of abstraction
+\item Real life objects into lists and numbers
+\item Re-Introduce human language
+\item Group Ideas into Functions
+\end{itemize}
+%
+\end{frame}
+
+% =========================================================================== %
+
+\begin{frame}[fragile]
+%
+\begin{codebox}[Code in Functions ...]
+\begin{minted}[linenos, fontsize=\scriptsize]{python}
+import random
+
+# =========================================================================== #
+
+def deckLookup (value) :
+    deckTexts = {11 : "J", 12 : "Q", 13 : "K"}
+        
+    if value in deckTexts : return deckTexts[value]
+    else                  : return str(value)
+        
+def buildDeck() :
+    deck = []
+
+    for deckID in range(6) :
+        for suit in ("Hearts", "Diamond", "Club", "Spades") :
+            for value in ( range(1, 14) ) :
+                deck.append( (suit, deckLookup(value)) )
+    
+    random.shuffle(deck)    # look how nice this reads! Like "normal" English!
+    return deck
+\end{minted}
+\end{codebox}
+%
+\end{frame}
+
+% =========================================================================== %
+
+\begin{frame}[fragile]
+%
+\begin{codebox}[Code in Functions (Continued)]
+\begin{minted}[linenos, firstnumber=last, fontsize=\scriptsize]{python}
+
+def dealCards (players, deck) :
+    for player in players :
+        player['cards'].append( deck.pop() )
+
+# =========================================================================== #
+
+deck = buildDeck()
+
+players = [
+    {'name' : 'Jacques Hartington', 'money' : 9001, 'cards' : []},
+    {'name' : 'Farin Urlaub'      , 'money' : 9001, 'cards' : []},
+ ]
+
+dealCards(players, deck)
+
+print(players)
+\end{minted}
+\end{codebox}
+%
+\end{frame}
+
+% =========================================================================== %
+
+\begin{frame}{Getting Rid of Last Hard Coded Elements}
+%
+\begin{itemize}
+\item Current Form: Always players Jacques Hartington and Farin Urlaub
+\item Desired: Flexible Code
+\item[\Thus] User Input: Who plays?
+\item Keep Function Form: new idea \enquote{add player}
+\end{itemize}
+%
+\end{frame}
+
+% =========================================================================== %
+
+\begin{frame}{Analysis: Adding a New Player}
+%
+\begin{itemize}
+\item Need to know:
+	\begin{itemize}
+	\item Names and Money of players
+	\item[\Thus] \inPy{input}
+	\end{itemize}
+\item Need \emph{not} to know:
+	\begin{itemize}
+	\item Cards -- they all start with an empty hand!
+	\end{itemize}
+\item There's more than one player
+	\begin{itemize}
+	\item[\Thus] Some loop
+	\item Either: ask for number of players first \Thus \inPy{for ID in range(playerCount)}
+	\item Or: empty line signifies end of list
+	\end{itemize}
+\end{itemize}
+%
+\end{frame}
+
+% =========================================================================== %
+
+\begin{frame}[fragile]
+%
+\begin{codebox}[Adding a new player]
+\begin{minted}[linenos, fontsize=\scriptsize]{python}
+def registerPlayers() :
+    players = []
+    notDoneYet = True
+    
+    while notDoneYet :
+        name = input("Please enter the next player's name "
+                     "(empty line ends player registration): ")
+        
+        if len(name) == 0 :   # or: if name == "", or if not len(name), or ...
+            notDoneYet = False
+            break
+        
+        money = float( input(f"Please enter {name}'s start money: ") )
+        
+        players.append(
+            {'name' : name, 'money' : money, 'cards' : []}
+        )
+    
+    return players
+\end{minted}
+\end{codebox}
+%
+\end{frame}
+
+% =========================================================================== %
+
+\begin{frame}[fragile]
+%
+\begin{codebox}[Adding a New Player -- Adjustments to Module Level Code]
+\begin{minted}[linenos, fontsize=\scriptsize]{python}
+deck = buildDeck()
+players = registerPlayers()
+
+dealCards(players, deck)
+
+print(players)
+\end{minted}
+\end{codebox}
+%
+\begin{cmdbox}[Output: Adding a New Player -- Adjustments to Module Level Code]
+\begin{minted}[fontsize=\scriptsize]{text}
+Please enter the next player's name (empty line ends player registration): Dusky Joe
+Please enter Dusky Joe's start money: 9001
+Please enter the next player's name (empty line ends player registration): Blue Chameleon
+Please enter The Chameleon's start money: 9001
+Please enter the next player's name (empty line ends player registration):
+[{'name': 'Dusky Joe', 'money': 9001.0, 'cards': [('Spades', '4')]},
+ {'name': 'Blue Chameleon', 'money': 9001.0, 'cards': [('Club', '10')]}]
+\end{minted}
+\end{cmdbox}
 %
 \end{frame}
