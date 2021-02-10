@@ -165,8 +165,8 @@ How do we portray players?
 \begin{minted}[linenos, fontsize=\scriptsize]{python}
 deck = [(...), (...), ...]
 players = [
-    {'name'  : 'Jacques Hartington', 'money' : 9001, 'cards' : [(...), (...), ...]},
-    {'name'  : 'Farin Urlaub'      , 'money' : 9001, 'cards' : [(...), (...), ...]},
+    {'name' : 'Jacques Hartington', 'money' : 9001, 'cards' : [(...), (...), ...]},
+    {'name' : 'Farin Urlaub'      , 'money' : 9001, 'cards' : [(...), (...), ...]},
     ...
 ]
 \end{minted}
@@ -213,7 +213,7 @@ How do we build a deck?
 deck = []
 for deckID in range(6) :
   for suit in ("Hearts", "Diamond", "Club", "Spades") :
-      for value in ("A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q" , "K") :
+      for value in ("A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K") :
           deck.append( (suit, value) )
 
 print(deck)
@@ -254,7 +254,7 @@ print(deck)
 \begin{minted}[linenos, fontsize=\scriptsize]{python}
 deck = []
 
-def deckLookup (value) :
+def lookupCardName (value) :
     deckTexts = {1: "A", 11 : "J", 12 : "Q", 13 : "K"}
     
     if value in deckTexts :
@@ -265,7 +265,7 @@ def deckLookup (value) :
 for deckID in range(6) :
   for suit in ("Hearts", "Diamond", "Club", "Spades") :
       for value in ( range(1, 14) ) :
-          deck.append( (suit, deckLookup(value)) )
+          deck.append( (suit, lookupCardName(value)) )
 
 print(deck)
 \end{minted}
@@ -328,7 +328,7 @@ shuffle(x, random=None) method of random.Random instance
 import random
 
 deck = []
-def deckLookup (value) :
+def lookupCardName (value) :
     # as before
 for deckID in range(6) :
     # as before
@@ -462,7 +462,7 @@ import random
 
 # =========================================================================== #
 
-def deckLookup (value) :
+def lookupCardName (value) :
     deckTexts = {11 : "J", 12 : "Q", 13 : "K"}
         
     if value in deckTexts : return deckTexts[value]
@@ -474,7 +474,7 @@ def buildDeck() :
     for deckID in range(6) :
         for suit in ("Hearts", "Diamond", "Club", "Spades") :
             for value in ( range(1, 14) ) :
-                deck.append( (suit, deckLookup(value)) )
+                deck.append( (suit, lookupCardName(value)) )
     
     random.shuffle(deck)    # look how nice this reads! Like "normal" English!
     return deck
