@@ -268,53 +268,13 @@ Funkname (par, kw1 = v1, kw2 = v2, ...)
 
 % =========================================================================== %
 
-\begin{frame}{Keyword Arguments}
-%
-\begin{itemize}
-\item Arbitrary many keyword-value pairs in calls
-\item Only one keyword argument in the definition -- absorbs all keywords into a single \inPy{dict}
-\end{itemize}
-%
-\begin{columns}[T]
-\column{.4\linewidth}
-\begin{itemize}
-\item Possible Order:
-	\begin{itemize}
-	\item positional arguments
-	\item optionale arguments
-	\item variadic arguments
-	\item keyword arguments
-	\end{itemize}
-\end{itemize}
-%
-\column{.4\linewidth}
-\begin{itemize}
-\item Possible Order:
-	\begin{itemize}
-	\item positional arguments
-	\item variadic arguments
-	\item optionale arguments
-	\item keyword arguments
-	\end{itemize}
-\end{itemize}
-\end{columns}
-
-%
-\begin{hintbox}[How to remember the order]
-The interpreter needs to be able to decide which arguments belong to which parameter. This is only possible in the two above arrangements.
-\end{hintbox}
-%
-\end{frame}
-
-% =========================================================================== %
-
 \begin{frame}[fragile]
 %
 \begin{tcbraster}[raster columns=2,
                   raster equal height,
                   nobeforeafter,
                   raster column skip=0.5cm]
-\begin{codebox}[Example: Variadic Functions]
+\begin{codebox}[Example: Keyword Arguments]
 \begin{minted}[linenos, fontsize=\scriptsize]{python}
 def func (
     posArg1, posArg2,
@@ -337,7 +297,7 @@ func(1, 2, "value", 4, key="value")
 \end{minted}
 \end{codebox}
 %
-\begin{cmdbox}[Output: Variadic Functions]
+\begin{cmdbox}[Output: Keyword Arguments]
 \begin{minted}[fontsize=\scriptsize]{text}
 pos. arguments: 1 2
 var. argument   : ()
@@ -361,6 +321,46 @@ key. argument   : {'key': 'value'}
 \end{minted}
 \end{cmdbox}
 \end{tcbraster}
+%
+\end{frame}
+
+% =========================================================================== %
+
+\begin{frame}{Keyword Arguments}
+%
+\begin{itemize}
+\item Arbitrary many keyword-value pairs in calls
+\item Only one keyword argument in the definition -- absorbs all keywords into a single \inPy{dict}
+\end{itemize}
+%
+\begin{columns}[T]
+\column{.4\linewidth}
+\begin{itemize}
+\item Possible Order:
+	\begin{itemize}
+	\item positional arguments
+	\item optional arguments
+	\item variadic arguments
+	\item keyword arguments
+	\end{itemize}
+\end{itemize}
+%
+\column{.4\linewidth}
+\begin{itemize}
+\item Possible Order:
+	\begin{itemize}
+	\item positional arguments
+	\item variadic arguments
+	\item optional arguments
+	\item keyword arguments
+	\end{itemize}
+\end{itemize}
+\end{columns}
+
+%
+\begin{hintbox}[How to remember the order]
+The interpreter needs to be able to decide which arguments belong to which parameter. This is only possible in the two above arrangements.
+\end{hintbox}
 %
 \end{frame}
 

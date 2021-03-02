@@ -36,7 +36,6 @@
 \item Block structures
 	\begin{itemize}
 	\item \inPy{with open(...) as handle} -- automatically close files
-	\item Realized via dunders \inPy{__enter__} and \inPy{__exit__}
 	\item \inPy{for line in handle}
 	\end{itemize}
 \end{itemize}
@@ -93,7 +92,7 @@
 \item Data types in Python are examples of classes
 	\begin{itemize}
 	\item Example: \inPy{list}s
-	\item \enquote{Data content}: liste elements
+	\item \enquote{Data content}: list elements
 	\item Assigned methods: sort, reverse, append, ...
 	\item \texttt{append} makes no sense with an \inPy{int}!
 	\end{itemize}
@@ -132,9 +131,9 @@ newVar = ClassName()
 \rowcolors{1}{tabhighlight}{tabcontrast}
 \begin{tabular}{c|ccp{.3\linewidth}p{.3\linewidth}}
 	\textbf{Symbol} & \textbf{Name} & \textbf{Height} & \textbf{Upsides}                                 & \textbf{Downsides} \tabcrlf
-	\texttt{exgf1}  & Steffie       & 1.65 m          & intelligent, beautiful, has a dog                & too attached to her mother, 
+	\texttt{exgf1}  & Steffie       & 1.63 m          & intelligent, beautiful, has a dog                & too attached to her mother, 
 																																																				doesn't like meeting people \\
-	\texttt{exgf2}  & Epsi          & 1.63 m          & very intelligent, beautiful, good taste in music & doesn't like coffee, doesn't like coding \\
+	\texttt{exgf2}  & Epsi          & 1.65 m          & very intelligent, beautiful, good taste in music & doesn't like coffee, doesn't like coding \\
 	\texttt{exgf3}  & Katja         & 1.81 m          & intelligent, very beautiful, musician            & moody, cheated on me
 \end{tabular}
 \end{center}
@@ -190,7 +189,7 @@ class Cla :
     bar = "dead parrot"
     lst = [1]
 
-foo = cla()
+foo = Cla()
 \end{minted}
 \end{codebox}
 %
@@ -202,7 +201,7 @@ foo = cla()
 \begin{minted}[fontsize=\scriptsize, linenos, firstnumber=last]{python}
 print("via foo:", foo.bar)
 print("via Cla:", Cla.bar, end="\n\n")
-cla.bar = "lumberjack"
+Cla.bar = "lumberjack"
 print("via foo:", foo.bar)
 print("via Cla:", Cla.bar, end="\n\n")
 foo.bar = "hovercraft"
@@ -305,7 +304,7 @@ Up to line 8 (only read access):
 	
 	\draw [->, bend left=20]
 		(a3.south) to node 
-		[below] {Referenced via \texttt{foo = cla()}} 
+		[below] {Referenced via \texttt{foo = Cla()}} 
 		(a0.south);
 		
 	\node (t6) at (5.5,+1.5) {\texttt{dead parrot}};
@@ -654,9 +653,9 @@ perfect = Expartner("Arista" , 1.70,
 \item \inPy{__repr__}
 	\begin{itemize}
 	\item \emph{Debug form}, may be shorter or hold whatever you may need for development
-	\item Automatisch called by \inPy{repr(instance)}
+	\item Automatically called by \inPy{repr(instance)}
 	\end{itemize}
-\item Both methods take \textbf{no arguments}!
+\item Both methods take \emph{no arguments}!
 \end{itemize}
 %
 \column{.5\linewidth}
@@ -675,8 +674,8 @@ class ClassName :
 \begin{minted}[fontsize=\scriptsize]{python}
 instance = ClassName()
 
-print(instance)         # beide
-print(str(instance))    # gleich
+print(instance)         # both do
+print(str(instance))    # the same
 pritn(repr(instance))
 \end{minted}
 \end{codebox}

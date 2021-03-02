@@ -202,7 +202,7 @@ In this class, we'll learn how to analyze our own thought process and to formula
 \begin{itemize}
 \item Start terminal
 	\begin{itemize}
-	\item Windows start button: Search for\texttt{Kommandozeile} oder \texttt{Command Line}
+	\item Windows start button: Search for \texttt{Kommandozeile} or \texttt{Command Line}
 	\item Execute-Dialog: \texttt{[Windows-Key]} + \texttt{[R]}, then enter \texttt{cmd}
 	\end{itemize}
 \item Change CWD:
@@ -271,7 +271,7 @@ In this class, we'll learn how to analyze our own thought process and to formula
 
 % =========================================================================== %
 
-\begin{frame}[fragile]{More Complex Codes: Script Fiels}
+\begin{frame}[fragile]{More Complex Codes: Script Files}
 %
 \begin{minipage}[t]{.29\linewidth}
 \vspace{0pt}
@@ -379,7 +379,7 @@ and even more text
 \item Can be overwritten: \inPy{x = x + 1}
 \item Can be used with commands: \inPy{print(x)}
 \item Can (and should!) comprise of several characters: \inPy{mouseCoordinate = 17}
-\item Valid Characters: a-z, A-Z (case sensitive!), undrscore (\_); 0-9 except for the first character
+\item Valid Characters: a-z, A-Z (case sensitive!), underscore (\_); 0-9 except for the first character
 \item Recommendation: either \emph{Camel Case}: \inPy{mouseCoordinate}; or \emph{Snake Case}: \inPy{mouse_coordinate}
 \item Technically possible but problematic: overwriting key words: \inPy{print = 3} \\
 	(mark syntax highlighting of your IDE)
@@ -417,7 +417,7 @@ and even more text
 	\bottomrule[1.5pt]	
 \end{tabularx}
 \begin{itemize}
-\item Parantheses and order of operations is obeyed
+\item Parentheses and order of operations is obeyed
 \item Arbitrary number of nested parentheses
 \end{itemize}
 %
@@ -431,7 +431,7 @@ and even more text
 \item Syntax element: \texttt{variable += expression}
 \item Abbreviation for operations in the form of \inPy{variable = variable + expression}
 \item Likewise: \inPy{-=}, \inPy{*=}, \inPy{/=}, ...
-\item For the computer, both are translated the same
+\item For the computer, both are translated the same way
 \item But: removes a source of errors
 	\begin{itemize}
 	\item Code almost never is written top-to-bottom
@@ -470,20 +470,20 @@ and even more text
 %
 \begin{itemize}
 \item Each expression (\zB variable) has assigned information: what is it?
-\item This gives context for \enquote{computations}Gibt Kontext für Rechnungen vor.
+\item This gives context for \enquote{computations}
 \item Example: text vs. number:
 	\begin{itemize}
 	\item \inPy{"1" + "2"} \thus~ \inPy{"12"}
 	\item \inPy{1 + 2} \thus~ \inPy{3}
 	\end{itemize}
-\item data types:
+\item Data types:
 	\begin{itemize}
 	\item \inPy{int} -- integers (no decimal point)
 	\item \inPy{float} -- \enquote{floating point numbers}, reals
 	\item \inPy{complex} -- complex numbes: \inPy{z = 5.3 - 1j}
 	\item \inPy{str} -- text (\enquote{string})
 	\end{itemize}
-\item find out data type: \inPy{print(type(expression))}
+\item Find out data type: \inPy{print(type(expression))}
 \end{itemize}
 %
 \end{frame}

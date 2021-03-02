@@ -196,10 +196,10 @@ This holds for \emph{all} block structures: loops, functions, \inPy{if}s, \ldots
 import random
 
 class Owner :
-  def __init__(self) :
+  def __init__ (self) :
     self._spots = [1, 2, 3, 4, 5]
   
-  def getSpots :
+  def getSpots (self) :
     return self._spots
 
 class Gardener :

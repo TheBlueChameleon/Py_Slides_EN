@@ -99,7 +99,7 @@ class Expartner :
         return self.rating() > rhs.rating()
     
     def __le__(self, rhs) :
-        return not (self < rhs)
+        return not (self > rhs)
 
 # Definition of instances ex1, ex2 like last time
 
@@ -328,7 +328,7 @@ print(2 * v)    # this now calls __rmul__(v, 2)!
 \begin{frame}[fragile]{Index Access}
 %
 \begin{columns}[T]
-\column{.5\linewidth}
+\column{.47\linewidth}
 \begin{itemize}
 \item Scenario: Index access desired, \eg \inPy{v[1]} \thus \inPy{v.x}
 \item Can be useful, \eg for looping over elements
@@ -341,7 +341,7 @@ print(2 * v)    # this now calls __rmul__(v, 2)!
 \item \texttt{index} is the expression in \texttt{[}brackets\texttt{]}
 \end{itemize}
 %
-\column{.5\linewidth}
+\column{.53\linewidth}
 \begin{codebox}[Syntax: \texttt{\_\_getitem\_\_}{,} \texttt{\_\_setitem\_\_}]
 \begin{minted}[fontsize=\scriptsize]{python3}
 class ClassName :
