@@ -356,19 +356,11 @@ print("done.")
 
 \begin{frame}[fragile]{\inPy{else} with \inPy{while} and \inPy{for}}
 %
-\begin{columns}
-\column{.5\linewidth}
 \begin{itemize}
-\item Remember: With \inPy{while}, we never enter the loop body, if the condition is not satisfied at the start
-\item Optionally: \inPy{else} -- execute code if condition not satisfied at the start
+\item Idea \enquote{if not applicable}
+\item \inPy{else}-block is executed, if a loop terminates \emph{regularly}, \ie if it is not exited via \inPy{break}
+\item For both, \inPy{for} and \inPy{while}
 \end{itemize}
-%
-\column{.5\linewidth}
-\begin{itemize}
-\item With \inPy{for}: Idea \enquote{if not applicable}
-\item \inPy{else}-block is executed, if a loop terminates \emph{regularly}, \ie if it is not exited via \inPy{break} (or similar mechanisms)
-\end{itemize}
-\end{columns}
 %
 \end{frame}
 
@@ -386,6 +378,9 @@ years    = 0
 while capital < limit :
     capital *= 1 + interest
     years   += 1
+    
+    if capital < limit :
+        break
 else :
     print("Your seed capital is already big enough.")
   

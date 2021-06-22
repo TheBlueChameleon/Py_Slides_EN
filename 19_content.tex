@@ -74,7 +74,7 @@ N       = len(names)
 \begin{codebox}[Exercise: Linear Optimization]
 \begin{minted}[fontsize=\scriptsize, linenos, firstnumber=last]{python3}
 # construction of the meshgrid
-upperLimits = np.array(money // prices)
+upperLimits = money // prices
 
 values = tuple(
     [np.arange(u + 1) 
@@ -516,7 +516,7 @@ We need:
 	\item \inPy{int L}: width of the lattice (not indispensible, but \enquote{more comfortable})
 	\item \inPy{float J}: coupling constant (necessary for computing the energy)
 	\end{itemize}
-\item Methoden
+\item Methods
 	\begin{itemize}
 	\item \inPy{__init__(self, L, J, ??)} (maybe additional parameters): prepares a lattice in some \emph{initial state}
 	\item \texttt{getMagnetization(self)} (no further parameters)
@@ -849,7 +849,7 @@ print(" E :", g.energy())
 \begin{hintbox}[Lecture \emph{Monte Carlo Methods for Physicists}]
 The Code shown before is far from optimal. I didn't want to go too far into specifics since they are covered in more detail in another lecture anyway. The optimized code, however, follows the same train of thought.
 
-To interested (nature) scientists I can really recommend the lecture \emph{Monte Carlo Methods for Physicists} by Prof. Bloch. There, the Ising Model and the Metropolis algorithm as well as more advanced methods are covered in detail. Part of the lecture are coding exercises in C++.
+To interested (nature) scientists I can really recommend the lecture \emph{Monte Carlo Methods for Physicists} by Dr. Bloch. There, the Ising Model and the Metropolis algorithm as well as more advanced methods are covered in detail. Part of the lecture are coding exercises in C++.
 \end{hintbox}
 %
 \end{frame}

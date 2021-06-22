@@ -10,7 +10,7 @@
 %
 \begin{itemize}
 \item Variables store values
-\item We want to compute with these values
+\item We want to do computations with these values
 \item Data types affect the computation (\inPy{"1" + "2"} vs. \inPy{1 + 2})
 \item Data types can be incompatible (\inPy{"1" + 2} causes an error message)
 \item Data types can be used as functions: \inPy{float(1)} \thus~ \inPy{1.0}
@@ -135,7 +135,7 @@ Joe                 :   666
 %
 \begin{itemize}
 \item \texttt{<}, \texttt{>}, \inPy{^}: Alignment left, right, centered
-\item \texttt{.number}: Limit output to \texttt{number} characters
+\item \texttt{.number}: Limit output to \texttt{number} characters (truncate)
 \item whitespace or plus: reserve space for a sign
 \item \texttt{0}: show leading zeros
 \end{itemize}
@@ -168,7 +168,7 @@ print(f"|{text:^15}| |{value:^15}|")
 %
 \begin{itemize}
 \item Format Specifier \texttt{f}
-\item \texttt{.number}: limit to \texttt{number} characters
+\item \texttt{.number}: limit to \texttt{number} characters (truncate)
 \item \texttt{total.decimal} -- use \texttt{total} characters, of which \texttt{decimal} after the point
 \item Attention: Decimal point is counted as well
 \item Can be combined with other characters
@@ -607,7 +607,7 @@ if  playerCount < 2 or
 \begin{hintbox}[Conclusion]
 Question your Structures. Avoid Redundancy. Whenever you would copy and paste: Check if there isn't a better solution.
 
-In bigger project I write almost each line (that works in the first place) \emph{twice}: Once as a concept and once to keep the code useable in the long run.
+In bigger projects I write almost each line (that works in the first place) \emph{twice}: Once as a concept and once to keep the code useable in the long run.
 \end{hintbox}
 %
 \end{frame}
