@@ -16,7 +16,7 @@
 	\ReplacePackage{beamercolorthemechameleon}{./sty/beamercolorthemechameleon}
 
 \usetheme[
-	pageofpages=von,
+	pageofpages=/,
 	bullet=circle,
 	titleline=true,
 	alternativetitlepage=true,
@@ -35,6 +35,7 @@
 \usepackage{lmodern}
 \usepackage{microtype}
 \usepackage{csquotes}
+\usepackage{xspace}
 
 \usepackage{tabularx}
 \usepackage{booktabs}
@@ -107,8 +108,8 @@
 \newcommand*{\eg}{e.\,g. }
 \newcommand*{\ie}{i.\,e. }
 
-\newcommand{\Thus}{\ensuremath{\Rightarrow}}
-\newcommand{\thus}{\ensuremath{\rightarrow}}
+\newcommand{\Thus}{\ensuremath{\Rightarrow}\xspace}
+\newcommand{\thus}{\ensuremath{\rightarrow}\xspace}
 
 \newcommand*{\tabcrlf}{\\ \midrule}			% actually still allows for optional argument
 
@@ -120,7 +121,7 @@
 \title{Programming in Python}
 \subtitle{Part 5: \texttt{while}-Loops and Functions}
 \institute{University Regensburg, Department of Theoretical Physics}
-\date{Block Course, Summer Term 2021}
+\date{Block Course, Winter Term 2021}
 
 % =========================================================================== %
 

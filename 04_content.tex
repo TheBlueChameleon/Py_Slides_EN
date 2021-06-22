@@ -26,7 +26,7 @@
 \begin{columns}[T]
 \column{.5\linewidth}
 \begin{itemize}
-\item Already known: texts in \texttt{'}single\texttt{'} or \texttt{''}double\texttt{''} quotes
+\item We already know: texts in \texttt{'}single\texttt{'} or \texttt{''}double\texttt{''} quotes
 \item Internally: \emph{immutable list of characters}
 \item Known techniques applicable:
 	\begin{itemize}
@@ -113,7 +113,7 @@ t = tuple("text")
 	\item \emph{mutable}
 	\item Syntax: in \{curly brackets\}
 	\item Important methods: \texttt{add}, \texttt{clear}, \texttt{difference}, \texttt{intersection}, \texttt{union}
-	\item Addition is not defined for \inPy{set}s (but logical or, \texttt{|})
+	\item Addition is not defined for \inPy{set}s (but logical or (\texttt{|}), as well as logical and (\texttt{\&}))
 	\end{itemize}
 \item \inPy{frozenset}s
 	\begin{itemize}
@@ -136,7 +136,7 @@ print(s)        # {2, 4}
 
 s = set("aardvark")
 print(s)        #{'r', 'v', 'k', 'd', 'a'}
-# sorting is not preserved
+# order is not preserved
 \end{minted}
 \end{codebox}
 \end{columns}
@@ -188,7 +188,7 @@ print(list(range(5, 0, -1)))
 \begin{itemize}
 \item \enquote{\inPy{list} with arbitrary \emph{keys} as indices}
 \item key: (almost) arbitrary value, \eg a string
-\item \{curly brackets\}, key-value pairs linked with a colon (:)
+\item \{curly brackets\}, key-value pairs, linked with a colon (:)
 \item Important Methods:
 	\begin{itemize}
 	\item \texttt{keys} -- returns (something like) a \inPy{list} of keys
@@ -211,7 +211,7 @@ print(list(d.items())[0:2])
 # [('north', 12), ('east', 9)]
 
 d['north'] = 0
-# auch Schreibzugriff möglich
+# write access possible, too
 \end{minted}
 \end{codebox}
 \end{columns}
@@ -287,7 +287,7 @@ print(list(zip(A, B)))
 \begin{itemize}
 \item Idea: do [actions] \emph{for each element} in a container
 \item Container: \inPy{list}s, \inPy{tuple}s, \inPy{range}s, \inPy{dict}s, ...
-\item Action: Arbitrary code (things you know already and stuff I'll show you later)
+\item Action: arbitrary code (things you know already and stuff I'll show you later)
 \item Can be multiple lines of code
 \item[\Thus] Block structure: Indentation
 \item Can be nested
@@ -348,17 +348,17 @@ Do it now!
 \begin{minted}[fontsize=\scriptsize, linenos]{python}
 print("the first 10 square numbers are:")
 for i in range(10) :
-    print(f"{i}² = {i**2}")
+    print(f"{i}² = {i**2:2}")
 \end{minted}
 \end{codebox}
 %
 \begin{cmdbox}[Output: \texttt{for}-loop with \texttt{range}s -- counter loops]
 \begin{minted}[fontsize=\scriptsize]{text}
 the first 10 square numbers are:
-0² = 0
-1² = 1
-2² = 4
-3² = 9
+0² =  0
+1² =  1
+2² =  4
+3² =  9
 4² = 16
 5² = 25
 6² = 36
@@ -429,6 +429,10 @@ vector (-1, 2) has length 2.23606797749979
 
 \begin{frame}[fragile]
 %
+\begin{hintbox}[\texttt{enumerate}]
+The function \inPy{enumerate} generates \inPy{tuple}s holding the indeces and elements within a container.
+\end{hintbox}
+%
 \begin{codebox}[Example: \texttt{for}-loop with \texttt{enumerate}]
 \begin{minted}[fontsize=\scriptsize, linenos]{python}
 tasklist = ["write the script", "drink some coffee", "drink more coffee"]
@@ -446,10 +450,6 @@ Your tasks today:
 3. drink more coffee
 \end{minted}
 \end{cmdbox}
-%
-\begin{hintbox}[\texttt{enumerate}]
-The function \inPy{enumerate} generates \inPy{tuple}s holding the indeces and elements within a container.
-\end{hintbox}
 %
 \end{frame}
 

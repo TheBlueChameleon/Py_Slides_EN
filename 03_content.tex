@@ -284,7 +284,7 @@ print( cmath.sin(cmath.pi / 2) )
 \begin{columns}
 \column{.5\linewidth}
 \begin{itemize}
-\item So far: only handle singlular units of information at once (single numbers)
+\item So far: only handle singular units of information at once (single numbers)
 \item We often need \emph{lists} of values
 \item New data type: \inPy{list}
 \item Composition of arbitrary many values of arbitrary type
@@ -337,8 +337,8 @@ print(values[4])
 %
 \begin{cmdbox}[Output: \texttt{list}s]
 \begin{minted}[fontsize=\scriptsize]{text}
-[1, 2, 3, 'other data type', ['eine', 
- 'Liste', 'in', 'der', 'Liste']]
+[1, 2, 3, 'other data type', ['a', 
+ 'list', 'within', 'the', 'list']]
 1
 ['a', 'list', 'within', 'the', 'list']
 \end{minted}
@@ -450,7 +450,7 @@ print(copiedList)
 
   \node (labelMem) at (8,  1) {Symbols in code};
   \node (labelMem) at (8,  0) {Values in memory};
-  \node (labelMem) at (8, -1) {Adresses};
+  \node (labelMem) at (8, -1) {Addresses};
   
   \node (a1) [below=2mm of c1]             {\tiny 0x27ff};
   \node (a2) [below=2mm of c2, color=teal] {\tiny 0x2800};
@@ -459,7 +459,7 @@ print(copiedList)
   \node (a5) [below=2mm of c5]             {\tiny 0x2803};
   \node (a6) [below=2mm of c6]             {\tiny 0x2804};
   
-  \node (ptr) [below=8mm of c1] {\scriptsize Adresse von \texttt{x}};
+  \node (ptr) [below=8mm of c1] {\scriptsize Address of \texttt{x}};
   \node (vc2) [above=6mm of c1] {\scriptsize Variable \texttt{x}};
   \node (vc0) [above=2mm of c1] {\scriptsize Variable \texttt{y}};
   
@@ -471,7 +471,7 @@ print(copiedList)
 \end{tcolorbox}
 %
 \begin{itemize}
-\item Variables really only store \emph{adresses}
+\item Variables really only store \emph{addresses}
 \item Access to referenced memory cells
 \end{itemize}
 %
@@ -518,8 +518,8 @@ print(copiedList)
   \node (b3) [below=2mm of c3]             {\tiny 0x2952};
   \node (b4) [below=2mm of c4]             {\tiny 0x2953};
   
-  \node (p1) [below=8mm of gap1] {\scriptsize adress of \texttt{myList}};
-  \node (p2) [below=8mm of gap2] {\scriptsize adress of \texttt{copiedList}};
+  \node (p1) [below=8mm of gap1] {\scriptsize address of \texttt{myList}};
+  \node (p2) [below=8mm of gap2] {\scriptsize address of \texttt{copiedList}};
 
   \draw [ld, teal] (p1.east) .. controls +(0.3,0) .. (a1.south);
   \draw [ld, teal] (p2.east) .. controls +(0.3,0) .. (b1.south);
@@ -564,8 +564,8 @@ print(copiedList)
   \node (b3) [below=2mm of c3]             {\tiny 0x2952};
   \node (b4) [below=2mm of c4]             {\tiny 0x2953};
   
-  \node (p1) [below=8mm of gap1] {\scriptsize adress of \texttt{myList}};
-  \node (p2) [below=8mm of gap2] {\scriptsize adress of \texttt{copiedList}};
+  \node (p1) [below=8mm of gap1] {\scriptsize address of \texttt{myList}};
+  \node (p2) [below=8mm of gap2] {\scriptsize address of \texttt{copiedList}};
 
   \draw [ld, teal] (p1.east) .. controls +( 0.3,0) .. (a1.south);
   \draw [ld, red ] (p2.west) .. controls +(-0.3,0) .. (a1.south);
@@ -764,7 +764,7 @@ A is C: True
 \item Syntax: \texttt{object.method(parameters)}
 	\begin{itemize}
 	\item \texttt{object}: \zB a \inPy{list}
-	\item \texttt{Methode}: \zB \inPy{append}: appends an element to the list
+	\item \texttt{method}: \zB \inPy{append}: appends an element to the list
 	\item \texttt{parameter}: depends on the method. For \inPy{append}: object to be appended
 	\end{itemize}
 \end{itemize}
@@ -796,7 +796,7 @@ Methods
 	\end{itemize}
 \item \inPy{insert} -- insert an element into the middle of the \inPy{list}
 	\begin{itemize}
-	\item first parameter: index after which to insert the element
+	\item first parameter: index \emph{after which} to insert the new element
 	\item other elements are shifted back
 	\end{itemize}
 \item \inPy{remove} -- delete an element (if present in the \inPy{list})
@@ -879,7 +879,7 @@ Methods -- Continued
 \begin{itemize}
 \item \inPy{sort} -- sort list ascending (if possible)
 \item \inPy{reverse} -- reverse list order
-\item \inPy{pop} -- remove and return last element
+\item \inPy{pop} -- remove and return last element (or element at given index)
 \end{itemize}
 %
 \begin{tcbraster}[raster columns=2,

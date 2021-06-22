@@ -125,7 +125,7 @@ for   row    in range(    height    ) :
 \end{codebox}
 \end{tcbraster}
 %
-\begin{codebox}[Example: Christmas{,} one loop]
+\begin{codebox}[Example: Christmas{,} one loop (\enquote{The Python Way} of writing code)]
 \begin{minted}[fontsize=\scriptsize, linenos]{python}
 height = 7
 
@@ -214,7 +214,7 @@ for char in sortedChars :
 \item Check \texttt{[condition]} \emph{before} each repetition
 \item Possible to create \emph{infinite loops}
 	\begin{itemize}
-	\item May be intentionally
+	\item May be intentional
 	\item Most often by mistake
 	\item Stop running code:\\
 		\texttt{[CTRL] + C} in terminal
@@ -260,7 +260,7 @@ print("After", years, "years you've reached your savings goal.")
 \begin{itemize}
 \item Loops (\ie both, \inPy{while} and \inPy{for}) can be exited at any time
 \item Useful for secondary conditions within the loop
-\item Should be coupled to a condition\\
+\item Should be tied to a condition\\
  \Thus \inPy{if}
 \item Nested loops: exit \emph{current level}
 	\begin{itemize}
@@ -315,8 +315,8 @@ while total < 10 :
             quitFlag = True
             break
             
-        if quitFlag : break
-        total += num
+    if quitFlag : break
+    total += num
     
 print("total:", total)
 \end{minted}
@@ -330,7 +330,6 @@ print("total:", total)
 \begin{itemize}
 \item Skip rest of loop body \emph{without exiting it}
 \item Works for both, \inPy{while} and \inPy{for}
-\item Usually with \Thus \inPy{if}, too
 \end{itemize}
 %
 \begin{codebox}[Example: \texttt{continue}]
@@ -376,13 +375,13 @@ limit    = float(input("Please provide the savings goal :"))
 
 years    = 0
 while capital < limit :
+    if interest <= 0 :
+        break
+    
     capital *= 1 + interest
     years   += 1
-    
-    if capital < limit :
-        break
 else :
-    print("Your seed capital is already big enough.")
+    print("With this interest rate, the savings goal cannot be achieved.")
   
 print("After", years, "years you've reached your savings goal.")
 \end{minted}
@@ -449,7 +448,7 @@ work was found in task ID 1
 \item Can be parametrised (Example: Output of text in a box)
 \item Can return a result (\Thus \emph{function} in its mathematical sense)
 \item \inPy{return}: exit function, return to where it was called
-\inPy{return result}: same as above, plus: \enquote{report} a result
+\item \inPy{return result}: same as above, plus: \enquote{report} a result
 \item Without \inPy{return}: jump-back automatically after last command
 \item Implicit return value \inPy{None}
 \end{itemize}
@@ -586,12 +585,42 @@ The function returned: None
 %
 \end{frame}
 
+% =========================================================================== %\\
+
+\begin{frame}[fragile]
+%
+\begin{hintbox}[KISS: Keep It Simple{,} Stupid]
+\emph{A function should do one thing and one thing only.}
+
+\vspace{6pt}
+Write your functions such that they \emph{either} return a value \emph{or} print on screen.
+
+\vspace{6pt}
+If you want to solve multiple problems, write multiple functions. If one problem can be decomposed into $N$ subproblems, write $N+1$ functions:
+
+\begin{codebox}
+\begin{minted}[fontsize=\scriptsize]{python3}
+def subProblemA (...) :
+     ...
+   
+def subProblemB (...) :
+     ...
+   
+def fullProblem (...) :
+     subProblemA(...)
+     subProblemB(...) 
+\end{minted}
+\end{codebox}
+\end{hintbox}
+%
+\end{frame}
+
 % =========================================================================== %
 
 \begin{frame}[fragile]{By-Value und By-Reference-Parameter}
 %
 \begin{itemize}
-\item Function \enquote{doesn't know}, where original information was stored (\emph{no} pass by reference)
+\item Pass By Value: Function \enquote{doesn't know}, where original information was stored
 \item Picture: Pass on a working copy (pass by value) -- only partially correct
 \item In fact: working copy of \emph{addresses}
 \end{itemize}
@@ -678,10 +707,10 @@ on module level: data = [1]
 
 
 
-  \node (main1) [below=0mm of A2, color=teal] {\scriptsize adress of \texttt{data} in module-level and in \texttt{foobar}};
-  \node (main2) [below=0mm of B2, color=teal] {\scriptsize adress of \texttt{data} in module-level and in \texttt{foobar}};
-  \node (main3) [below=0mm of C2, color=teal] {\scriptsize adress of \texttt{data} in module-level};
-  \node (func)  [below=0mm of C6, color=blue] {\scriptsize adress of \texttt{data} in \texttt{foobar}};
+  \node (main1) [below=0mm of A2, color=teal] {\scriptsize address of \texttt{data} in module-level and in \texttt{foobar}};
+  \node (main2) [below=0mm of B2, color=teal] {\scriptsize address of \texttt{data} in module-level and in \texttt{foobar}};
+  \node (main3) [below=0mm of C2, color=teal] {\scriptsize address of \texttt{data} in module-level};
+  \node (func)  [below=0mm of C6, color=blue] {\scriptsize address of \texttt{data} in \texttt{foobar}};
   
   \draw [->] (a6.east)arc(120:-115:1.0);		%start angle: stop angle : radius  
   \node (step1) at (9,3) {\texttt{data.append(1)}};
@@ -748,7 +777,7 @@ def foobar() :
     reDefVar = [42]                 # redefinition -- local variable
     print(globVar, reDefVar)        # globVar: module level; reDefVar: local scope
     globVar.append("foo bar")       # write access; adress doesn't change
-    #globVar = globVar + ["baz"]    ! error: would change adress
+    #globVar = globVar + ["baz"]    ! error: would change address
 
 foobar()
 
