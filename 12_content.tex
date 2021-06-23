@@ -31,9 +31,14 @@
 \begin{itemize}
 \item Called via \inPy{len(instance)} and \inPy{abs(instance)}, respectively
 \item Implementation freely chooseable, but should reflect properties of absolute value and length
+	\begin{itemize}
+	\item \inPy{len}: often \inPy{int}eger, number of elements (cf. \inPy{str}ings: number of characters)
+	\item \inPy{abs}: often \inPy{float}, length of a vector)
+	\end{itemize} 
 \end{itemize}
 %
 \column{.5\linewidth}
+\vspace{-6pt}
 \begin{codebox}[Example: \texttt{\_\_abs\_\_}]
 \begin{minted}[fontsize=\scriptsize, linenos]{python3}
 class Expartner :
@@ -69,6 +74,7 @@ print(f"height of {ex.name}: {len(ex)}")
 \end{itemize}
 %
 \column{.5\linewidth}
+\vspace{-6pt}
 \begin{codebox}[Syntax: Definition]
 \begin{minted}[fontsize=\scriptsize]{python3}
 class ClassName :
@@ -104,7 +110,7 @@ class Expartner :
 # Definition of instances ex1, ex2 like last time
 
 betterText = "not" if ex1 <= ex2 else ""
-print(f"With {ex1.name} it was {betterText} better than with {ex2.name}.")
+print(f"It was {betterText} better with {ex1.name} than with {ex2.name}.")
 \end{minted}
 \end{codebox}
 %
@@ -115,7 +121,7 @@ print(f"With {ex1.name} it was {betterText} better than with {ex2.name}.")
 \begin{frame}[fragile]
 %
 \begin{hintbox}[Hint: Sortable lists]
-A class that implements either \inPy{__lt__} or \inPy{__gt__} can be used with \inPy{sorted} or \inPy{listOfInstances.sort()} respectively!
+A class that implements either \inPy{__lt__} \emph{or} \inPy{__gt__} can be used with \inPy{sorted} or \inPy{listOfInstances.sort()} respectively!
 \end{hintbox}
 %
 \begin{codebox}[Example: Sorting \texttt{list}s]
@@ -137,11 +143,12 @@ for i, ex in enumerate(sorted(listOfExes, reverse=True)) :
 \begin{frame}[fragile]{Type Safety}
 %
 \begin{itemize}
-\item Most languages: Data type fixed in parameter list
-\item Python: \emph{Dynamic Typing} -- everything is possible
+\item Most languages: data type fixed in parameter list
+\item Python: \emph{dynamic typing} -- everything is possible
 \item Result: syntactically correct but senseless calls
 \end{itemize}
-%
+
+\vspace{6pt}
 \begin{tcbraster}[raster columns=2,
                   raster equal height,
                   nobeforeafter,
@@ -171,8 +178,9 @@ TypeError: '<' not supported between
 
 % =========================================================================== %
 
-\begin{frame}[fragile]{Adding Type Safety manually}
-%
+\begin{frame}[fragile]{Adding Type Safety Manually}
+
+\vspace{-6pt}
 \begin{codebox}[Example: Type Safe Comparison]
 \begin{minted}[fontsize=\scriptsize, linenos]{python3}
 class Expartner :
@@ -207,9 +215,11 @@ print( myEx > 7 )  # works just fine!
 \item Implements operations \inPy{A + B}, \inPy{-A}, \inPy{A - B}, \inPy{A * B}, \inPy{A / B}, \inPy{A // B} and\\
  \texttt{A @ B}
 \item Operator \texttt{@}: \emph{arbitrary operation}, usually matrix produkt
+\item Also common: cross product ($\times$)
 \end{itemize}
 %
-\column{.5\linewidth}
+\column{.45\linewidth}
+\vspace{-6pt}
 \begin{codebox}[Syntax: Definition]
 \begin{minted}[fontsize=\scriptsize]{python3}
 class ClassName :
@@ -224,8 +234,8 @@ print(instance1 XX instance2)
 \end{minted}
 \end{codebox}
 \end{columns}
-%
-\vspace{6pt}
+
+\vspace{12pt}
 \emph{From here on: vectors. I wouldn't know which meaning to assign to \texttt{ex1 // ex2} ...}
 %
 \end{frame}
@@ -328,7 +338,7 @@ print(2 * v)    # this now calls __rmul__(v, 2)!
 \begin{frame}[fragile]{Index Access}
 %
 \begin{columns}[T]
-\column{.47\linewidth}
+\column{.49\linewidth}
 \begin{itemize}
 \item Scenario: Index access desired, \eg \inPy{v[1]} \thus \inPy{v.x}
 \item Can be useful, \eg for looping over elements
@@ -342,6 +352,7 @@ print(2 * v)    # this now calls __rmul__(v, 2)!
 \end{itemize}
 %
 \column{.53\linewidth}
+\vspace{-6pt}
 \begin{codebox}[Syntax: \texttt{\_\_getitem\_\_}{,} \texttt{\_\_setitem\_\_}]
 \begin{minted}[fontsize=\scriptsize]{python3}
 class ClassName :
@@ -368,6 +379,7 @@ class ClassName :
 
 \begin{frame}[fragile]
 %
+\vspace{-6pt}
 \begin{codebox}[Example: Index-Getter und -Setter]
 \begin{minted}[linenos, fontsize=\scriptsize]{python3}
 class Vector3D :
@@ -399,6 +411,7 @@ class Vector3D :
 
 \begin{frame}[fragile]
 %
+\vspace{-6pt}
 \begin{hintbox}[Hint: Common Code in Shared Method]
 Where there are common features between any two methods, a \enquote{hidden method} can do the shared tasks. Functions are commonly \enquote{hidden} by choosing a name beginning with an underscore (\texttt{\_}).
 \end{hintbox}
@@ -443,7 +456,8 @@ def procB(sharedParameters, specificParameters) :
 	\end{itemize}
 \end{itemize}
 %
-\column{.5\linewidth}
+\column{.45\linewidth}
+\vspace{-6pt}
 \begin{codebox}[Syntax: Creating a Derived Class]
 \begin{minted}[fontsize=\scriptsize]{python3}
 class DerivedClass(ParentClass) :
@@ -491,7 +505,7 @@ print( abs(cA) )                      # call old method __abs__
 
 % =========================================================================== %
 
-\begin{frame}[fragile]{Using Code from the parent class -- \inPy{super()}}
+\begin{frame}[fragile]{Using Code from the Parent Class -- \inPy{super()}}
 %
 \begin{itemize}
 \item Example on previous slide: copy\&paste-code
@@ -670,7 +684,9 @@ Bat is an animal.
 \begin{hintbox}[Hint: Keep Class Relations Simple]
 In practice, inheritance over multiple layers leads to a lot of confusion; this holds even more so for multi-inheritance.
 
-Avoid overly complicated structures; keep classes self-contained whereever possible.
+\vspace{3pt}
+Avoid overly complicated structures; keep classes self-contained whereever possible.\\
+(\Thus \emph{KISS-Principle})
 \end{hintbox}
 \end{tcbraster}
 %

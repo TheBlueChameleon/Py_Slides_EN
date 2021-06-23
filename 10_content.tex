@@ -29,7 +29,7 @@
 \item \emph{Object Descriptor}
 	\begin{itemize}
 	\item Data Type ID (number that can be looked up in a table)
-	\item Adress of actual data
+	\item Address of actual data
 	\item Size of actual data
 	\item (More internal stuff...)
 	\end{itemize}
@@ -76,7 +76,7 @@ What does \inPy{x = 1337} look like internally?
   \node (b7) [above=1mm of a7] {\tiny 0xF030};
   
   \draw [decorate, decoration={brace,amplitude=7pt}, xshift=-0pt, yshift=0pt]
-  		(+0.5, 1.0) -- ( 4.5, 1.0) node (x) [midway, yshift=+0.5cm] 
+  		(+0.5, 1.0) -- ( 3.5, 1.0) node (x) [midway, yshift=+0.5cm] 
 		(braceDescriptor) {Descriptor of \texttt{x}};
 	
   \draw [decorate, decoration={brace,amplitude=7pt}, xshift=-0pt, yshift=0pt]
@@ -126,7 +126,7 @@ What does \inPy{lst = [x, 666]} look like internally?
   \node  (a4) at ( 4,0) [cell] {\ttfamily  ...};
   \node  (a5) at ( 5,0) [cell] {\ttfamily  ...};
   \node  (a6) at ( 6,0) [cell] {\ttfamily @x  };
-  \node  (a7) at ( 7,0) [cell] {\ttfamily @new};
+  \node  (a7) at ( 7,0) [cell] {\ttfamily @666};
   \node  (a8) at ( 8,0) [cell] {\ttfamily  ...};
   
   \node (b0) [above=1mm of a0] {\tiny 0xF030};
@@ -140,7 +140,7 @@ What does \inPy{lst = [x, 666]} look like internally?
   \node (b8) [above=1mm of a8] {\tiny 0xF068};
   
   \draw [decorate, decoration={brace,amplitude=7pt}, xshift=-0pt, yshift=0pt]
-  		(+0.5, 1.0) -- ( 4.5, 1.0) node (x) [midway, yshift=+0.5cm] 
+  		(+0.5, 1.0) -- ( 3.5, 1.0) node (x) [midway, yshift=+0.5cm] 
 		(braceDescriptor) {Descriptor of \texttt{lst}};
 	
   \draw [decorate, decoration={brace,amplitude=7pt}, xshift=-0pt, yshift=0pt]
@@ -166,7 +166,7 @@ What does \inPy{lst = [x, 666]} look like internally?
 \end{center}
 
 \vspace{10pt}
-The content of lists is actually only a series of adresses: each adress references an object descriptor, even for literal constants! For constants, like \inPy{666} a new object descriptor is constructed \emph{somewhere}. They have no (exposed) symbol.
+The content of lists is actually only a series of addresses: each address references an object descriptor, even for literal constants! For constants, like \inPy{666} a new object descriptor is constructed \emph{somewhere}. They have no (exposed) symbol.
 \end{tcolorbox}
 %
 \end{frame}
@@ -274,6 +274,10 @@ print(c)
 		[below] {} 
 		(a8.south);
 		
+	\draw [->, bend right=20, color=blue]
+		(a7.south) to node 
+		[below] {} 
+		(a9.south);
 		
 	\draw [->, bend right=20, color=cyan]
 		(a8.south) to node 
@@ -339,7 +343,7 @@ print(c)
 \begin{tcbraster}[raster columns=3,
                   raster equal height,
                   nobeforeafter,
-                  raster column skip=0.5cm]
+                  raster column skip=0.2cm]
 \begin{codebox}[A Function Call]
 \begin{minted}[linenos, fontsize=\scriptsize]{python3}
 def func(a) :
@@ -355,7 +359,7 @@ func(x)
 \begin{tcolorbox}[title=Symbol Table \texttt{main}]
 \scriptsize
 \begin{tabular}{cc}
-	\textbf{Symbol} & \textbf{Adress} \tabcrlf
+	\textbf{Symbol} & \textbf{Address} \tabcrlf
 	\texttt{x} & \texttt{0xF000}
 \end{tabular}
 \end{tcolorbox}
@@ -363,7 +367,7 @@ func(x)
 \begin{tcolorbox}[title=Symbol Table \texttt{func}]
 \scriptsize
 \begin{tabular}{cc}
-	\textbf{Symbol} & \textbf{Adress} \tabcrlf
+	\textbf{Symbol} & \textbf{Address} \tabcrlf
 	\texttt{x} & \texttt{0xF000} \\
 	\texttt{a} & \texttt{0xF000} \\
 	\texttt{b} & \texttt{0xF018} \\
@@ -677,7 +681,8 @@ A completely solved problem starting at 0
 % =========================================================================== %
 
 \begin{frame}[fragile]
-%
+
+\vspace{-6pt}
 \begin{codebox}[Example: appendUniqueChars]
 \begin{minted}[linenos, fontsize=\scriptsize]{python3}
 def appendUniqueChars (queue, string) :
@@ -691,15 +696,18 @@ appendUniqueChars(data, "This will add only an exclamation mark!")
 print(data)
 \end{minted}
 \end{codebox}
-%
-\begin{cmdbox}[Output: \texttt{nonlocal}]
+
+\vspace{-12pt}
+\begin{cmdbox}[Output: appendUniqueChars]
 \begin{minted}[fontsize=\scriptsize]{text}
 ['T', 'h', 'e', ' ', 'q', 'u', 'i', 'c', 'k', 'b', 'r', 'o', 'w', 'n', 'f', 'x',
  'j', 'm', 'p', 's', 'v', 't', 'l', 'a', 'z', 'y', 'd', 'g', '!']
 \end{minted}
 \end{cmdbox}
-%
+
+\vspace{-9pt}
 \begin{hintbox}
+\small
 You should do this with \inPy{set}s, ideally.
 \end{hintbox}
 %

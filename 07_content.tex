@@ -13,7 +13,7 @@
 \begin{itemize}
 \item \inPy{while}-loops
 	\begin{itemize}
-	\item Repeat code as long as (while) a condition is satisfied
+	\item Repeat code as long as (\emph{while}) a condition is satisfied
 	\end{itemize}
 \item \inPy{break} and \inPy{continue}
 	\begin{itemize}
@@ -21,8 +21,8 @@
 	\end{itemize}
 \item \inPy{else} with \inPy{for} and \inPy{while}
 	\begin{itemize}
-	\item \inPy{for}   -- execute code only when end of loop is reached
-	\item \inPy{while} -- execute code only when loop body was never executed
+	\item execute code only when end of loop is reached
+	\item skip over \inPy{else} clause with \inPy{break}
 	\end{itemize}
 \end{itemize}
 %
@@ -32,7 +32,8 @@
 	\begin{itemize}
 	\item Separate blocks of code
 	\item New commands for doing larger blocks of work at once
-	\item Variables local to the function (\thus scopes)
+	\item Variables local to the function\\
+		(\thus scopes)
 	\item Only \emph{mutable} variables can be changed by a function
 	\item Memory model -- old references under new (local) names
 	\end{itemize}
@@ -424,10 +425,10 @@ print(1, 2, 3, end="#\n", sep="--")
 
 \begin{frame}[fragile]{Funktions as Return Values}
 %
-\begin{itemize}
-\item In Python, \emph{anything} can be stored in variables
-\item[\Thus] \emph{anything} can be the return value of a function
-\end{itemize}
+In Python, \emph{everything} can be stored in variables
+
+\Thus \emph{everything} can be the return value of a function
+
 %
 \begin{tcbraster}[raster columns=2,
                   raster equal height,
@@ -465,9 +466,10 @@ print(func(math.pi))
 \begin{frame}[fragile]
 %
 \begin{hintbox}[Lookups via \texttt{dict}s]
-\scriptsize
-The previous example should only illistrate an idea. Long  \inPy{if-elif-...}-chains can be replaced by \inPy{dict}s:
+\small
+The previous example should only illustrate an idea. Long  \inPy{if-elif-...}-chains can be replaced by \inPy{dict}s:
 
+\vspace{6pt}
 \begin{codebox}[Example: Lookups with \texttt{dict}s]
 \begin{minted}[linenos, fontsize=\scriptsize]{python}
 import math
@@ -594,7 +596,7 @@ print(dcos)
 		
 	\draw [->, bend right=20]
 		(a2.south) to node 
-		[below right=0] {copy, plug in\texttt{sin}} 
+		[below right=0] {copy, plug in \texttt{sin}} 
 		(a6.south);
   
 	\draw [->, bend right]
@@ -620,7 +622,7 @@ print(dcos)
 \begin{itemize}
 \item Shorthand form for very simple functions
 \item Often: \enquote{single-use functions}, parameters to other functions
-\item Example: choose sorting criterion
+\item Example: choose sorting criterion (see next slide)
 \item Obey same rules as \enquote{normal} functions (scopes, treatment of mutable/immutables, optional/variadic/... arguments, ...)
 \end{itemize}
 %
@@ -704,8 +706,8 @@ To understand recursion, you first need to understand recursion.
 \begin{frame}[fragile]{Example: Sum over Elements in a List}
 %
 Of course, we know that this problem can be easily solved with \inPy{total = sum(someList)}. Here, however, we want to illustrate the technique recursion. Hence, we'll follow this idea:
-%
-\vspace{6pt}
+
+\vspace{-4pt}
 \begin{tcolorbox}[title=Recursive Approach]
 The sum over the elements in a list is equal to its first element plus the sum over the remaining elements.
 \end{tcolorbox}
@@ -718,6 +720,7 @@ def recSum (data) :
     
 print(recSum(list(range(4))))    # Ausgabe: 6 = 0 + 1 + 2 + 3
 \end{minted}
+\vspace{-4pt}
 \end{codebox}
 %
 \end{frame}
@@ -777,7 +780,7 @@ Each level \enquote{lives} in its own scope! The symbol \texttt{data} refers to 
 \begin{frame}{Remarks}
 %
 \begin{itemize}
-\item Maximum recursion depth (by default): 100
+\item Maximum recursion depth (by default): 1000
 \item A lot of overhead -- slow execution
 \item But: \emph{some} problems can be solved extremely efficiently that way
 	\begin{itemize}

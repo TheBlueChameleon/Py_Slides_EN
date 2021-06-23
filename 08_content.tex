@@ -67,7 +67,6 @@
 \item Expand our model of a player: Add key \inPy{'state'} to the \inPy{'dict'}
 \item Can be done directly in \texttt{registerPlayer}
 \item Needs to be changed in other functions
-\item You probably just lost \emph{The Game}.
 \end{itemize}
 %
 \end{frame}
@@ -145,11 +144,14 @@ def countActivePlayers(players) :
 \end{codebox}
 %
 \begin{hintbox}[Hint: Write out of order]
+\small
 When writing functions that compute a value: your first line should always be
+
+\vspace{6pt}
 \mint{python3}{variable = default_value}
 Proceed with
 \mint{python3}{return variable}
-Then, write the stuff in between
+Then, write the stuff in between.
 \end{hintbox}
 %
 \end{frame}

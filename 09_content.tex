@@ -29,7 +29,7 @@
 \item Lambdas
 	\begin{itemize}
 	\item Shorthand form for functions
-	\item Often used as arguments (\thus \texttt{sort})
+	\item Often used as arguments (\thus \inPy{sort})
 	\end{itemize}
 \item Recursion
 	\begin{itemize}
@@ -61,6 +61,7 @@ print( sorted(data, key=lambda x: x[0]**2 + x[1]**2) )
 \item Lambda: Projection \inPy{tuple} \thus Length
 \item Called for each \inPy{tuple} in the \inPy{list data}
 \item Sort by length, ascendingly 
+\item Monotony of square root \thus can be omitted here \thus faster execution
 \end{itemize}
 %
 \end{frame}
@@ -69,7 +70,7 @@ print( sorted(data, key=lambda x: x[0]**2 + x[1]**2) )
 
 \begin{frame}[fragile]
 %
-\begin{codebox}[Binary Search \emph{with} Rekursion]
+\begin{codebox}[Binary Search \emph{with} Recursion]
 \begin{minted}[fontsize=\scriptsize, linenos]{python}
 def binarySearch (data, searchTerm) :
   size = len(data)
@@ -100,7 +101,7 @@ print(binarySearch(data, 2)          , end="\n\n")      # test for not in list
 
 \begin{frame}[fragile]
 %
-\begin{codebox}[Binary Search \emph{without} Rekursion]
+\begin{codebox}[Binary Search \emph{without} Recursion]
 \begin{minted}[fontsize=\scriptsize, linenos]{python}
 def midSearch(data, searchTerm):
     first = 0
@@ -180,20 +181,18 @@ print(midSearch(data, 1337))
 
 % =========================================================================== %
 
-\begin{frame}[fragile]
+\begin{frame}[fragile]{Opening Files -- Handles}
 %
-\begin{columns}[T]
+\vspace{-15pt}
+\begin{columns}[t]
 \column{.5\linewidth}
-\begin{Large}
-	{Opening Files -- Handles}
-	\vspace{6pt}
-\end{Large}
 \begin{itemize}
 \item Python does most of the interpretation work in the background through assigned data types (\inPy{int}, \inPy{float}, \inPy{dict}, \ldots)
-\item File content only holes \enquote{raw information}, without an assigned data type
+\item File content only holds \enquote{raw information}, without an assigned data type
 \item[\Thus] Our task
-\item Python: File Mode -- like assigning a data type
+\item Manipulate files via \emph{handles}
 \item Picture: \enquote{attach a handle to a file} with which you can \enquote{touch} the file
+\item File Mode -- like assigning a data type -- affects what we can do with the file
 \end{itemize}
 %
 \column{.5\linewidth}
@@ -205,14 +204,32 @@ handle = open(filename, mode)
 %
 \begin{itemize}
 \item \texttt{filename} -- relative or absolute filename
+	\vspace{-12pt}
 	\begin{itemize}
 	\item \inPy{"myFile.txt"} -- try to find it in the current working directory (CWD)
-	\item \inPy{"C:\myFiles\myFile.txt"} -- absolute filename
-	\item \inPy{"..\myFile.txt"} -- try to find it one level above the CWD
+	\item \inPy{"C:/myFiles/myFile.txt"} -- absolute filename
+	\item \inPy{"../myFile.txt"} -- try to find it one level above the CWD
 	\end{itemize}
-\item Linux and Mac: separator is a \emph{forward slash} (/), not the Backslash (\textbackslash).
+\item Separator is a \emph{forward slash} (/), not the backslash (\textbackslash).
 \end{itemize}
 \end{columns}
+%
+\end{frame}
+
+% =========================================================================== %
+
+\begin{frame}
+%
+\begin{hintbox}[Windows Users: Forward and Backward Slashes{,} non-escaped Strings]
+In the Windows world, it is common to use a backslash (\textbackslash) as a separator character. Python for Windows \enquote{understands} forward slashes, too. If, however, you want to use the Windows-Convention, remember that the backslash introduces an \emph{escape character} (\eg \texttt{\textbackslash n} -- line break). To avoid this, do ...
+
+\vspace{12pt}
+\begin{itemize}
+\item ... either escape the backslash (\textbackslash\textbackslash)
+\item ... or use the prefix \texttt{r}: \inPy{r"Text\with\numerous\backslashes"}\\
+	\thus \texttt{Text\textbackslash with\textbackslash numerous\textbackslash backslashes}
+\end{itemize}
+\end{hintbox}
 %
 \end{frame}
 
@@ -274,7 +291,7 @@ If possible: order programs such that all necessary files can be found in \emph{
 \begin{frame}[fragile]
 %
 \begin{columns}[T]
-\column{.5\linewidth}
+\column{.4\linewidth}
 \begin{Large}
 	{Closing Files}
 	\vspace{6pt}
@@ -284,14 +301,14 @@ If possible: order programs such that all necessary files can be found in \emph{
 \item Handling Files: Fairly complicated processes
 	\begin{itemize}
 	\item Many media types: hard discs, CDs, network files, \ldots
-	\item Many file systems (NTFS, FAT, ext, \ldots)
+	\item Many file systems (NTFS, FAT, ext, hfs+, \ldots)
 	\end{itemize}
 \item Most work done by the operating system (OS)
 \item To work correctly, we have to tell the OS when an operation is completed
 \item[\Thus] Method \inPy{close()}
 \end{itemize}
 %
-\column{.5\linewidth}
+\column{.6\linewidth}
 \begin{codebox}[Syntax: Closing Files]
 \begin{minted}[fontsize=\scriptsize]{python3}
 handle.close()
@@ -299,7 +316,7 @@ handle.close()
 \end{codebox}
 %
 \begin{itemize}
-\item If forgotten: Usually, Python interpreter closes files automatically
+\item If forgotten: Usually, Python interpreter closes files automatically \emph{eventually}
 \item Can result in a noticeable delay
 \end{itemize}
 %
@@ -316,16 +333,16 @@ When typing \inPy{open}: Write the associated \texttt{close} directly thereafter
 \begin{frame}[fragile]{Writing Files}
 %
 \begin{columns}[T]
-\column{.5\linewidth}
+\column{.4\linewidth}
 \begin{itemize}
 \item As soon as we've opend a file in a write mode (\texttt{w}, \texttt{wb}, \texttt{a}, \ldots): method \texttt{write} can be used
-\item Takes either \inPy{str}ings (text mode) or \inPy{bytes}-Objekte (binary mode) as an argument
-\item Argument is written int the file \enquote{as is}
+\item Takes either \inPy{str}ings (text mode) or \inPy{bytes} objects (binary mode) as an argument
+\item Argument is written into the file \enquote{as is}
 \item \emph{No} automatic line break
 \item Multiple write commands in sequence possible (no overwriting, regardless of mode)
 \end{itemize}
 %
-\column{.5\linewidth}
+\column{.55\linewidth}
 \begin{codebox}[Example: Writing Two Lines into a File]
 \begin{minted}[fontsize=\scriptsize, linenos]{python}
 handle = open("output.txt", "w")
@@ -351,8 +368,12 @@ Some text Some text
 
 \begin{frame}[fragile]
 %
+
+\vspace{-12pt}
 \begin{columns}[T]
 \column{.5\linewidth}
+
+\vspace{12pt}
 \begin{Large}
 	{Excursion: \inPy{bytes}-Object}
 	\vspace{6pt}
@@ -405,8 +426,12 @@ ABCD
 
 \begin{frame}[fragile]
 %
+
+\vspace{-12pt}
 \begin{columns}[T]
 \column{.5\linewidth}
+
+\vspace{12pt}
 \begin{Large}
 	{Reading From Files}
 	\vspace{6pt}
@@ -433,7 +458,7 @@ Some text Some text
 \end{cmdbox}
 %
 \begin{codebox}[Example: Reading Text Files]
-\begin{minted}[fontsize=\scriptsize]{python}
+\begin{minted}[fontsize=\scriptsize, linenos]{python}
 handle = open("output.txt", "r")
 firstWord = handle.read(4)
 rest = handle.read()
@@ -507,22 +532,20 @@ Some text Some text
 
 % =========================================================================== %
 
-\begin{frame}[fragile]
+\begin{frame}[fragile]{Block structure: \inPy{with .. as}}
 %
-\begin{columns}[T]
-\column{.5\linewidth}
-\begin{Large}
-	{Block strukture: \inPy{with .. as}}
-\end{Large}
-\vspace{12pt}
 \begin{itemize}
 \item Close Files automatically
 \item Generally recommended to use
 \item Sometimes not possible due to complex program structure
 \item Using \inPy{with} is not limited to files, but we can only cover so much in this course
 \end{itemize}
-%
-\column{.5\linewidth}
+
+\vspace{12pt}
+\begin{tcbraster}[raster columns=2,
+                  raster equal height,
+                  nobeforeafter,
+                  raster column skip=0.3cm]
 \begin{codebox}[Syntax: \texttt{with .. as}]
 \begin{minted}[fontsize=\scriptsize]{python}
 with open(filename, mode) as handle :
@@ -540,8 +563,7 @@ with open("output.txt", "r") as handle :
 print(data)
 \end{minted}
 \end{codebox}
-%
-\end{columns}
+\end{tcbraster}
 %
 \end{frame}
 
@@ -710,7 +732,7 @@ Only load pickles that you really trust!
 %
 \begin{itemize}
 \item \emph{JavaScript Object Notation}
-\item Alternative Approach to Pickle, Same Goal
+\item Alternative approach to Pickle, same goal
 \item Data is stored as human-readable text
 \item Only supports 8 data types (as well as compositions thereof): 
 	\inPy{int}, \inPy{float}, \inPy{str}, \inPy{bool}, \inPy{list}, \inPy{tuple}, \inPy{dict}, \inPy{None}
@@ -766,7 +788,8 @@ print(jsonObjects["dict"])
 \begin{itemize}
 \item \emph{Comma Separated Values}. Supported by many spreadsheet programs (such as Microsoft Excel or LibreOffice Calc)
 \item \inPy{str}ings, \inPy{int}s and \inPy{float}s in rows and columns
-\item Columns separated by some separator character, usually a comma (hence the name CSV); possible to use with whitespaces or tabulators, too
+\item Columns separated by some separator character, usually a comma (hence the name CSV)
+\item Possible to use with arbitrary separator characters (\eg whitespaces, tabulators, semicolons, vertical bars, ...)
 \item Double separator character \Thus empty cell
 \item \inPy{str}ings usually in \emph{string delimiters}, most often  \texttt{"}double quotes\texttt{"}
 \end{itemize}
@@ -803,7 +826,7 @@ print(jsonObjects["dict"])
 \begin{tcbraster}[raster columns=2,
                   raster equal height,
                   nobeforeafter,
-                  raster column skip=0.5cm]
+                  raster column skip=0.2cm]
 \begin{cmdbox}[File to Read]
 \begin{minted}[fontsize=\scriptsize, obeytabs, tabsize=14]{text}
 #time in s	voltage in V
@@ -825,24 +848,24 @@ print(jsonObjects["dict"])
 import csv
 
 with open("tab.txt", "r") as handle :
-    reader = csv.reader(
-        handle,
-        delimiter='\t'
-    )
-    first = next(reader)
-    print(first)
-    for row in reader :
-        print(row)
+   reader = csv.reader(
+      handle,
+      delimiter='\t'
+   )
+   first = next(reader)
+   print(*first, sep='\t')
+   for row in reader :
+      print("{}\t\t{:>4}".format(*row))
 \end{minted}
 \end{codebox}
 \end{tcbraster}
 %
 \begin{cmdbox}[Output on Screen]
 \begin{minted}[fontsize=\scriptsize, obeytabs, tabsize=14]{text}
-['#time in s', 'voltage in V']
-['0', '0']
-['1', '0.1']
-['2', '1.6']
+#time in s      voltage in V
+0                  0
+1                0.1
+2                1.6
 ...
 \end{minted}
 \end{cmdbox}
@@ -856,8 +879,10 @@ with open("tab.txt", "r") as handle :
 \begin{tcbraster}[raster columns=3,
                   raster equal height,
                   nobeforeafter,
-                  raster column skip=0.5cm]
+                  raster column skip=0.2cm]
 \begin{tcolorbox}[title=Pickle]
+
+\vspace{-1pt}
 \begin{itemize}
 \item Very complex objects
 \item Pure Python Projects
@@ -867,6 +892,8 @@ with open("tab.txt", "r") as handle :
 \end{tcolorbox}
 %
 \begin{tcolorbox}[title=JSON]
+
+\vspace{-1pt}
 \begin{itemize}
 \item Medium complexity of data objects
 \item No specific order to the data
@@ -876,6 +903,8 @@ with open("tab.txt", "r") as handle :
 \end{tcolorbox}
 %
 \begin{tcolorbox}[title=CSV]
+
+\vspace{-1pt}
 \begin{itemize}
 \item Tabular structure
 \item Very simple data types in rows and columns

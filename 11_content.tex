@@ -85,7 +85,8 @@
 % =========================================================================== %
 
 \begin{frame}[fragile]{Classes in Python -- Data Types}
-%
+
+\vspace{-6pt}
 \begin{columns}[T]
 \column{.5\linewidth}
 \begin{itemize}
@@ -93,7 +94,7 @@
 	\begin{itemize}
 	\item Example: \inPy{list}s
 	\item \enquote{Data content}: list elements
-	\item Assigned methods: sort, reverse, append, ...
+	\item Assigned methods: sort, append, ...
 	\item \texttt{append} makes no sense with an \inPy{int}!
 	\end{itemize}
 \item Designing classes means: creating your own data type
@@ -101,6 +102,7 @@
 \end{itemize}
 %
 \column{.5\linewidth}
+\vspace{-6pt}
 \begin{codebox}[Syntax: Creating Classes]
 \begin{minted}[fontsize=\scriptsize]{python}
 class ClassName :
@@ -108,6 +110,7 @@ class ClassName :
 \end{minted}
 \end{codebox}
 
+\vspace{-9pt}
 \begin{codebox}[Syntax: Instantiating a Class]
 \begin{minted}[fontsize=\scriptsize]{python}
 newVar = ClassName()
@@ -118,6 +121,11 @@ newVar = ClassName()
 \item Most important details in this lecture
 \end{itemize}
 \end{columns}
+%
+\begin{hintbox}[Convention]
+\small
+Typically, classes begin with an UPPERCASE letter, while instances are lowercase.
+\end{hintbox}
 %
 \end{frame}
 
@@ -182,7 +190,8 @@ ClassName.newAttribute = newValue
 % =========================================================================== %
 
 \begin{frame}[fragile]
-%
+
+\vspace{-3pt}
 \begin{codebox}[Example: Changing Attributes]
 \begin{minted}[fontsize=\scriptsize, linenos]{python}
 class Cla :
@@ -192,11 +201,12 @@ class Cla :
 foo = Cla()
 \end{minted}
 \end{codebox}
-%
+
+\vspace{-9pt}
 \begin{tcbraster}[raster columns=2,
                   raster equal height,
                   nobeforeafter,
-                  raster column skip=0.5cm]
+                  raster column skip=0.2cm]
 \begin{codebox}[(... continued ...)]
 \begin{minted}[fontsize=\scriptsize, linenos, firstnumber=last]{python}
 print("via foo:", foo.bar)
@@ -373,8 +383,10 @@ Since \texttt{bar} is \emph{immutable} (property of strings), changes to \texttt
 % =========================================================================== %\\
 
 \begin{frame}[fragile]
-%
+
+\vspace{-6pt}
 \begin{tcolorbox}[title=Memory Model]
+\small
 Line 14: \inPy{foo.bar = "hovercraft"}\\
 Line 18: \inPy{foo.new = "eel"}
 \begin{center}
@@ -440,7 +452,8 @@ Class attributes are written \emph{within the class}. Instance attributes are de
 % =========================================================================== %
 
 \begin{frame}[fragile]
-%
+
+\vspace{-9pt}
 \begin{codebox}[Example: Class Attributes and Instance Attributes]
 \begin{minted}[linenos, fontsize=\scriptsize]{python}
 class Expartner :
@@ -471,14 +484,10 @@ exbf2.downsides = {"flirty with everyone", "complains a lot"}
 
 % =========================================================================== %
 
-\begin{frame}[fragile]
+\begin{frame}[fragile]{Classes with Methods}
 %
 \begin{columns}[T]
 \column{.5\linewidth}
-\begin{Large}
-	{Classes with Methods}
-	\vspace{6pt}
-\end{Large}
 \begin{itemize}
 \item Method: Function that accesses data \enquote{in} an instance
 \item Definition \emph{within the class}
@@ -509,18 +518,19 @@ Instance = ClassName()
 Instance.method(...)
 \end{minted}
 \end{codebox}
-%
-\begin{itemize}
-\item[\Thus] There may be two (or more) distinct classes, each of them having their own method called \texttt{doStuff}
-\end{itemize}
 \end{columns}
+
+\vspace{6pt}
+\small
+\Thus Possible: two (or more) distinct classes, each with their own method \texttt{doStuff}
 %
 \end{frame}
 
 % =========================================================================== %
 
 \begin{frame}[fragile]
-%
+
+\vspace{-6pt}
 \begin{codebox}[Example: Class with Methods]
 \begin{minted}[linenos, fontsize=\scriptsize]{python}
 class Expartner :
@@ -562,31 +572,33 @@ print( exbf2.rating() )                      # Output: 5
 \item \enquote{Hidden} (automatic) function calls
 	\begin{itemize}
 	\item Initialization: \inPy{__init__}
-	\item Computations: \inPy{__add__}, \inPy{__sub__}, \inPy{__mul__}, \inPy{__matmul__}, \inPy{__truediv__}, \inPy{__floordiv__}
+	\item Computations: \inPy{__add__}, \inPy{__sub__}, \inPy{__mul__}, \inPy{__matmul__}, \inPy{__truediv__}, \inPy{__floordiv__}, \inPy{__pow__}
 	\item Comparisons: \inPy{__eq__}, \inPy{__ne__}, \inPy{__gt__}, \inPy{__ge__}, \inPy{__lt__}, \inPy{__le__}
 	\item String representation: \inPy{__str__} und \inPy{__repr__}
 	\item Use as a function: \inPy{__call__}
 	\end{itemize}
 \item \emph{Double Underscore} \Thus \enquote{Dunders}
+\item[\Thus] \url{https://www.tutorialsteacher.com/python/magic-methods-in-python}
+\item[\Thus] \url{https://www.reddit.com/r/Python/comments/br9ok2/list_of_all_python_dunder_methods/}
 \end{itemize}
 %
 \end{frame}
 
 % =========================================================================== %
 
-\begin{frame}[fragile]
+\begin{frame}[fragile]{\inPy{__init__} -- Constructor (Initializer)}
 %
 \begin{columns}[T]
 \column{.5\linewidth}
-\begin{Large}
-	{\inPy{__init__} -- Constructor (Initializer)}
-\end{Large}
-\vspace{6pt}
-%
 \begin{itemize}
 \item Called as soon as an instance of a class is created
 \item After \inPy{self}: free form (any number of arguments)
 \item Usually: Put default values into the instance
+\item Construct all Instance attributes
+\item Possibly: update class attributes
+	\begin{itemize}
+	\item Instance counter!
+	\end{itemize}
 \end{itemize}
 %
 \column{.5\linewidth}
@@ -735,7 +747,7 @@ class Expartner :
     def __call__(self) :
         print("You shouldn't call your Ex'es. Leave the past behind.")
 
-ex = Expartner("Sandra", 1.70)
+ex = Expartner("Julia", 1.70)
 ex()
 \end{minted}
 \end{codebox}
