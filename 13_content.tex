@@ -251,13 +251,20 @@ print( o.getGoodSpot(g) )
 %
 \begin{hintbox}[Whom to give the responsibilty?]
 Both approaches make sense. Which one is better depends on the form of the project as a whole. Some thoughts that go into the decision:
+
+\vspace{6pt}
 \begin{itemize}
 \item Which approach minimized the number of function calls (\thus efficiency)
 \item Which object will be used mostly by the end-user (\thus user interface)
-\item Which object already controls most of the required data/methods (\thus hierarchy)
+\item Which object already controls most of the required data/methods \\
+	(\thus hierarchy)
 \end{itemize}
 
+\vspace{6pt}
 These questions can lead to contradictory results; there isn't always one ulitimative answer.
+
+\vspace{6pt}
+Whichever way you decide to follow: stay consistent!
 \end{hintbox}
 %
 \end{frame}
@@ -294,6 +301,7 @@ These questions can lead to contradictory results; there isn't always one ulitim
 \end{itemize}
 %
 \column{.5\linewidth}
+\vspace{-6pt}
 \begin{codebox}[Syntax: \texttt{try..except} Block]
 \begin{minted}[fontsize=\scriptsize]{python}
 try :
@@ -313,28 +321,29 @@ except ErrorClass as varible :
 \begin{tcbraster}[raster columns=2,
                   raster equal height,
                   nobeforeafter,
-                  raster column skip=0.5cm]
-\begin{codebox}[Example: Code w. Error Treatment (1)]
+                  raster column skip=0.2cm]
+\begin{codebox}[Ex.: Code w. Error Treatment (1)]
 \begin{minted}[linenos, fontsize=\scriptsize]{python}
 import math
 
 for x in range(-3, 4) :
   try :
-    print( 1/x,  math.log(abs(x-2)) )
+    print(f"{1/x:+5.2f}",
+          f"{math.log(abs(x-2)):+5.2f}")
   except ZeroDivisionError as e :
     print("Error:", e)
 \end{minted}
 \end{codebox}
 %
-\begin{cmdbox}[Output: Code w. Error Treatment (1)]
+\begin{cmdbox}[Out.: Code w. Error Treatment (1)]
 \begin{minted}[fontsize=\scriptsize]{text}
--0.3333333333333333 1.6094379124341003
--0.5 1.3862943611198906
--1.0 1.0986122886681098
+-0.33 +1.61
+-0.50 +1.39
+-1.00 +1.10
 Error: division by zero
-1.0 0.0
++1.00 +0.00
 Traceback (most recent call last):
-  File "<stdin>", line 3, in <module>
+  File "<stdin>", line 4, in <module>
 ValueError: math domain error
 \end{minted}
 \end{cmdbox}
@@ -365,12 +374,12 @@ ValueError: math domain error
 \begin{tcbraster}[raster columns=2,
                   raster equal height,
                   nobeforeafter,
-                  raster column skip=0.5cm]
-\begin{codebox}[Example: Code w. Error Treatment (2)]
+                  raster column skip=0.2cm]
+\begin{codebox}[Ex.: Code w. Error Treatment (2)]
 \begin{minted}[linenos, fontsize=\scriptsize]{python}
 try :
     for x in range(-3, 4) :
-        print(1 / x)
+        print(f"{1/x:+5.2}")
 except ZeroDivisionError as e :
     print("Error:", e)
 
@@ -378,11 +387,11 @@ print("Done.")
 \end{minted}
 \end{codebox}
 %
-\begin{cmdbox}[Output: Code w. Error Treatment (2)]
+\begin{cmdbox}[Out.: Code w. Error Treatment (2)]
 \begin{minted}[fontsize=\scriptsize]{text}
--0.3333333333333333
--0.5
--1.0
+-0.33
+-0.50
+-1.00
 Error: division by zero
 Done.
 \end{minted}
@@ -405,13 +414,14 @@ Done.
 \begin{columns}[T]
 \column{.5\linewidth}
 \begin{itemize}
-\item In one \inPy{try} block there can be multiply things going wrong
+\item In one \inPy{try} block there can be multiple things going wrong
 \item Simple case: React to all errors in the same way
 \item If so: list error classes as a \inPy{tuple}
 \item[\Thus] If \emph{any} of the error classes meets the exception, treatment is triggered
 \end{itemize}
 %
 \column{.5\linewidth}
+\vspace{-6pt}
 \begin{codebox}[Syntax: \texttt{try..except} Block]
 \begin{minted}[fontsize=\scriptsize]{python}
 try :
@@ -431,30 +441,32 @@ except (class1, class2, ..) as varible :
 \begin{tcbraster}[raster columns=2,
                   raster equal height,
                   nobeforeafter,
-                  raster column skip=0.5cm]
-\begin{codebox}[Example: Code w. Error Treatment (3)]
+                  raster column skip=0.2cm]
+\begin{codebox}[Ex.: Code w. Error Treatment (3)]
 \begin{minted}[linenos, fontsize=\scriptsize]{python}
 import math
 
 for x in range(-3, 4) :
-    try :
-        print(1/x,  math.log(abs(x-2)))
-        
-    except (ZeroDivisionError,
-            ValueError) as e :
-        print("Error:", e)
+  try :
+    print(f"{1/x:+5.2f}",
+          f"{math.log(abs(x-2)):+5.2f}"
+    )
+
+  except (ZeroDivisionError, 
+          ValueError) as e :
+    print("Error:", e)
 \end{minted}
 \end{codebox}
 %
-\begin{cmdbox}[Output: Code w. Error Treatment (3)]
+\begin{cmdbox}[Out.: Code w. Error Treatment (3)]
 \begin{minted}[fontsize=\scriptsize]{text}
--0.3333333333333333 1.6094379124341003
--0.5 1.3862943611198906
--1.0 1.0986122886681098
+-0.33 +1.61
+-0.50 +1.39
+-1.00 +1.10
 Error: division by zero
-1.0 0.0
++1.00 +0.00
 Error: math domain error
-0.3333333333333333 0.0
++0.33 +0.00
 \end{minted}
 \end{cmdbox}
 \end{tcbraster}
@@ -477,6 +489,7 @@ Error: math domain error
 \end{itemize}
 %
 \column{.5\linewidth}
+\vspace{-6pt}
 \begin{codebox}[Syntax: \texttt{try..except}-Block]
 \begin{minted}[fontsize=\scriptsize]{python}
 try :
@@ -654,12 +667,14 @@ TypeError: unsupported operand type(s)
 \column{.5\linewidth}
 \begin{itemize}
 \item Wrong usage of a class or function may cause harm
-\item Example: User enters a file name \Thus could overwrite existing files
+\item Example: User enters a file name\\
+	\Thus could overwrite existing files
 \item Syntactically correct, but undesired behaviour
 \item[\Thus] \emph{Throw/Raise an exception}
 \end{itemize}
 %
 \column{.5\linewidth}
+\vspace{-6pt}
 \begin{codebox}[Syntax: \texttt{raise}]
 \begin{minted}[fontsize=\scriptsize]{python}
 raise ErrorClass(Arguments)
@@ -730,10 +745,10 @@ RuntimeError: Invalid choice
 \begin{itemize}
 \item Possibly desired: Debug-Output, but no full treatment of the exception
 \item Superior functional unit (end user) treats the problem
-\item[\Thus] Reactivate error after \enquote{treatment}: \texttt{raise} \emph{without} error class
+\item[\Thus] Reactivate error after \enquote{treatment}: \inPy{raise} \emph{without} error class
 \end{itemize}
-%
-\vspace{15pt}
+
+\vspace{8pt}
 \begin{cmdbox}[Ausgabe: re-\texttt{raise}]
 \begin{minted}[fontsize=\scriptsize]{text}
 division by zero
@@ -743,7 +758,8 @@ Error was caught, eventually
 \end{cmdbox}
 %
 \column{.5\linewidth}
-\begin{codebox}[Beispiel: re-\texttt{raise}]
+\vspace{-6pt}
+\begin{codebox}[Example: re-\texttt{raise}]
 \begin{minted}[fontsize=\scriptsize]{python}
 def divide(x, y) :
   try :
@@ -773,7 +789,8 @@ except ZeroDivisionError as e:
 \begin{hintbox}[Choose Error Classes with Maximum Specificity]
 Error classes should be chosen very narrowly, such that treatment can be written effectively. 
 
-Catching Errors too unspecifically can cause more harm than doing good.
+\vspace{6pt}
+Catching Errors too unspecifically can cause more harm than doing good by masking the true cause with the wrong treatment
 \end{hintbox}
 %
 \end{frame}
@@ -792,6 +809,7 @@ Catching Errors too unspecifically can cause more harm than doing good.
 \end{itemize}
 %
 \column{.5\linewidth}
+\vspace{-6pt}
 \begin{codebox}[Syntax: Creating an Own Error Class]
 \begin{minted}[fontsize=\scriptsize]{python3}
 class OwnErrorClass (Exception) :

@@ -6,120 +6,120 @@
 
 % =========================================================================== %
 
-\begin{frame}{Recap}
+%\begin{frame}{Recap}
+%%
+%\begin{columns}[T]
+%\column{.5\linewidth}
+%\begin{itemize}
+%\item Exceptions
+%\item Block structure
+%	\begin{itemize}
+%	\item \inPy{try}: Anything that might go wroing
+%	\item \inPy{except}: What to do if something goes wrong
+%	\item \inPy{else}: What to do if everything is all right
+%	\item \inPy{finally}: What to do in any case
+%	\end{itemize}
+%\item Error Classes
+%	\begin{itemize}
+%	\item Hierarchical Order
+%	\item Allows specific treatment
+%	\end{itemize}
+%\end{itemize}
+%%
+%\column{.5\linewidth}
+%\begin{itemize}
+%\item Command \inPy{raise}
+%	\begin{itemize}
+%	\item Trigger an exception yourself
+%	\item Argument: instance of an error class
+%	\item Or: Re-raise in an \inPy{except} block
+%	\end{itemize}
+%\item Own Error Classes
+%	\begin{itemize}
+%	\item Inherit from \texttt{Exception}
+%	\item Arbitrary Design
+%	\item Usually only for specific treatment of user-defined errors: \enquote{empty} classes
+%	\end{itemize}
+%\end{itemize}
 %
-\begin{columns}[T]
-\column{.5\linewidth}
-\begin{itemize}
-\item Exceptions
-\item Block structure
-	\begin{itemize}
-	\item \inPy{try}: Anything that might go wroing
-	\item \inPy{except}: What to do if something goes wrong
-	\item \inPy{else}: What to do if everything is all right
-	\item \inPy{finally}: What to do in any case
-	\end{itemize}
-\item Error Classes
-	\begin{itemize}
-	\item Hierarchical Order
-	\item Allows specific treatment
-	\end{itemize}
-\end{itemize}
-%
-\column{.5\linewidth}
-\begin{itemize}
-\item Command \inPy{raise}
-	\begin{itemize}
-	\item Trigger an exception yourself
-	\item Argument: instance of an error class
-	\item Or: Re-raise in an \inPy{except} block
-	\end{itemize}
-\item Own Error Classes
-	\begin{itemize}
-	\item Inherit from \texttt{Exception}
-	\item Arbitrary Design
-	\item Usually only for specific treatment of user-defined errors: \enquote{empty} classes
-	\end{itemize}
-\end{itemize}
-
-\end{columns}
-%
-\begin{center}
-	\emph{Any Questions?}
-\end{center}
-%
-\end{frame}
-
-% =========================================================================== %
-
-\begin{frame}{Recap}
-%
-\begin{columns}[T]
-\column{.5\linewidth}
-\begin{itemize}
-\item Manipulating the file cursor
-	\begin{itemize}
-	\item \texttt{handle.tell} -- get current position
-	\item \texttt{handle.seek(offset, startPoint)} -- move file cursor
-	\end{itemize}
-\item Pickle
-	\begin{itemize}
-	\item Serialize objects
-	\item Works with (virtually) everything in Python
-	\item May contain (harmful) code
-	\item \texttt{pickle.dump} and \texttt{pickle.load}
-	\end{itemize}
-\end{itemize}
-%
-\column{.5\linewidth}
-\begin{itemize}
-\item JSON
-	\begin{itemize}
-	\item Inter-Plattform serialization
-	\item Only works with specific data types
-	\item Human readable format
-	\item \texttt{json.dump} and \texttt{json.load}
-	\item Usually: \inPy{dict}s of variables
-	\end{itemize}
-\item CSV
-	\begin{itemize}
-	\item Data in columns
-	\item Class \texttt{DictReader} via \texttt{csv.reader}
-	\item Iterable -- can be used with \inPy{for}
-	\item Rows split into columns by a separator character (\eg \texttt{','}) into \inPy{list}s
-	\end{itemize}
-\end{itemize}
-
-\end{columns}
-%
-\begin{center}
-	\emph{Any Questions?}
-\end{center}
-%
-\end{frame}
+%\end{columns}
+%%
+%\begin{center}
+%	\emph{Any Questions?}
+%\end{center}
+%%
+%\end{frame}
 
 % =========================================================================== %
 
-\begin{frame}[fragile]
+%\begin{frame}{Recap}
+%%
+%\begin{columns}[T]
+%\column{.5\linewidth}
+%\begin{itemize}
+%\item Manipulating the file cursor
+%	\begin{itemize}
+%	\item \texttt{handle.tell} -- get current position
+%	\item \texttt{handle.seek(offset, startPoint)} -- move file cursor
+%	\end{itemize}
+%\item Pickle
+%	\begin{itemize}
+%	\item Serialize objects
+%	\item Works with (virtually) everything in Python
+%	\item May contain (harmful) code
+%	\item \texttt{pickle.dump} and \texttt{pickle.load}
+%	\end{itemize}
+%\end{itemize}
+%%
+%\column{.5\linewidth}
+%\begin{itemize}
+%\item JSON
+%	\begin{itemize}
+%	\item Inter-Plattform serialization
+%	\item Only works with specific data types
+%	\item Human readable format
+%	\item \texttt{json.dump} and \texttt{json.load}
+%	\item Usually: \inPy{dict}s of variables
+%	\end{itemize}
+%\item CSV
+%	\begin{itemize}
+%	\item Data in columns
+%	\item Class \texttt{DictReader} via \texttt{csv.reader}
+%	\item Iterable -- can be used with \inPy{for}
+%	\item Rows split into columns by a separator character (\eg \texttt{','}) into \inPy{list}s
+%	\end{itemize}
+%\end{itemize}
 %
-\begin{tcbraster}[raster columns=2,
-                  raster equal height,
-                  nobeforeafter,
-                  raster column skip=0.5cm]
-\begin{codebox}[Example: Title goes here]
-\begin{minted}[fontsize=\scriptsize, linenos]{python}
-foo
-\end{minted}
-\end{codebox}
-%
-\begin{codebox}[Example: Title goes here]
-\begin{minted}[fontsize=\scriptsize, linenos]{python}
-bar
-\end{minted}
-\end{codebox}
-\end{tcbraster}
-%
-\end{frame}
+%\end{columns}
+%%
+%\begin{center}
+%	\emph{Any Questions?}
+%\end{center}
+%%
+%\end{frame}
+
+% =========================================================================== %
+
+%\begin{frame}[fragile]
+%%
+%\begin{tcbraster}[raster columns=2,
+%                  raster equal height,
+%                  nobeforeafter,
+%                  raster column skip=0.5cm]
+%\begin{codebox}[Example: Title goes here]
+%\begin{minted}[fontsize=\scriptsize, linenos]{python}
+%foo
+%\end{minted}
+%\end{codebox}
+%%
+%\begin{codebox}[Example: Title goes here]
+%\begin{minted}[fontsize=\scriptsize, linenos]{python}
+%bar
+%\end{minted}
+%\end{codebox}
+%\end{tcbraster}
+%%
+%\end{frame}
 
 % =========================================================================== %
 

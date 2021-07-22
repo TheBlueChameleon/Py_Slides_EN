@@ -16,7 +16,7 @@
 	\item Supply and Demand
 	\item Happiness
 	\end{itemize}
-\item Use Object Oriented Approach
+\item Use object oriented approach
 	\begin{itemize}
 	\item Attributes
 	\item Responsibilities
@@ -69,9 +69,12 @@
 \begin{frame}{If you don't know where to start...}
 %
 \begin{center}
-	\begin{minipage}{.35\linewidth}
+	\begin{minipage}{.4\linewidth}
 		\begin{itemize}
 		\item Tell somebody
+			\begin{itemize}
+			\item My fellow lodgers now know by my look when to hide from me
+			\end{itemize}
 		\item Or something
 			\begin{itemize}
 			\item Could be a Rubber Duck
@@ -87,7 +90,7 @@
 			\end{itemize}
 		\end{itemize}
 	\end{minipage}
-	\hspace{1em}
+	\hspace{3em}
 	\begin{minipage}{.5\linewidth}
 		\begin{minipage}{\linewidth}
 		\includegraphics[width=.45\linewidth]{./gfx/Duck1}
@@ -157,7 +160,8 @@ The return value of \texttt{timestep} is a \inPy{list} of \texttt{Parcel}s that 
 \begin{hintbox}[Design Rules]
 When implementing a set of mechanics, there is more than one way to do it. Most of the time, all of the possible paths have their benefits of their own, and there's no clear superior strategy.
 
-When faced with a choice, try to see the \enquote{big picture}: how well do the possible strategies work together with the components that exist or that you've planned? Select the one that covers most of the cases you need to cover. If you can't decide -- select one \emph{and stick with it!}
+\vspace{6pt}
+When faced with a choice, try to see the \enquote{big picture}: how well do the possible strategies work together with the components that exist or that you've planned? Select the one that covers most of the cases you need to cover. If you can't decide, just select any one that comes to your mind, \emph{but stick with it!}
 \end{hintbox}
 %
 \end{frame}
@@ -175,7 +179,7 @@ We could
 \item Make the consumers place an order and thus create a \texttt{Parcel}
 \end{itemize}
 
-None is truly superior, so we'll simply pick the second one, because it is closer to the reality we want to simulate.
+None is truly superior, so we'll simply pick the second one, because it is \emph{closer to the reality} we want to simulate.
 \end{tcolorbox}
 %
 \begin{tcolorbox}[title=Design Rule: Lower Case Strings]
@@ -188,11 +192,14 @@ The \texttt{category} strings will not only be used for user output, but also fo
 
 \begin{frame}[fragile]
 %
+\vspace{-3pt}
 \begin{tcbraster}[raster columns=2,
                   raster equal height,
                   nobeforeafter,
-                  raster column skip=0.5cm]
+                  raster column skip=0.2cm]
 \begin{tcolorbox}[title=Class \texttt{Residential}]
+
+\vspace{-3pt}
 \begin{itemize}
 \item Class attributes
 	\begin{itemize}
@@ -213,6 +220,8 @@ The \texttt{category} strings will not only be used for user output, but also fo
 \end{tcolorbox}
 %
 \begin{tcolorbox}[title=Class \texttt{Residential} (Continued)]
+
+\vspace{-3pt}
 \begin{itemize}
 \item Methods
 	\begin{itemize}
@@ -267,7 +276,7 @@ The \texttt{category} strings will not only be used for user output, but also fo
 \begin{tcolorbox}[title=Why do we need \texttt{createParcel}?]
 \begin{itemize}
 \item Consumers are responsible for triggering \texttt{Parcel} creation
-\item But: They do not know know who offers how much
+\item But: They do not know who offers how much
 \item \enquote{City} needs to make public offers
 \item[\Thus] \inPy{list} of producers
 \item Producers will \texttt{createParcel} and tell the consumer that it is en route
@@ -287,6 +296,8 @@ The \texttt{category} strings will not only be used for user output, but also fo
                   nobeforeafter,
                   raster column skip=0.5cm]
 \begin{tcolorbox}[title=Class \texttt{Factory}]
+
+\vspace{-3pt}
 \begin{itemize}
 \item Class attributes
 	\begin{itemize}
@@ -309,6 +320,8 @@ The \texttt{category} strings will not only be used for user output, but also fo
 \end{tcolorbox}
 %
 \begin{tcolorbox}[title=Class \texttt{Farm}]
+
+\vspace{-3pt}
 \begin{itemize}
 \item Class attributes
 	\begin{itemize}
@@ -338,6 +351,7 @@ The \texttt{category} strings will not only be used for user output, but also fo
 \begin{hintbox}[Forgotten Elements]
 Even when putting a lot of effort into your planning phase: you will not think of \emph{everything} beforehand. For the most part, this isn't too much of a problem; you can fit almost any new concept in an existing framework. But to do so, keep the \enquote{rules} simple: encapsulate everything in functions and methods, but avoid \enquote{wild} access to instance attributes.
 
+\vspace{6pt}
 There are some missing elements in the above analysis. But actually I missed out on much more when conceptualizing this lecture. That's a coder's life. Take a step back, calmly consider your options and their implications, keep track of your methods, and only then carry on, implementing stuff that you didn't think of before.
 \end{hintbox}
 %
@@ -548,10 +562,10 @@ class Factory (Building) :
                   "arrived at a", self.category, "Factory.")
             parcel = None               # this should never happen
         elif category == "food" :
-            parcel = Parcel(category, min(self.stockFood , quantity, receiver))
+            parcel = Parcel(category, min(self.stockFood , quantity), receiver)
             self.stockFood -= parcel.quantity
         elif category == "goods" :
-            parcel = Parcel(category, min(self.stockGoods, quantity, receiver))
+            parcel = Parcel(category, min(self.stockGoods, quantity), receiver)
             self.stockGoods -= parcel.quantity
         else :
             print("Something's wrong in your code: an order for", category,

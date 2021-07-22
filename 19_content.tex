@@ -9,7 +9,7 @@
 \begin{frame}{Recap}
 %
 \begin{columns}[T]
-\column{.5\linewidth}
+\column{.45\linewidth}
 \textbf{MatPlotLib}
 \begin{itemize}
 \item Commands \texttt{plt.plot(X, Y)} and \texttt{plt.show()}
@@ -19,7 +19,7 @@
 \item In doubt: Look it up on \url{https://matplotlib.org/} or in the lecture notes
 \end{itemize}
 %
-\column{.5\linewidth}
+\column{.45\linewidth}
 \textbf{NumPy}
 \begin{itemize}
 \item Central element: \texttt{np.ndarray}
@@ -70,7 +70,7 @@ N       = len(names)
 \begin{tcbraster}[raster columns=2,
                   raster equal height,
                   nobeforeafter,
-                  raster column skip=0.5cm]
+                  raster column skip=0.2cm]
 \begin{codebox}[Exercise: Linear Optimization]
 \begin{minted}[fontsize=\scriptsize, linenos, firstnumber=last]{python3}
 # construction of the meshgrid
@@ -124,7 +124,7 @@ meshgrid = np.meshgrid(*values)
 \begin{tcbraster}[raster columns=2,
                   raster equal height,
                   nobeforeafter,
-                  raster column skip=0.5cm]
+                  raster column skip=0.2cm]
 \begin{codebox}[Example: 2D Meshgrids]
 \begin{minted}[fontsize=\scriptsize, linenos]{python3}
 import numpy as np
@@ -171,7 +171,7 @@ milk chocolate
 \begin{tcbraster}[raster columns=2,
                   raster equal height,
                   nobeforeafter,
-                  raster column skip=0.5cm]
+                  raster column skip=0.2cm]
 \begin{codebox}[Exercise: Linear Optimization]
 \begin{minted}[fontsize=\scriptsize, linenos, firstnumber=32]{python3}
 # Find the cost for each config ...
@@ -228,10 +228,12 @@ bestConfig = np.unravel_index(bestID, shape=meshgrid[0].shape)
 %
 \begin{itemize}
 \item What we see:\\
+	\vspace{3pt}
 	$\begin{pmatrix}
 		1 & 5 & 4 \\
 		2 & 2 & 3
 	\end{pmatrix}$
+	\vspace{3pt}
 \item What NumPy sees:\\
 	\texttt{[1 5 4 2 2 3]}
 \item Output of \texttt{np.argmax}: Index of maximum in \emph{flattened} array\\
@@ -362,7 +364,8 @@ print("Analyzed", np.prod(1 + upperLimits, dtype=np.int), "configurations.")
 \item Represent each magnet by a number $+1$ or $-1$
 \item Lattice in its entirety: table (matrix): $G = \left( g_{ij} \right)$
 \item Magnetization density
-	\[ M = \frac{1}{V} \sum_{i, j} g_{ij} \qquad \text{where } V: \text{\enquote{Volume}, number of atoms} \]
+	\[ \small M = \frac{1}{V} \sum_{i, j} g_{ij} \qquad \text{where } V: \text{\enquote{Volume}, number of atoms} \]
+	\vspace{-12pt}
 \item Energy
 	\begin{itemize}
 	\item Coupling constant $J$
@@ -419,7 +422,7 @@ Where:
 
 Thus:
 \begin{itemize}
-\item \emph{In prinziple} magnetization for eavery temperature can be computed
+\item \emph{In principle} magnetization for eavery temperature can be computed
 \item \emph{In practice} too time intensive
 \end{itemize}
 
@@ -504,7 +507,10 @@ We need:
 
 \begin{frame}[fragile]{Programming: class \texttt{Grid} -- first concept}
 %
+\vspace{-6pt}
 \begin{tcolorbox}[title=class \texttt{Grid}]
+
+\vspace{-3pt}
 \begin{itemize}
 \item Class attributes
 	\begin{itemize}
@@ -531,6 +537,7 @@ We need:
 
 \begin{frame}[fragile]{Programming: class \texttt{Grid} -- first code}
 %
+\vspace{-6pt}
 \begin{codebox}
 \begin{minted}[linenos, fontsize=\scriptsize]{python3}
 import numpy as np
@@ -546,8 +553,10 @@ print(g.spins)
 \end{minted}
 \end{codebox}
 %
+
+\vspace{-12pt}
 \begin{hintbox}[Answer open questions as simply as possible]
-The \emph{initial state} wasn't covered in our regards so far. In such a case: start with a simple fill-in, like here: \texttt{np.ones}
+We haven't covered the \emph{initial state} so far. In such a case: start with a \emph{simple} fill-in, like here: \texttt{np.ones}
 \end{hintbox}
 %
 \end{frame}
@@ -590,12 +599,12 @@ class Grid :
     def __init__ (self, L, J = 1, p = None) :
         self.L     = L
         self.J     = J
-        self.spins = np.ones(shape = (L, L), dtype=np.int64)
+        self.spins = np.ones(shape=(L, L), dtype=np.int64)
         
         if p : self.shake(p)
         
     def shake (self, p = 0.5) :
-        mask = np.random.uniform(size = (self.L, self.L)) < p
+        mask = np.random.uniform(size=(self.L, self.L)) < p
         self.spins[mask] *= -1
 
 g = Grid(5, 1, 0.5)
@@ -681,6 +690,7 @@ print(g.magnetization())
 
 \begin{frame}[fragile]
 %
+\vspace{-9pt}
 \begin{codebox}
 \begin{minted}[linenos, fontsize=\scriptsize]{python3}
 class Grid :
@@ -718,12 +728,13 @@ class Grid :
 \item Instead of: count each neighbour at half weight: count only half of the neighbours!
 \end{itemize}
 %
+\vspace{-6pt}
 \begin{codebox}
 \begin{minted}[linenos, fontsize=\scriptsize]{python3}
 class Grid :
     def __init__ (self, L, J = 1, p = None) :
         # ...
-        self.neighbours = np.zeros(shape = (L, L, 2, 2), dtype = np.int64)
+        self.neighbours = np.zeros(shape=(L, L, 2, 2), dtype=np.int64)
         # ...
     
     def makeNeighbourList (self) :
@@ -781,11 +792,11 @@ print(" E :", g.energy())
 	\end{itemize}
 \item Number of possible configurations: $2^V$
 	\begin{itemize}
-	\item For our \emph{tiny} lattice with 25 Atomen: 33\,554\,432 configurations
+	\item For our \emph{tiny} lattice with 25 atoms: 33\,554\,432 configurations
 	\item Assumption: Computation time per configuration \SI{1}{ms}
 	\item[\Thus] 9 hours 19 minutes
-	\item[\Thus]  \emph{Fat Ouf}
 	\end{itemize}
+\item[\Thus]  \emph{Fat Oof}
 \end{itemize}
 %
 \end{frame}
@@ -849,6 +860,7 @@ print(" E :", g.energy())
 \begin{hintbox}[Lecture \emph{Monte Carlo Methods for Physicists}]
 The Code shown before is far from optimal. I didn't want to go too far into specifics since they are covered in more detail in another lecture anyway. The optimized code, however, follows the same train of thought.
 
+\vspace{6pt}
 To interested (nature) scientists I can really recommend the lecture \emph{Monte Carlo Methods for Physicists} by Dr. Bloch. There, the Ising Model and the Metropolis algorithm as well as more advanced methods are covered in detail. Part of the lecture are coding exercises in C++.
 \end{hintbox}
 %

@@ -98,7 +98,7 @@
                   nobeforeafter,
                   raster column skip=0.5cm]
 \begin{codebox}[Example: Christmas{,} three loops]
-\begin{minted}[fontsize=\scriptsize, linenos]{python}
+\begin{minted}[fontsize=\scriptsize, linenos]{python3}
 height = 7
 
 for row in range(height) :
@@ -355,11 +355,26 @@ print("done.")
 
 \begin{frame}[fragile]{\inPy{else} with \inPy{while} and \inPy{for}}
 %
-\begin{itemize}
-\item Idea \enquote{if not applicable}
-\item \inPy{else}-block is executed, if a loop terminates \emph{regularly}, \ie if it is not exited via \inPy{break}
-\item For both, \inPy{for} and \inPy{while}
-\end{itemize}
+Idea \enquote{if not applicable}: Execute depending on how loop was terminated
+%
+\begin{columns}[T]
+\column{.5\linewidth}
+	\begin{itemize}
+	\item In a \inPy{for} loop
+		\begin{itemize}
+		\item \inPy{else}-block is executed, if a loop terminates \emph{regularly}, \ie if it is not exited via \inPy{break}
+		\end{itemize}
+	\end{itemize}
+	
+\column{.5\linewidth}
+	\begin{itemize}
+	\item 
+	In a \inPy{while} loop
+		\begin{itemize}
+		\item \inPy{else}-block is executed, if a loop terminates \emph{non-regularly}, \ie if it \emph{is} exited via \inPy{break}
+		\end{itemize}
+	\end{itemize}
+\end{columns}
 %
 \end{frame}
 
@@ -470,7 +485,7 @@ variable = functionName(parameterlist)
 \end{codebox}
 %
 \begin{hintbox}[Order of Code]
-Funktions have to be defined \emph{before} they are called for the first time.
+Functions have to be defined \emph{before} they are called for the first time.
 \end{hintbox}
 \end{columns}
 %
