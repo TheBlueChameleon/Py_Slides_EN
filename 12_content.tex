@@ -46,7 +46,7 @@ class Expartner :
     # like last time
     
     def __abs__(self) :
-        retrun self.rating()
+        return self.rating()
     
     def __len__(self) :
         return self.height
@@ -206,14 +206,14 @@ print( myEx > 7 )  # works just fine!
 
 % =========================================================================== %
 
-\begin{frame}[fragile]{\inPy{__add__}, \inPy{__neg__}, \inPy{__sub__}, \inPy{__mul__}, \inPy{__truediv__}, \inPy{__floordiv__} and \inPy{__matmul__}: Computations}
+\begin{frame}[fragile]{\inPy{__add__}, \inPy{__neg__}, \inPy{__sub__}, \inPy{__mul__}, \inPy{__truediv__}, \inPy{__floordiv__}, \inPy{__pow__} and \inPy{__matmul__}: Computations}
 %
 \begin{columns}[T]
 \column{.5\linewidth}
 \begin{itemize}
 \item Same logic as with comparison operators
-\item Implements operations \inPy{A + B}, \inPy{-A}, \inPy{A - B}, \inPy{A * B}, \inPy{A / B}, \inPy{A // B} and\\
- \texttt{A @ B}
+\item Implements operations \inPy{A+B}, \inPy{-A}, \inPy{A-B}, \inPy{A*B}, \inPy{A/B}, \inPy{A//B}, \inPy{A**B} and
+ \texttt{A@B}
 \item Operator \texttt{@}: \emph{arbitrary operation}, usually matrix produkt
 \item Also common: cross product ($\times$)
 \end{itemize}

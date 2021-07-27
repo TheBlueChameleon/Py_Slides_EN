@@ -296,8 +296,8 @@ Whichever way you decide to follow: stay consistent!
 	\item \inPy{try}: anything that could go wrong
 	\item \inPy{except}: what to do when something has gone wrong
 	\end{itemize}
-\item Discern \emph{error classes}, aka \emph{exeptions}
-\item After treatment of this exception: program continues normally
+\item Discern \emph{error classes}, aka \emph{exceptions}
+\item After treatment of this exception: program continues normally \emph{after} the block
 \end{itemize}
 %
 \column{.5\linewidth}
@@ -328,7 +328,7 @@ import math
 
 for x in range(-3, 4) :
   try :
-    print(f"{1/x:+5.2f}",
+    print(f"{1/x:+5.2f}  ",
           f"{math.log(abs(x-2)):+5.2f}")
   except ZeroDivisionError as e :
     print("Error:", e)
@@ -337,11 +337,11 @@ for x in range(-3, 4) :
 %
 \begin{cmdbox}[Out.: Code w. Error Treatment (1)]
 \begin{minted}[fontsize=\scriptsize]{text}
--0.33 +1.61
--0.50 +1.39
--1.00 +1.10
+-0.33   +1.61
+-0.50   +1.39
+-1.00   +1.10
 Error: division by zero
-+1.00 +0.00
++1.00   +0.00
 Traceback (most recent call last):
   File "<stdin>", line 4, in <module>
 ValueError: math domain error
@@ -448,7 +448,7 @@ import math
 
 for x in range(-3, 4) :
   try :
-    print(f"{1/x:+5.2f}",
+    print(f"{1/x:+5.2f}  ",
           f"{math.log(abs(x-2)):+5.2f}"
     )
 
@@ -460,13 +460,13 @@ for x in range(-3, 4) :
 %
 \begin{cmdbox}[Out.: Code w. Error Treatment (3)]
 \begin{minted}[fontsize=\scriptsize]{text}
--0.33 +1.61
--0.50 +1.39
--1.00 +1.10
+-0.33   +1.61
+-0.50   +1.39
+-1.00   +1.10
 Error: division by zero
-+1.00 +0.00
++1.00   +0.00
 Error: math domain error
-+0.33 +0.00
++0.33   +0.00
 \end{minted}
 \end{cmdbox}
 \end{tcbraster}
