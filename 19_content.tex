@@ -313,7 +313,7 @@ print("Analyzed", np.prod(1 + upperLimits, dtype=np.int), "configurations.")
 	\begin{itemize}
 	\item Simplification: only two orientations
 	\item either: north pole \enquote{up}
-	\item or: Nordpol \enquote{down}
+	\item or: north pole \enquote{down}
 	\end{itemize}
 \item Magnetic fields sum up
 	\begin{itemize}
@@ -740,8 +740,8 @@ class Grid :
     def makeNeighbourList (self) :
         for     row in range(self.L) :
             for col in range(self.L) :
-                self.neighbours[row][col][1] = (row + 1, col    )
-                self.neighbours[row][col][3] = (row    , col + 1)
+                self.neighbours[row][col][0] = (row + 1, col    )
+                self.neighbours[row][col][1] = (row    , col + 1)
                 
         mask = self.neighbours >= self.L
         self.neighbours[mask]  -= self.L
